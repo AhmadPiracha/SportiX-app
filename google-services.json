@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "205197053914",
+    "project_id": "sportix-app-7e67e",
+    "storage_bucket": "sportix-app-7e67e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205197053914:android:1ba654bc2af32c4427bae3",
+        "android_client_info": {
+          "package_name": "com.ahmadpiracha.sportix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205197053914-b74pim3andci0k3j6c2obac4l4ujfdkd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS-sBiKHUVAZIjYCteH-vCS-ti05MURjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205197053914-628f2chfgddqg93ps351r2i9nm25je7r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

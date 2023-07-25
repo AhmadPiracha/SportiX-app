@@ -1,0 +1,76 @@
+{
+    "matches": [
+        {
+            "match_id": 1,
+            "team_1_id": "MNUFC",
+            "team1_name": "Minnesota United FC",
+            "team_2_id": "ATLUTD",
+            "team2_name": "Atlanta United FC",
+            "venue": "Allianz Field",
+            "time": "2023-05-20T20:00:00-05:00"
+        },
+        {
+            "match_id": 2,
+            "team_1_id": "NYCFC",
+            "team1_name": "New York City FC",
+            "team_2_id": "PHI",
+            "team2_name": "Philadelphia Union",
+            "venue": "Yankee Stadium",
+            "time": "2023-05-21T15:00:00-04:00"
+        },
+        {
+            "match_id": 3,
+            "team_1_id": "LAFC",
+            "team1_name": "Los Angeles FC",
+            "team_2_id": "SJ",
+            "team2_name": "San Jose Earthquakes",
+            "venue": "Banc of California Stadium",
+            "time": "2023-05-21T19:30:00-07:00"
+        },
+        {
+            "match_id": 4,
+            "team_1_id": "TFC",
+            "team1_name": "Toronto FC",
+            "team_2_id": "ORL",
+            "team2_name": "Orlando City SC",
+            "venue": "BMO Field",
+            "time": "2023-05-22T13:00:00-04:00"
+        },
+        {
+            "match_id": 5,
+            "team_1_id": "SKC",
+            "team1_name": "Sporting Kansas City",
+            "team_2_id": "LA",
+            "team2_name": "LA Galaxy",
+            "venue": "Children's Mercy Park",
+            "time": "2023-05-22T15:00:00-05:00"
+        },
+        {
+            "match_id": 6,
+            "team_1_id": "COL",
+            "team1_name": "Colorado Rapids",
+            "team_2_id": "RSL",
+            "team2_name": "Real Salt Lake",
+            "venue": "Dick's Sporting Goods Park",
+            "time": "2023-05-22T17:00:00-06:00"
+        },
+        {
+            "match_id": 7,
+            "team_1_id": "NSH",
+            "team1_name": "Nashville SC",
+            "team_2_id": "CHI",
+            "team2_name": "Chicago Fire FC",
+            "venue": "Nissan Stadium",
+            "time": "2023-05-23T19:00:00-05:00"
+        },
+        {
+            "match_id": 8,
+            "team_1_id": "MTL",
+            "team1_name": "CF Montréal",
+            "team_2_id": "DC",
+            "team2_name": "D.C. United",
+            "venue": "Saputo Stadium",
+            "time": "2023-05-24T19:30:00-04:00"
+        }
+    ]
+}
