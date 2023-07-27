@@ -12,13 +12,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 const MatchDetailsCard = () => {
-  console.log(matches);
+  // console.log(matches);
   return (
-      <SafeAreaView>
-        <View>
-          <Text>Match Details</Text>
-        </View>
-      </SafeAreaView>
+    <SafeAreaView>
+      <View>
+        <Text>Match Details</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 

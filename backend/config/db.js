@@ -39,7 +39,7 @@ app.get("/teamSchedule", function (req, res) {
 
 app.get("/getPlayers", function (req, res) {
   const team = req.query.team;
-  console.log(team)
+  // console.log(team)
   connection.query("SELECT playername FROM player WHERE team = ?",[team],
    function (err, results) {
       if (err) throw err;

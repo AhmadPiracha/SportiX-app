@@ -25,8 +25,6 @@ const LoginScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-
-
   const updateInputVal = (val, prop) => {
     const state = { displayName, email, password, isLoading };
     state[prop] = val;
@@ -85,12 +83,32 @@ const LoginScreen = ({ navigation }) => {
       .then(async (res) => {
         const userDoc = db.collection("users").doc(res.user.uid).get();
         const storedPasswordHash = (await userDoc).data().password;
-        console.log(storedPasswordHash);
+        // console.log(storedPasswordHash);
 
+        // if (enteredPasswordHash === storedPasswordHash) {
+        //   console.log("User logged in successfully!");
+        //   await AsyncStorage.setItem("user", JSON.stringify(user));
+        //   navigation.navigate("DrawerRoot", { screen: "Home" });
+        //   setIsLoading(false);
+        //   setDisplayName("");
+        //   setEmail("");
+        //   setPassword("");
+        //   setError("");
+        // } else {
+        //   setIsLoading(false);
+        //   Alert.alert("Invalid credentials");
+        // }
         if (enteredPasswordHash === storedPasswordHash) {
           console.log("User logged in successfully!");
-          // await AsyncStorage.setItem("user", JSON.stringify(user));
-          navigation.navigate("DrawerRoot", { screen: "Home" });
+
+          // Save the user's login status to AsyncStorage
+          try {
+            await AsyncStorage.setItem("isLoggedIn", "true");
+          } catch (error) {
+            console.log("Error saving login status to AsyncStorage:", error);
+          }
+
+          navigation.navigate("Home");
           setIsLoading(false);
           setDisplayName("");
           setEmail("");
@@ -104,7 +122,7 @@ const LoginScreen = ({ navigation }) => {
       .catch((error) => {
         setIsLoading(false);
         Alert.alert(error.message);
-        console.log(error.message);
+        // console.log(error.message);
       });
   };
 

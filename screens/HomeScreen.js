@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   ScrollView,
   TextInput,
-  Image
+  Image,
 } from "react-native";
 import Carousel from "react-native-snap-carousel";
 import Feather from "react-native-vector-icons/Feather";
@@ -53,33 +53,33 @@ const HomeScreen = ({ navigation }) => {
   const renderMatches = (matches) => {
     return (
       <View style={styles.container}>
-        {matches.map((item) => (
-          <View style={styles.card}>
-          <View style={styles.headerContainer}>
-            <View style={styles.teamLogoContainer}>
-              <Image
-                source={require("../assets/logo/islamabad-united.jpg")}
-                style={styles.teamLogo}
-              />
-              <Text style={styles.teamName}>Malang</Text>
+        {matches.map((item, index) => (
+          <View style={styles.card} key={index}>
+            <View style={styles.headerContainer}>
+              <View style={styles.teamLogoContainer}>
+                <Image
+                  source={require("../assets/logo/islamabad-united.jpg")}
+                  style={styles.teamLogo}
+                />
+                <Text style={styles.teamName}>Malang</Text>
+              </View>
+              <Text style={styles.versus}>VS</Text>
+              <View style={styles.teamLogoContainer}>
+                <Image
+                  source={require("../assets/logo/lahore-qalandars.jpg")}
+                  style={styles.teamLogo}
+                />
+                <Text style={styles.teamName}>Thunders</Text>
+              </View>
             </View>
-            <Text style={styles.versus}>VS</Text>
-            <View style={styles.teamLogoContainer}>
-              <Image
-                source={require("../assets/logo/lahore-qalandars.jpg")}
-                style={styles.teamLogo}
-              />
-              <Text style={styles.teamName}>Thunders</Text>
-            </View>
-          </View>
 
-          <View style={styles.VenueTeamContainer}>
-            <Text style={styles.venue}>Fast Cricket Stadium</Text>
+            <View style={styles.VenueTeamContainer}>
+              <Text style={styles.venue}>Fast Cricket Stadium</Text>
+            </View>
+            <View style={styles.VenueTeamContainer}>
+              <Text style={styles.venue}>17/05/2023</Text>
+            </View>
           </View>
-          <View style={styles.VenueTeamContainer}>
-            <Text style={styles.venue}>17/05/2023</Text>
-          </View>
-        </View>
         ))}
       </View>
     );
@@ -112,7 +112,6 @@ const HomeScreen = ({ navigation }) => {
 
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Gallery</Text>
-         
         </View>
 
         {/* <Carousel
@@ -137,8 +136,6 @@ const HomeScreen = ({ navigation }) => {
 
         {matchTab === 1 && renderMatches(TodaysMatch)}
         {matchTab === 2 && renderMatches(UpcomingMatches)}
-
-
       </ScrollView>
     </SafeAreaView>
   );

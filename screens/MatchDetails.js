@@ -14,27 +14,28 @@ import { useState } from "react";
 
 const MatchDetails = () => {
   const navigation = useNavigation();
-  const [cricket,setCricket]=useState([]);
+  const [cricket, setCricket] = useState([]);
 
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('http://10.54.4.219:5001/teamSchedule',{
-        "Content-Type":"application/json"
-      });
-      if (response?.data) {
-        setCricket(response.data);
-        // console.log(response.data)
-       
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://10.54.4.219:5001/teamSchedule",
+          {
+            "Content-Type": "application/json",
+          }
+        );
+        if (response?.data) {
+          setCricket(response.data);
+          // console.log(response.data)
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+    };
 
-  fetchData();
-}, []);
-
+    fetchData();
+  }, []);
 
   const handleMatchPress = (item) => {
     navigation.navigate("MatchTeamCard", {
@@ -43,17 +44,15 @@ useEffect(() => {
       team2_name: item.teamB,
       venue: item.venue,
       date: item.date,
-      time:item.time,
+      time: item.time,
     });
-    console.log("Match team Card Pressed")
+    // console.log("Match team Card Pressed")
   };
 
   const renderMatchItem = ({ item }) => (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <TouchableOpacity 
-        onPress={() => handleMatchPress(item)}
-        >
+        <TouchableOpacity onPress={() => handleMatchPress(item)}>
           <View style={styles.detailsContainer}>
             <Image
               source={require("../assets/logo/islamabad-united.jpg")}

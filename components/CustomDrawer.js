@@ -19,23 +19,31 @@ import { Alert } from "react-native";
 const CustomDrawer = (props) => {
   const navigation = useNavigation();
   const [displayName, setDisplayName] = useState("");
+
   useEffect(() => {
-    db.collection("users")
-      .doc(auth.currentUser.uid)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          setDisplayName(doc.data().displayName);
-        } else {
-          console.log("User not found");
-        }
-      });
+    if (auth.currentUser) {
+      const userId = auth.currentUser.uid; // Get the user ID from the currently authenticated user object
+      db.collection("users")
+        .doc(userId) // Provide the user ID as the document ID
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            setDisplayName(doc.data().displayName);
+          } else {
+            console.log("User not found");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    }
   }, []);
+
   const signOut = () => {
     auth
       .signOut()
       .then(() => {
-        navigation.navigate("DrawerRoot", { screen: "Login" });
+        navigation.navigate("Login");
         console.log("User signed out Successfully!");
       })
       .catch((error) => {
@@ -57,6 +65,8 @@ const CustomDrawer = (props) => {
       ],
       { cancelable: false }
     );
+
+    // FOR WEB PAGES
 
     // window.confirm("Are you sure you want to Sign Out?");
     // signOut();
@@ -113,7 +123,10 @@ const CustomDrawer = (props) => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={signOutConfirmBtn} style={{ paddingVertical: 15 }}>
+        <TouchableOpacity
+          onPress={signOutConfirmBtn}
+          style={{ paddingVertical: 15 }}
+        >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Ionicons name="exit-outline" size={22} />
             <Text
