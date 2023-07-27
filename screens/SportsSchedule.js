@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   FlatList,
   SafeAreaView,
-  Modal,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";

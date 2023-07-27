@@ -9,6 +9,7 @@ import { TouchableOpacity, Text, View } from "react-native";
 // Screens
 import HomeScreen from "./screens/HomeScreen";
 import SportsSchedule from "./screens/SportsSchedule";
+import SportsInventory from "./screens/SportsInventory";
 import CustomDrawer from "./components/CustomDrawer";
 import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
@@ -50,6 +51,20 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="Sports Schedule"
         component={SportsSchedule}
+        options={{
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              size={size}
+              color={focused ? "#00B4D8" : "#000"}
+            />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+        name="Sports Inventory"
+        component={SportsInventory}
         options={{
           drawerIcon: ({ focused, size }) => (
             <Ionicons
