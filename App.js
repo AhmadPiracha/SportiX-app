@@ -4,12 +4,11 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { auth } from "./database/firebase";
-import { TouchableOpacity, Text, View } from "react-native";
 
 // Screens
 import HomeScreen from "./screens/HomeScreen";
 import SportsSchedule from "./screens/SportsSchedule";
-import SportsInventory from "./screens/SportsInventory";
+import SportsInventoryScreen from "./screens/SportsInventoryScreen";
 import CustomDrawer from "./components/CustomDrawer";
 import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
@@ -17,6 +16,9 @@ import MatchTeamCard from "./screens/MatchTeamCard";
 import ViewResultsScreen from "./screens/ViewResultsScreen";
 import MatchDetails from "./screens/MatchDetails";
 import { useNavigation } from "@react-navigation/native";
+import EquipmentBooking from "./screens/EquipmentBookingScreen";
+import SportsVenueBooking from "./screens/SportsVenueBooking";
+import ItemDetailsScreen from "./screens/ItemDetailsScreen";
 
 // Initialize navigators
 const Drawer = createDrawerNavigator();
@@ -63,8 +65,8 @@ const DrawerNavigator = () => {
       />
 
       <Drawer.Screen
-        name="Sports Inventory"
-        component={SportsInventory}
+        name="Booking"
+        component={SportsInventoryScreen}
         options={{
           drawerIcon: ({ focused, size }) => (
             <Ionicons
@@ -111,6 +113,14 @@ const App = () => {
             <Stack.Screen name="MatchTeamCard" component={MatchTeamCard} />
             <Stack.Screen name="MatchDetails" component={MatchDetails} />
             <Stack.Screen name="ViewResults" component={ViewResultsScreen} />
+            <Stack.Screen name="EquipmentBooking" component={EquipmentBooking} />
+            <Stack.Screen name="SportsVenueBooking" component={SportsVenueBooking} />
+            <Stack.Screen
+          name="ItemDetails"
+          component={ItemDetailsScreen}
+          options={{ title: "Item Details" }}
+        />
+
           </>
         ) : (
           <>
@@ -119,6 +129,13 @@ const App = () => {
           </>
         )}
       </Stack.Navigator>
+
+      {/* <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="SportsInventoryScreen"
+          component={SportsInventoryScreen}
+        />
+      </Stack.Navigator> */}
     </NavigationContainer>
   );
 };
