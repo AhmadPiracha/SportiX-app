@@ -14,7 +14,7 @@ import { SportsType } from "../model/matchesData";
 
 const EquipmentBooking = ({ navigation }) => {
   const onPressBack = () => {
-    navigation.navigate("Booking");
+    navigation.navigate("Home");
   };
 
   return (

@@ -15,7 +15,7 @@ import CustomButton from "../components/CustomButton";
 
 const SportsVenueBooking = ({ navigation }) => {
   const onPressBack = () => {
-    navigation.navigate("Booking");
+    navigation.navigate("Home");
   };
 
   return (

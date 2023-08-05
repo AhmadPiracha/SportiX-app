@@ -46,13 +46,13 @@ const SportsInventoryScreen = ({ navigation }) => {
               marginTop: 20,
             }}
           >
-            <Image
+            {/* <Image
               style={{
                 width: 500,
                 height: 300,
               }}
               source={require("../assets/images/loginpageImg.png")}
-            />
+            /> */}
           </View>
         </View>
         <View style={styles.containerTwo}>

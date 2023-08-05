@@ -63,9 +63,36 @@ const DrawerNavigator = () => {
         }}
       />
 
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Booking"
         component={SportsInventoryScreen}
+        options={{
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              size={size}
+              color={focused ? "#00B4D8" : "#000"}
+            />
+          ),
+        }}
+      /> */}
+
+      <Drawer.Screen
+        name="Equipment Booking"
+        component={EquipmentBooking}
+        options={{
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              size={size}
+              color={focused ? "#00B4D8" : "#000"}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Venue Booking"
+        component={SportsVenueBooking}
         options={{
           drawerIcon: ({ focused, size }) => (
             <Ionicons
@@ -112,14 +139,11 @@ const App = () => {
             <Stack.Screen name="MatchTeamCard" component={MatchTeamCard} />
             <Stack.Screen name="MatchDetails" component={MatchDetails} />
             <Stack.Screen name="ViewResults" component={ViewResultsScreen} />
-            <Stack.Screen name="EquipmentBooking" component={EquipmentBooking} />
-            <Stack.Screen name="SportsVenueBooking" component={SportsVenueBooking} />
             <Stack.Screen
-          name="ItemDetails"
-          component={ItemDetailsScreen}
-          options={{ title: "Item Details" }}
-        />
-
+              name="ItemDetails"
+              component={ItemDetailsScreen}
+              options={{ title: "Item Details" }}
+            />
           </>
         ) : (
           <>

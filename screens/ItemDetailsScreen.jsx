@@ -15,7 +15,7 @@ const ItemDetailsScreen = ({ route,navigation }) => {
   };
 
   const onPressBack = () => {
-    navigation.navigate("EquipmentBooking");
+    navigation.navigate("Equipment Booking");
   };
 
 
