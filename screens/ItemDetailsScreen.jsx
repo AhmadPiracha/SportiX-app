@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
+import { Alert } from 'react-native';
 
 const ItemDetailsScreen = ({ route,navigation }) => {
   const { item } = route.params;
@@ -9,8 +10,27 @@ const ItemDetailsScreen = ({ route,navigation }) => {
   const handleBooking = () => {
     const totalCount = equipmentList.reduce((total, equipment) => total + equipment.quantity, 0);
     if (totalCount > 0) {
-      // Perform the booking action or navigate to 'Booking' screen
-      // navigation.navigate('Booking', { item, quantity: totalCount });
+      Alert.alert(
+        "Confirm Booking",
+        `Book ${totalCount} ${totalCount === 1 ? 'Item' : 'Items'}?`,
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          {
+            text: 'Confirm',
+            onPress: () => {
+              alert(`Booking confirmed for ${totalCount} ${totalCount === 1 ? 'Item' : 'Items'}`);
+            }
+
+          },
+        ],
+        { cancelable: false }
+      );
+    } else {
+      alert('Please select at least one item to book');
     }
   };
 

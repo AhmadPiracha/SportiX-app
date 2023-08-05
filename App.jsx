@@ -8,7 +8,6 @@ import { auth } from "./database/firebase";
 // Screens
 import HomeScreen from "./screens/HomeScreen";
 import SportsSchedule from "./screens/SportsSchedule";
-import SportsInventoryScreen from "./screens/SportsInventoryScreen";
 import CustomDrawer from "./components/CustomDrawer";
 import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
@@ -62,20 +61,6 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-
-      {/* <Drawer.Screen
-        name="Booking"
-        component={SportsInventoryScreen}
-        options={{
-          drawerIcon: ({ focused, size }) => (
-            <Ionicons
-              name={focused ? "person" : "person-outline"}
-              size={size}
-              color={focused ? "#00B4D8" : "#000"}
-            />
-          ),
-        }}
-      /> */}
 
       <Drawer.Screen
         name="Equipment Booking"
