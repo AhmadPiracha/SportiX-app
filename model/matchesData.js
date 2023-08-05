@@ -36,35 +36,43 @@ export const SportsType = [{
         id: "1",
         title: "Cricket",
         logo: "tennisball-sharp",
-        quantity: 0, // Initial count for Cricket
-        maxQuantity: 5, // Maximum count for Cricket
-
+        equipment: [
+            { id: "1", name: "Bat", quantity: 0, maxQuantity: 5 },
+            { id: "2", name: "Ball", quantity: 0, maxQuantity: 5 },
+            { id: "3", name: "Gloves", quantity: 0, maxQuantity: 5 },
+            { id: "4", name: "Pads", quantity: 0, maxQuantity: 5 },
+            { id: "5", name: "Helmet", quantity: 0, maxQuantity: 5 },
+            { id: "6", name: "Full Kit", quantity: 0, maxQuantity: 5 },
+        ],
     },
     {
         id: "2",
         title: "Futsal",
         logo: "football-sharp",
-        quantity: 0, // Initial count for Futsal
-        maxQuantity: 10, // Maximum count for Cricket
-
+        equipment: [
+            { id: "1", name: "Football", quantity: 0, maxQuantity: 10 },
+        ],
     },
     {
         id: "3",
         title: "Basketball",
         logo: "american-football-sharp",
-        quantity: 0, // Initial count for Basketball
-        maxQuantity: 5, // Maximum count for Cricket
-
+        equipment: [
+            { id: "1", name: "Basketball", quantity: 0, maxQuantity: 5 },
+        ],
     },
     {
         id: "4",
         title: "Badminton",
         logo: "basketball-sharp",
-        quantity: 0, // Initial count for Badminton
-        maxQuantity: 0, // Maximum count for Cricket
-
+        equipment: [
+            { id: "1", name: "Racket", quantity: 0, maxQuantity: 0 },
+            { id: "2", name: "Shuttlecock", quantity: 0, maxQuantity: 0 },
+        ],
     },
 ];
+
+
 
 
 
