@@ -13,7 +13,7 @@ import CustomDrawer from "./components/CustomDrawer";
 import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import MatchTeamCard from "./screens/MatchTeamCard";
-import ViewResultsScreen from "./screens/ViewResultsScreen";
+import ViewResultsScreen from "./screens/ViewResultsScreen.jsx";
 import MatchDetails from "./screens/MatchDetails";
 import EquipmentBooking from "./screens/EquipmentBookingScreen";
 import SportsVenueBooking from "./screens/SportsVenueBooking";
@@ -115,10 +115,11 @@ const App = () => {
             <Stack.Screen name="EquipmentBooking" component={EquipmentBooking} />
             <Stack.Screen name="SportsVenueBooking" component={SportsVenueBooking} />
             <Stack.Screen
-              name="ItemDetails"
-              component={ItemDetailsScreen}
-              options={{ title: "Item Details" }}
-            />
+          name="ItemDetails"
+          component={ItemDetailsScreen}
+          options={{ title: "Item Details" }}
+        />
+
           </>
         ) : (
           <>

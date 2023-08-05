@@ -10,9 +10,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { windowHeight, windowWidth } from "../utils/dimensions";
-import { Button } from "react-native-elements";
 import CustomButton from "../components/CustomButton";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const SportsInventoryScreen = ({ navigation }) => {
   const onPressBack = () => {
