@@ -32,6 +32,13 @@ export const UpcomingMatches = [{
 
 ];
 
+export const timeSlots = [
+    { id: 1, duration: '30 minutes' },
+    { id: 2, duration: '1 hour' },
+    { id: 3, duration: '1 hour 30 minutes' },
+    { id: 4, duration: '2 hours' },
+];
+
 export const SportsType = [{
         id: "1",
         title: "Cricket",
