@@ -78,9 +78,42 @@ export const SportsType = [{
         ],
     },
 ];
+export const Grounds = [{
+        id: 0,
+        name: "Select Ground",
+        type: "Select Type",
+        location: "Select Location",
 
+    }, {
+        id: 1,
+        name: "Cricket Ground",
+        type: "Cricket",
+        location: "FAST NU CFD",
 
+    },
+    {
+        id: 2,
+        name: "Futsal Ground",
+        type: "Futsal",
+        location: "FAST NU CFD",
 
+    },
+    {
+        id: 3,
+        name: "Basketball Ground",
+        type: "Basketball",
+        location: "FAST NU CFD",
+
+    },
+    {
+        id: 4,
+        name: "Badminton Court",
+        type: "Badminton",
+        location: "FAST NU CFD",
+
+    }
+
+];
 
 
 export const TeamAPlayers = [{
