@@ -27,7 +27,7 @@ const MatchDetails = () => {
         );
         if (response?.data) {
           setCricket(response.data);
-          // console.log(response.data)
+          console.log(response.data)
         }
       } catch (error) {
         console.error("Error fetching data:", error);

@@ -7,15 +7,17 @@ var app = express();
 const server = http.createServer(app);
 
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to application." });
+    res.json({ message: "Welcome to application." });
 });
 
 server.listen(5000, () => {
-  console.log("Server is running on port 5000.");
-  connection.connect((err) => {
-    if (err) {
-      throw err;
-    }
-    console.log("Connected to database");
-  });
+    console.log("Server is running on port 5000.");
+    connection.connect((err) => {
+        if (err) {
+            console.log("Error connecting to database");
+
+            throw err;
+        }
+        console.log("Connected to database");
+    });
 });
