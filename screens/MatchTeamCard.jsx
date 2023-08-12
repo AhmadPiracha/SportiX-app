@@ -1,14 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import { Modal,View, Text, StyleSheet, Image,SafeAreaView, TouchableOpacity } from "react-native";
+import { Modal, View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import CustomSwitch from "../components/CustomSwitch";
 import PlayersList from "../components/PlayerList";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-const MatchTeamCard = ({ route }) => {
-  const { team1_name, team2_name, venue, date,time } = route.params;
+const MatchTeamCard = ({ route, team }) => {
+  const { team1_name, team2_name, venue, date, time } = route.params;
   const [playersList, setPlayersList] = useState(1);
-  const [playerData,setPlayerData]=useState([]);
+  const [playerData, setPlayerData] = useState([]);
 
   const navigation = useNavigation();
 
@@ -18,37 +18,47 @@ const MatchTeamCard = ({ route }) => {
   };
 
   useEffect(() => {
+    if (!team) {
+      console.error("Team name not provided");
+      return;
+    }
+    
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.10.2:5001/getPlayers?team='+'Soul Hunters', {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          
-        });
+        const response = await axios.get(
+          `http://192.168.10.2:5001/getPlayers?team=${team}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         if (response?.data) {
           setPlayerData(response.data);
           console.log("Players", response.data);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
-  }, []);
-  
-  
+  }, [team]);
+
+
 
   const renderPlayers = () => {
     return (
       <View style={styles.container}>
+        <Text>Players for {team}:</Text>
+
         {playerData.map((item) => (
-          <PlayersList 
-          key={playerData.id} 
-          name={item.playername} 
+          <PlayersList
+            key={item.id}
+            name={item.playername}
+            rollNumber={item.rollno}
           />
-          
+
         ))}
       </View>
     );
@@ -58,72 +68,72 @@ const MatchTeamCard = ({ route }) => {
   };
 
   return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.mainContainer}>
-          <View style={styles.headerBar}>
-            <View style={styles.leftIcon}>
-              <Ionicons
-                onPress={handleGoBack}
-                name="arrow-back-outline"
-                size={20}
-                color="#fff"
-                style={styles.containerBtn}
-              />
-            </View>
-            <View style={styles.shareBtn}>
-              <Ionicons
-                name="share-social-outline"
-                size={20}
-                color="#fff"
-                style={styles.containerBtn}
-              />
-            </View>
-          </View>
-          <View style={styles.card}>
-            <View style={styles.headerContainer}>
-              <View style={styles.teamLogoContainer}>
-                <Image
-                  source={require("../assets/logo/islamabad-united.jpg")}
-                  style={styles.teamLogo}
-                />
-                <Text style={styles.teamName}>{team1_name}</Text>
-              </View>
-              <Text style={styles.versus}>VS</Text>
-              <View style={styles.teamLogoContainer}>
-                <Image
-                  source={require("../assets/logo/lahore-qalandars.jpg")}
-                  style={styles.teamLogo}
-                />
-                <Text style={styles.teamName}>{team2_name}</Text>
-              </View>
-            </View>
-
-            <View style={styles.VenueTeamContainer}>
-              <Text style={styles.venue}>{venue}</Text>
-            </View>
-            <View style={styles.VenueTeamContainer}>
-              <Text style={styles.venue}>{date}</Text>
-            </View>
-            <View style={styles.VenueTeamContainer}>
-              <Text style={styles.venue}>{time}</Text>
-            </View>
-          </View>
-
-          {/* Teams Players */}
-
-          <View style={styles.switchContainer}>
-            <CustomSwitch
-              Option1="Team A"
-              Option2="Team B"
-              selectionMode={playersList}
-              onSelectSwitch={onSelectSwitch}
+    <SafeAreaView style={styles.container}>
+      <View style={styles.mainContainer}>
+        <View style={styles.headerBar}>
+          <View style={styles.leftIcon}>
+            <Ionicons
+              onPress={handleGoBack}
+              name="arrow-back-outline"
+              size={20}
+              color="#fff"
+              style={styles.containerBtn}
             />
           </View>
-
-          {playersList === 1 && renderPlayers()}
-          {playersList === 2 && renderPlayers()}
+          <View style={styles.shareBtn}>
+            <Ionicons
+              name="share-social-outline"
+              size={20}
+              color="#fff"
+              style={styles.containerBtn}
+            />
+          </View>
         </View>
-      </SafeAreaView>
+        <View style={styles.card}>
+          <View style={styles.headerContainer}>
+            <View style={styles.teamLogoContainer}>
+              <Image
+                source={require("../assets/logo/islamabad-united.jpg")}
+                style={styles.teamLogo}
+              />
+              <Text style={styles.teamName}>{team1_name}</Text>
+            </View>
+            <Text style={styles.versus}>VS</Text>
+            <View style={styles.teamLogoContainer}>
+              <Image
+                source={require("../assets/logo/lahore-qalandars.jpg")}
+                style={styles.teamLogo}
+              />
+              <Text style={styles.teamName}>{team2_name}</Text>
+            </View>
+          </View>
+
+          <View style={styles.VenueTeamContainer}>
+            <Text style={styles.venue}>{venue}</Text>
+          </View>
+          <View style={styles.VenueTeamContainer}>
+            <Text style={styles.venue}>{date}</Text>
+          </View>
+          <View style={styles.VenueTeamContainer}>
+            <Text style={styles.venue}>{time}</Text>
+          </View>
+        </View>
+
+        {/* Teams Players */}
+
+        <View style={styles.switchContainer}>
+          <CustomSwitch
+            Option1="Team A"
+            Option2="Team B"
+            selectionMode={playersList}
+            onSelectSwitch={onSelectSwitch}
+          />
+        </View>
+
+        {playersList === 1 && renderPlayers()}
+        {playersList === 2 && renderPlayers()}
+      </View>
+    </SafeAreaView>
   );
 };
 

@@ -2,13 +2,15 @@ import React from "react";
 import { Text, View, StyleSheet, SafeAreaView } from "react-native";
 import { windowWidth } from "../utils/dimensions";
 
-const PlayersList = ({ name }) => {
+const PlayersList = ({ name,rollNumber }) => {
   return (
     <SafeAreaView>
       <View style={styles.container}>
         <View style={styles.playerContainer}>
-          <View style={{ width: windowWidth - 220 }}>
+          <View style={{ width: windowWidth - 220,flexDirection: 'row', alignItems: 'center',justifyContent:'space-evenly' }}>
             <Text style={styles.playerName}>{name}</Text>
+            <Text style={styles.playerName}>{rollNumber}</Text>
+
           </View>
         </View>
       </View>

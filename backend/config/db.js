@@ -43,19 +43,19 @@ app.get("/teamSchedule", function(req, res) {
 });
 
 
-
-
-
-
 app.get("/getPlayers", function(req, res) {
     const team = req.query.team;
-    // console.log(team)
-    connection.query("SELECT playername FROM sportix.player WHERE team = ?", [team],
+    connection.query("SELECT playername,rollno FROM sportix.player WHERE team = ?", [team],
         function(err, results) {
-            if (err) throw err;
+            if (err) {
+                console.error("Error executing SQL query:", err);
+                return res.status(500).send("Error fetching players");
+            }
             res.send(results);
-        })
+        });
 });
+
+
 
 app.listen(5001, () => {
     console.log("Server is running on port 5001.");
