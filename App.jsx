@@ -17,6 +17,11 @@ import MatchDetails from "./screens/MatchDetails";
 import EquipmentBooking from "./screens/EquipmentBookingScreen";
 import SportsVenueBooking from "./screens/SportsVenueBooking";
 import ItemDetailsScreen from "./screens/ItemDetailsScreen";
+// Sports Type Options Screens
+import Cricket from "./screens/SportsTypeOptions/Cricket";
+import Badminton from "./screens/SportsTypeOptions/Badminton";
+import Futsal from "./screens/SportsTypeOptions/Futsal";
+import BasketBall from "./screens/SportsTypeOptions/BasketBall";
 
 // Initialize navigators
 const Drawer = createDrawerNavigator();
@@ -121,8 +126,15 @@ const App = () => {
         {user ? (
           <>
             <Stack.Screen name="DrawerRoot" component={DrawerNavigator} />
+            {/* Sports Schedule Screens */}
+            <Stack.Screen name="Cricket" component={Cricket} />
+            <Stack.Screen name="Badminton" component={Badminton} />
+            <Stack.Screen name="Futsal" component={Futsal} />
+            <Stack.Screen name="BasketBall" component={BasketBall} />
+
             <Stack.Screen name="MatchTeamCard" component={MatchTeamCard} />
             <Stack.Screen name="MatchDetails" component={MatchDetails} />
+
             <Stack.Screen name="ViewResults" component={ViewResultsScreen} />
             {/* Sports Equipment Booking Items Screen */}
             <Stack.Screen

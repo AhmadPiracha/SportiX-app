@@ -12,7 +12,7 @@ import { windowWidth, windowHeight } from "../utils/dimensions";
 import axios from "axios";
 import { useState } from "react";
 
-const MatchDetails = () => {
+const MatchDetails = ({ type }) => {
   const navigation = useNavigation();
   const [cricket, setCricket] = useState([]);
 
@@ -20,15 +20,16 @@ const MatchDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          // "http://10.54.4.219:5001/teamSchedule",
-          "http://192.168.10.2:5001/teamSchedule",
+          `http://192.168.10.2:5001/teamSchedule?type=${type}`,
           {
-            "Content-Type": "application/json",
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
         );
         if (response?.data) {
           setCricket(response.data);
-          console.log(response.data)
+          console.log(response.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -36,7 +37,7 @@ const MatchDetails = () => {
     };
 
     fetchData();
-  }, []);
+  }, [type]);
 
   const handleMatchPress = (item) => {
     navigation.navigate("MatchTeamCard", {

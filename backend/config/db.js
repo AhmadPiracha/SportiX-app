@@ -29,12 +29,21 @@ app.get("/getTeams", function(req, res) {
 });
 
 app.get("/teamSchedule", function(req, res) {
-    let sql = "SELECT * FROM sportix.teamschedule WHERE type='cricket'";
-    connection.query(sql, function(err, results) {
-        if (err) throw err;
+    const type = req.query.type || "cricket"; // Default to cricket if no type is provided
+    let sql = "SELECT * FROM sportix.teamschedule WHERE type = ?";
+
+    connection.query(sql, [type], function(err, results) {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).send("Error fetching team schedules");
+        }
+
         res.send(results);
     });
 });
+
+
+
 
 
 
