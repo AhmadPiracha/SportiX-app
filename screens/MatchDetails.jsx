@@ -20,7 +20,8 @@ const MatchDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://10.54.4.219:5001/teamSchedule",
+          // "http://10.54.4.219:5001/teamSchedule",
+          "http://192.168.10.2:5001/teamSchedule",
           {
             "Content-Type": "application/json",
           }

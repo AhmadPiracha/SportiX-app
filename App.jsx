@@ -49,7 +49,7 @@ const DrawerNavigator = () => {
         }}
       />
       <Drawer.Screen
-        name="Sports Schedule"
+        name="Schedule"
         component={SportsSchedule}
         options={{
           drawerIcon: ({ focused, size }) => (
@@ -124,6 +124,7 @@ const App = () => {
             <Stack.Screen name="MatchTeamCard" component={MatchTeamCard} />
             <Stack.Screen name="MatchDetails" component={MatchDetails} />
             <Stack.Screen name="ViewResults" component={ViewResultsScreen} />
+            {/* Sports Equipment Booking Items Screen */}
             <Stack.Screen
               name="ItemDetails"
               component={ItemDetailsScreen}

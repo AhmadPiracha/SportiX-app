@@ -20,7 +20,8 @@ const connection = mysql.createConnection({
 module.exports = connection;
 
 app.get("/getTeams", function(req, res) {
-    let sql = "SELECT * FROM teams WHERE type='cricket'";
+    let sql = "SELECT * FROM sportix.teams WHERE type='cricket'";
+
     connection.query(sql, function(err, results) {
         if (err) throw err;
         res.send(results);
@@ -28,7 +29,7 @@ app.get("/getTeams", function(req, res) {
 });
 
 app.get("/teamSchedule", function(req, res) {
-    let sql = "SELECT * FROM teamschedule WHERE type='cricket'";
+    let sql = "SELECT * FROM sportix.teamschedule WHERE type='cricket'";
     connection.query(sql, function(err, results) {
         if (err) throw err;
         res.send(results);
@@ -40,7 +41,7 @@ app.get("/teamSchedule", function(req, res) {
 app.get("/getPlayers", function(req, res) {
     const team = req.query.team;
     // console.log(team)
-    connection.query("SELECT playername FROM player WHERE team = ?", [team],
+    connection.query("SELECT playername FROM sportix.player WHERE team = ?", [team],
         function(err, results) {
             if (err) throw err;
             res.send(results);

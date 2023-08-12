@@ -20,7 +20,7 @@ const MatchTeamCard = ({ route }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://10.54.4.219:5001/getPlayers?team='+'thunders', {
+        const response = await axios.get('http://192.168.10.2:5001/getPlayers?team='+'Soul Hunters', {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -28,7 +28,7 @@ const MatchTeamCard = ({ route }) => {
         });
         if (response?.data) {
           setPlayerData(response.data);
-          // console.log("Players", response.data);
+          console.log("Players", response.data);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -54,7 +54,7 @@ const MatchTeamCard = ({ route }) => {
     );
   };
   const handleGoBack = () => {
-    navigation.navigate("SportsSchedule")
+    navigation.navigate("Schedule")
   };
 
   return (
