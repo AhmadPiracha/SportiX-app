@@ -13,10 +13,12 @@ import { windowHeight, windowWidth } from "../utils/dimensions";
 import { SportsType } from "../model/matchesData";
 import HorizontalDaySlider from "./HorizontalDaySlider";
 import MatchDetails from "./MatchDetails";
-
-const SportsSchedule = ({navigation}) => {
+import { useNavigation } from "@react-navigation/native";
+import DateTImePicker from "../components/DateTImePickerComponent";
+const SportsSchedule = ({ activeSport }) => {
+  const navigation = useNavigation();
   const [showList, setShowList] = useState(false);
-  const [activeType, setActiveType] = useState("Cricket");
+  const [activeType, setActiveType] = useState(activeSport || "Select Sport");
 
   const toggleList = () => {
     setShowList((prevShowList) => !prevShowList);
@@ -28,6 +30,24 @@ const SportsSchedule = ({navigation}) => {
     const onPressListItem = () => {
       setActiveType(title);
       setShowList(false);
+
+      if (title === "Cricket") {
+        navigation.navigate("Cricket");
+      }
+      if (title === "Badminton") {
+        navigation.navigate("Badminton");
+      }
+      if (title === "Futsal") {
+        navigation.navigate("Futsal");
+      }
+      if (title === "BasketBall") {
+        navigation.navigate("BasketBall");
+      }
+      else {
+        console.log("No match found");
+      }
+
+
     };
 
     return (
@@ -45,46 +65,47 @@ const SportsSchedule = ({navigation}) => {
   };
 
   return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.mainContainer}>
-          <View style={styles.containerOne}>
-            <Ionicons
-              onPress={onPressBack}
-              name="arrow-back-outline"
-              size={20}
-              color="#fff"
-              style={styles.containerBtn}
-            />
-            <TouchableOpacity onPress={toggleList}>
-              <View style={styles.headerGameContainer}>
-                <Text style={styles.headerGameTxt}>{activeType}</Text>
-                <Ionicons
-                  style={styles.caretIcon}
-                  name="caret-down-outline"
-                  size={24}
-                  color="#fff"
-                />
-              </View>
-            </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.mainContainer}>
+        <View style={styles.containerOne}>
+          <Ionicons
+            onPress={onPressBack}
+            name="arrow-back-outline"
+            size={20}
+            color="#fff"
+            style={styles.containerBtn}
+          />
+          <TouchableOpacity onPress={toggleList}>
+            <View style={styles.headerGameContainer}>
+              <Text style={styles.headerGameTxt}>{activeType}</Text>
+              <Ionicons
+                style={styles.caretIcon}
+                name="caret-down-outline"
+                size={24}
+                color="#fff"
+              />
+            </View>
+          </TouchableOpacity>
 
-            {showList && (
-              <View>
-                <FlatList
-                  data={SportsType}
-                  renderItem={renderListItem}
-                  keyExtractor={(item) => item.id.toString()}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                />
-              </View>
-            )}
-          </View>
-
-          <HorizontalDaySlider />
-
-          <MatchDetails />
+          {showList && (
+            <View>
+              <FlatList
+                data={SportsType}
+                renderItem={renderListItem}
+                keyExtractor={(item) => item.id.toString()}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+          )}
         </View>
-      </SafeAreaView>
+
+        <DateTImePicker />
+
+        <MatchDetails type={activeSport} />
+
+      </View>
+    </SafeAreaView>
   );
 };
 
