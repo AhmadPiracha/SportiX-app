@@ -29,8 +29,12 @@ app.get("/getTeams", function(req, res) {
 });
 
 app.get("/teamSchedule", function(req, res) {
-    const type = req.query.type || "cricket"; // Default to cricket if no type is provided
-    let sql = "SELECT * FROM sportix.teamschedule WHERE type = ?";
+    const type = req.query.type || null; // No default type
+    let sql = "SELECT * FROM sportix.teamschedule";
+
+    if (type) {
+        sql += " WHERE type = ?";
+    }
 
     connection.query(sql, [type], function(err, results) {
         if (err) {
@@ -41,6 +45,7 @@ app.get("/teamSchedule", function(req, res) {
         res.send(results);
     });
 });
+
 
 
 app.get("/getPlayers", function(req, res) {

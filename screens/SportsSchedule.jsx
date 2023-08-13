@@ -11,7 +11,6 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { windowHeight, windowWidth } from "../utils/dimensions";
 import { SportsType } from "../model/matchesData";
-import HorizontalDaySlider from "./HorizontalDaySlider";
 import MatchDetails from "./MatchDetails";
 import { useNavigation } from "@react-navigation/native";
 import DateTImePicker from "../components/DateTImePickerComponent";

@@ -4,65 +4,16 @@ import { Modal, View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } 
 import CustomSwitch from "../components/CustomSwitch";
 import PlayersList from "../components/PlayerList";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
-const MatchTeamCard = ({ route, team }) => {
+const MatchTeamCard = ({ route }) => {
   const { team1_name, team2_name, venue, date, time } = route.params;
   const [playersList, setPlayersList] = useState(1);
-  const [playerData, setPlayerData] = useState([]);
-
   const navigation = useNavigation();
 
 
   const onSelectSwitch = (value) => {
     setPlayersList(value);
   };
-
-  useEffect(() => {
-    if (!team) {
-      console.error("Team name not provided");
-      return;
-    }
-    
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `http://192.168.10.2:5001/getPlayers?team=${team}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (response?.data) {
-          setPlayerData(response.data);
-          console.log("Players", response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [team]);
-
-
-
-  const renderPlayers = () => {
-    return (
-      <View style={styles.container}>
-        <Text>Players for {team}:</Text>
-
-        {playerData.map((item) => (
-          <PlayersList
-            key={item.id}
-            name={item.playername}
-            rollNumber={item.rollno}
-          />
-
-        ))}
-      </View>
-    );
-  };
+  
   const handleGoBack = () => {
     navigation.navigate("Schedule")
   };
@@ -123,15 +74,15 @@ const MatchTeamCard = ({ route, team }) => {
 
         <View style={styles.switchContainer}>
           <CustomSwitch
-            Option1="Team A"
-            Option2="Team B"
+          Option1={team1_name}
+            Option2={team2_name}
             selectionMode={playersList}
             onSelectSwitch={onSelectSwitch}
           />
         </View>
 
-        {playersList === 1 && renderPlayers()}
-        {playersList === 2 && renderPlayers()}
+        {playersList === 1 && <PlayersList key={team1_name} team={team1_name} />}
+        {playersList === 2 && <PlayersList key={team2_name} team={team2_name} />}
       </View>
     </SafeAreaView>
   );

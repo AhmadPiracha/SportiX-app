@@ -1,16 +1,8 @@
-import React, { useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { windowWidth, windowHeight } from "../utils/dimensions";
 import axios from "axios";
-import { useState } from "react";
 
 const MatchDetails = ({ type }) => {
   const navigation = useNavigation();
@@ -19,17 +11,13 @@ const MatchDetails = ({ type }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://192.168.10.2:5001/teamSchedule?type=${type}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await axios.get(`http://192.168.10.9:5001/teamSchedule?type=${type}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (response?.data) {
           setCricket(response.data);
-          console.log(response.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -46,34 +34,24 @@ const MatchDetails = ({ type }) => {
       team2_name: item.teamB,
       venue: item.venue,
       date: item.date,
-      time: item.time,
     });
-    // console.log("Match team Card Pressed")
   };
 
   const renderMatchItem = ({ item }) => (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <TouchableOpacity onPress={() => handleMatchPress(item)}>
-          <View style={styles.detailsContainer}>
-            <Image
-              source={require("../assets/logo/islamabad-united.jpg")}
-              style={styles.teamLogo}
-            />
-            <Text style={styles.teamsName}>{item.teamA}</Text>
-          </View>
-
-          <View style={styles.detailsContainer}>
-            <Image
-              source={require("../assets/logo/lahore-qalandars.jpg")}
-              style={styles.teamLogo}
-            />
-            <Text style={styles.teamsName}>{item.teamB}</Text>
-          </View>
-        </TouchableOpacity>
+    <TouchableOpacity onPress={() => handleMatchPress(item)} style={styles.matchContainer}>
+      <Image source={{ uri: item.teamALogo }} style={styles.teamLogo} />
+      <View style={styles.teamsInfo}>
+        <Text style={styles.teamName}>{item.teamA}</Text>
+        <Text style={styles.teamName}>{item.teamB}</Text>
       </View>
-    </View>
+      <Image source={{ uri: item.teamBLogo }} style={styles.teamLogo} />
+      <View style={styles.matchInfoContainer}>
+        <Text style={styles.matchInfoText}>Date: {item.date}</Text>
+        <Text style={styles.matchInfoText}>Venue: {item.venue}</Text>
+      </View>
+    </TouchableOpacity>
   );
+  
 
   return (
     <View style={styles.mainContainer}>
@@ -93,36 +71,43 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#0d1b2a",
   },
-  container: {
+  matchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#1b263b",
     borderRadius: 10,
     marginHorizontal: 10,
     marginVertical: 10,
-    padding: 10,
-  },
-  subContainer: {
-    flexDirection: "column",
-  },
-  detailsContainer: {
-    flexDirection: "row",
-    marginTop: 10,
-    marginLeft: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 12,
   },
   teamLogo: {
     width: 30,
     height: 30,
     borderRadius: 50,
   },
-  teamsName: {
-    paddingLeft: 10,
-    fontSize: 20,
+  teamsInfo: {
+    flex: 1,
+    marginHorizontal: 10,
+  },
+  teamName: {
+    fontSize: 18,
     fontWeight: "600",
     color: "#fff",
   },
+  matchInfoContainer: {
+    alignItems: "flex-end",
+  },
+  matchInfoText: {
+    fontSize: 14,
+    color: "#ccc",
+  },
   flatListContent: {
     width: windowWidth,
-    height: windowHeight,
+    paddingVertical: 10,
   },
+
+  
 });
 
 export default MatchDetails;
