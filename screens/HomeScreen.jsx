@@ -21,6 +21,7 @@ import { windowWidth } from "../utils/dimensions";
 import axios from "axios";
 
 const HomeScreen = ({ navigation }) => {
+  const [searchInput, setSearchInput] = useState("");
   const [matchTab, setMatchTab] = useState(1);
   const [displayName, setDisplayName] = useState("");
   const [matches, setMatches] = useState({ todayMatches: [], upcomingMatches: [] });
@@ -47,7 +48,7 @@ const HomeScreen = ({ navigation }) => {
         // console.log("PKT Current Date:", pktDate.toISO()); // Log PKT current date
 
         const response = await axios.get(
-          `http://192.168.10.15:5001/teamSchedule?date=${pktDate.toISO()}`,
+          `http://192.168.10.19:5001/teamSchedule?date=${pktDate.toISO()}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -130,7 +131,7 @@ const HomeScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Ionicons
             name="reorder-three-outline"
-            size={30}
+            size={28}
             color="#ffffff"
             style={styles.drawerIcon}
           />
@@ -141,10 +142,15 @@ const HomeScreen = ({ navigation }) => {
         <Feather
           name="search"
           size={20}
-          color="#ffffff"
+          color="#1b263b"
           style={styles.searchIcon}
         />
-        <TextInput style={styles.searchInput} placeholder="Search" />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search matches..."
+          value={searchInput}
+          onChangeText={(text) => setSearchInput(text)}
+        />
       </View>
 
       <View style={styles.sectionContainer}>
@@ -175,20 +181,27 @@ const HomeScreen = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.matchesContainer}>
           {matchTab === 1 ? (
-            matches.todayMatches && matches.todayMatches.length > 0 ? (
-              matches.todayMatches.map(renderMatchDetails)
-            ) : (
-              <Text style={styles.noMatchesText}>No matches available</Text>
-            )
+            // Filter and map today's matches
+            matches.todayMatches
+              .filter((match) =>
+                match.teamA.toLowerCase().includes(searchInput.toLowerCase()) ||
+                match.teamB.toLowerCase().includes(searchInput.toLowerCase()) ||
+                match.venue.toLowerCase().includes(searchInput.toLowerCase())
+              )
+              .map(renderMatchDetails)
           ) : (
-            matches.upcomingMatches && matches.upcomingMatches.length > 0 ? (
-              matches.upcomingMatches.map(renderMatchDetails)
-            ) : (
-              <Text style={styles.noMatchesText}>No matches available</Text>
-            )
+            // Filter and map upcoming matches
+            matches.upcomingMatches
+              .filter((match) =>
+                match.teamA.toLowerCase().includes(searchInput.toLowerCase()) ||
+                match.teamB.toLowerCase().includes(searchInput.toLowerCase()) ||
+                match.venue.toLowerCase().includes(searchInput.toLowerCase())
+              )
+              .map(renderMatchDetails)
           )}
         </View>
       </ScrollView>
+
 
 
     </SafeAreaView>
@@ -227,13 +240,14 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 10,
     marginBottom: 15,
+    backgroundColor: "#ffffff",
   },
   searchIcon: {
     marginRight: 5,
   },
   searchInput: {
     flex: 1,
-    color: "#ffffff",
+    color: "#1b263b",
   },
   sectionContainer: {
     flexDirection: "row",
