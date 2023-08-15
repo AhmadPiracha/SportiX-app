@@ -39,8 +39,8 @@ const SportsSchedule = ({ activeSport }) => {
       if (title === "Futsal") {
         navigation.navigate("Futsal");
       }
-      if (title === "BasketBall") {
-        navigation.navigate("BasketBall");
+      if (title === "Basketball") {
+        navigation.navigate("Basketball");
       }
       else {
         console.log("No match found");

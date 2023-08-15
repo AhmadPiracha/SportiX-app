@@ -65,11 +65,6 @@ const CustomDrawer = (props) => {
       ],
       { cancelable: false }
     );
-
-    // FOR WEB PAGES
-
-    // window.confirm("Are you sure you want to Sign Out?");
-    // signOut();
   };
 
   return (

@@ -1,27 +1,34 @@
 import React, { useState, useEffect } from "react";
+import { auth } from "./database/firebase";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+// Icons
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { auth } from "./database/firebase";
 
 // Screens
-import HomeScreen from "./screens/HomeScreen";
-import SportsSchedule from "./screens/SportsSchedule";
-import CustomDrawer from "./components/CustomDrawer";
+
+// Authentication Screens
 import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
+// HomeScreen
+import HomeScreen from "./screens/HomeScreen";
+// Sports Schedule Screens
+import SportsSchedule from "./screens/SportsSchedule";
 import MatchTeamCard from "./screens/MatchTeamCard";
-import ViewResultsScreen from "./screens/ViewResultsScreen.jsx";
 import MatchDetails from "./screens/MatchDetails";
-import EquipmentBooking from "./screens/EquipmentBookingScreen";
-import SportsVenueBooking from "./screens/SportsVenueBooking";
-import ItemDetailsScreen from "./screens/ItemDetailsScreen";
 // Sports Type Options Screens
 import Cricket from "./screens/SportsTypeOptions/Cricket";
 import Badminton from "./screens/SportsTypeOptions/Badminton";
 import Futsal from "./screens/SportsTypeOptions/Futsal";
 import BasketBall from "./screens/SportsTypeOptions/BasketBall";
+// Sports Inventory Screens
+import EquipmentBooking from "./screens/EquipmentBookingScreen";
+import SportsVenueBooking from "./screens/SportsVenueBooking";
+import ItemDetailsScreen from "./screens/ItemDetailsScreen";
+// Custom Drawer
+import CustomDrawer from "./components/CustomDrawer";
 
 // Initialize navigators
 const Drawer = createDrawerNavigator();
@@ -59,7 +66,7 @@ const DrawerNavigator = () => {
         options={{
           drawerIcon: ({ focused, size }) => (
             <Ionicons
-              name={focused ? "person" : "person-outline"}
+              name={focused ? "hourglass" : "hourglass-outline"}
               size={size}
               color={focused ? "#00B4D8" : "#000"}
             />
@@ -73,7 +80,7 @@ const DrawerNavigator = () => {
         options={{
           drawerIcon: ({ focused, size }) => (
             <Ionicons
-              name={focused ? "person" : "person-outline"}
+              name={focused ? "baseball" : "baseball-outline"}
               size={size}
               color={focused ? "#00B4D8" : "#000"}
             />
@@ -86,7 +93,7 @@ const DrawerNavigator = () => {
         options={{
           drawerIcon: ({ focused, size }) => (
             <Ionicons
-              name={focused ? "person" : "person-outline"}
+              name={focused ? "pin" : "pin-outline"}
               size={size}
               color={focused ? "#00B4D8" : "#000"}
             />
@@ -96,6 +103,16 @@ const DrawerNavigator = () => {
     </Drawer.Navigator>
   );
 };
+
+const LoadingScreen = () => {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <ActivityIndicator size="large" color="#00B4D8" />
+      <Text>Loading...</Text>
+    </View>
+  );
+};
+
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -117,7 +134,7 @@ const App = () => {
   }, []);
 
   if (isLoading) {
-    return null; // You can return a loading component here if needed
+    <LoadingScreen />;
   }
 
   return (
@@ -130,18 +147,11 @@ const App = () => {
             <Stack.Screen name="Cricket" component={Cricket} />
             <Stack.Screen name="Badminton" component={Badminton} />
             <Stack.Screen name="Futsal" component={Futsal} />
-            <Stack.Screen name="BasketBall" component={BasketBall} />
-
+            <Stack.Screen name="Basketball" component={BasketBall} />
             <Stack.Screen name="MatchTeamCard" component={MatchTeamCard} />
             <Stack.Screen name="MatchDetails" component={MatchDetails} />
-
-            <Stack.Screen name="ViewResults" component={ViewResultsScreen} />
             {/* Sports Equipment Booking Items Screen */}
-            <Stack.Screen
-              name="ItemDetails"
-              component={ItemDetailsScreen}
-              options={{ title: "Item Details" }}
-            />
+            <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{ title: "Item Details" }}/>
           </>
         ) : (
           <>
