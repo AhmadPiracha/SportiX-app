@@ -11,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { windowHeight, windowWidth } from "../utils/dimensions";
 import { SportsType } from "../model/matchesData";
 
-const EquipmentBooking = ({title}) => {
+const CustomSportsType = ({title}) => {
     
   const onPressBack = () => {
     navigation.navigate("Home");
@@ -103,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EquipmentBooking;
+export default CustomSportsType;

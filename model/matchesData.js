@@ -73,11 +73,42 @@ export const SportsType = [{
         title: "Badminton",
         logo: "basketball-sharp",
         equipment: [
-            { id: "1", name: "Racket", quantity: 0, maxQuantity: 0 },
-            { id: "2", name: "Shuttlecock", quantity: 0, maxQuantity: 0 },
+            { id: "1", name: "Racket", quantity: 0, maxQuantity: 5 },
+            { id: "2", name: "Shuttlecock", quantity: 0, maxQuantity: 10 },
         ],
     },
+    {
+
+        id: "5",
+        title: "Table Tennis",
+        logo: "tennisball-sharp",
+        equipment: [
+            { id: "1", name: "Racket", quantity: 0, maxQuantity: 10 },
+            { id: "2", name: "Ball", quantity: 0, maxQuantity: 20 },
+        ],
+    },
+    {
+        id: "6",
+        title: "Volleyball",
+        logo: "tennisball-sharp",
+        equipment: [
+            { id: "1", name: "Volleyball", quantity: 0, maxQuantity: 5 },
+        ],
+    },
+    {
+        id: "7",
+        title: "Others",
+        logo: "tennisball-sharp",
+        equipment: [
+            { id: "1", name: "Ludo", quantity: 0, maxQuantity: 5 },
+            { id: "2", name: "Chess", quantity: 0, maxQuantity: 5 },
+            { id: "3", name: "Carrom Board", quantity: 0, maxQuantity: 5 },
+            { id: "4", name: "Playing Cards", quantity: 0, maxQuantity: 5 },
+        ],
+    },
+
 ];
+
 export const Grounds = [{
         id: 0,
         name: "Select Ground",

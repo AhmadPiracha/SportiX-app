@@ -41,14 +41,14 @@ const HomeScreen = ({ navigation }) => {
     };
 
     fetchUserData();
-
+ 
     const fetchData = async () => {
       try {
         const pktDate = DateTime.local().setZone("Asia/Karachi"); // Get PKT current date and time
         // console.log("PKT Current Date:", pktDate.toISO()); // Log PKT current date
 
         const response = await axios.get(
-          `http://192.168.10.19:5001/teamSchedule?date=${pktDate.toISO()}`,
+          `http://192.168.10.8:5001/teamSchedule?date=${pktDate.toISO()}`,
           {
             headers: {
               "Content-Type": "application/json",
