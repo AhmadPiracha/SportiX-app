@@ -39,7 +39,10 @@ export const timeSlots = [
     { id: 4, duration: '2 hours' },
 ];
 
-export const SportsType = [{
+export const SportsType = [
+
+
+    {
         id: "1",
         title: "Cricket",
         logo: "tennisball-sharp",

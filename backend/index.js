@@ -7,7 +7,8 @@ var app = express();
 const server = http.createServer(app);
 
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome to application." });
+    res.json({ message: "SportiX - FAST NUCES" });
+
 });
 
 server.listen(5000, () => {

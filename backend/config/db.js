@@ -5,6 +5,8 @@ const app = express();
 const cors = require("cors");
 
 const bodyParser = require("body-parser");
+app.use(bodyParser.json({ type: "application/json" }));
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(express.json());
 app.use(cors());
 
@@ -60,6 +62,17 @@ app.get("/getPlayers", function(req, res) {
         });
 });
 
+
+
+app.get('/getEquipment', (req, res) => {
+    connection.query("SELECT * FROM product", (err, result) => {
+        if (err) {
+            res.send("Error fetching data");
+        } else {
+            res.send(result);
+        }
+    });
+});
 
 
 app.listen(5001, () => {

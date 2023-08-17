@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+// import React, { useState,useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,7 +12,25 @@ import { windowHeight, windowWidth } from "../utils/dimensions";
 import { SportsType } from "../model/matchesData";
 
 const CustomSportsType = ({title}) => {
-    
+    // const [sportsType, setSportsType] = useState([]);
+    // useEffect(() => {
+    //   const fetchData = async () => {
+    //     try {
+    //       const response = await axios.get(`http://192.168.10.8:5001`, {
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //       });
+    //       if (response?.data) {
+    //         setSportsType(response.data);
+    //       }
+    //     } catch (error) {
+    //       console.error("Error fetching data:", error);
+    //     }
+    //   };
+  
+    //   fetchData();
+    // }, []);
   const onPressBack = () => {
     navigation.navigate("Home");
   };
