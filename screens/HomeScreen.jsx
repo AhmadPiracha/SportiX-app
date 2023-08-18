@@ -70,14 +70,7 @@ const HomeScreen = ({ navigation }) => {
           );
 
           setMatches({ todayMatches, upcomingMatches });
-          // console.log(
-          //   "Today Matches:",
-          //   JSON.stringify(todayMatches, null, 2)
-          // ); // Log today's matches
-          // console.log(
-          //   "Upcoming Matches:",
-          //   JSON.stringify(upcomingMatches, null, 2)
-          // ); // Log upcoming matches
+         
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -157,7 +150,7 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.sectionTitle}>Gallery</Text>
       </View>
 
-      {/* <Carousel
+      <Carousel
         ref={(c) => {
           this._carousel = c;
         }}
@@ -166,7 +159,7 @@ const HomeScreen = ({ navigation }) => {
         sliderWidth={windowWidth - 40}
         itemWidth={300}
         loop={true}
-      /> */}
+      />
 
       <View style={styles.switchContainer}>
         <CustomSwitch

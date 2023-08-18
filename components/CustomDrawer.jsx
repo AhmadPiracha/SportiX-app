@@ -4,18 +4,15 @@ import {
   Text,
   ImageBackground,
   Image,
-  TouchableOpacity,
 } from "react-native";
 import {
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
-
 import { auth, db } from "../database/firebase";
 import { useNavigation } from "@react-navigation/native";
-
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { Alert } from "react-native";
+import CustomDrawerButton from "./CustomDrawerButton";
 const CustomDrawer = (props) => {
   const navigation = useNavigation();
   const [displayName, setDisplayName] = useState("");
@@ -87,12 +84,6 @@ const CustomDrawer = (props) => {
             }}
           />
           <Text style={{ color: "#fff", fontSize: 18 }}>{displayName}</Text>
-          <View style={{ flexDirection: "row" }}>
-            {/* <Text style={{ color: "#fff", fontSize: 14, marginRight: 5 }}>
-              10 Coins
-            </Text>
-            <FontAwesome5 name="coins" size={15} color="#fff" /> */}
-          </View>
         </ImageBackground>
         <View
           style={{
@@ -105,35 +96,10 @@ const CustomDrawer = (props) => {
         </View>
       </DrawerContentScrollView>
       <View style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccc" }}>
-        <TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Ionicons name="share-social-outline" size={22} />
-            <Text
-              style={{
-                fontSize: 15,
-                marginLeft: 5,
-              }}
-            >
-              Tell a Friend
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={signOutConfirmBtn}
-          style={{ paddingVertical: 15 }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Ionicons name="exit-outline" size={22} />
-            <Text
-              style={{
-                fontSize: 15,
-                marginLeft: 5,
-              }}
-            >
-              Sign Out
-            </Text>
-          </View>
-        </TouchableOpacity>
+        
+        <CustomDrawerButton title="Settings" logoName="settings-outline" handleButtonCLick={()=>{}} />
+        <CustomDrawerButton title="Tell a Friend" logoName="share-social-outline" handleButtonCLick={()=>{}} />
+        <CustomDrawerButton title="Sign Out" logoName="exit-outline" handleButtonCLick={signOutConfirmBtn} />
       </View>
     </View>
   );

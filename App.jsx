@@ -27,6 +27,9 @@ import BasketBall from "./screens/SportsTypeOptions/BasketBall";
 import EquipmentBooking from "./screens/EquipmentBookingScreen";
 import SportsVenueBooking from "./screens/SportsVenueBooking";
 import ItemDetailsScreen from "./screens/ItemDetailsScreen";
+
+// View Results Screen
+import ViewResultsScreen from "./screens/ViewResultsScreen";
 // Custom Drawer
 import CustomDrawer from "./components/CustomDrawer";
 
@@ -94,6 +97,19 @@ const DrawerNavigator = () => {
           drawerIcon: ({ focused, size }) => (
             <Ionicons
               name={focused ? "pin" : "pin-outline"}
+              size={size}
+              color={focused ? "#00B4D8" : "#000"}
+            />
+          ),
+        }}
+      />
+       <Drawer.Screen
+        name="View Results"
+        component={ViewResultsScreen}
+        options={{
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name={focused ? "clipboard" : "clipboard-outline"}
               size={size}
               color={focused ? "#00B4D8" : "#000"}
             />
