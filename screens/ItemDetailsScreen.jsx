@@ -11,7 +11,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
 
   const [userEmail, setUserEmail] = useState('');
-  const [userName, setUserName] = useState('');
+  const [displayName, setDisplayName] = useState('');
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -19,11 +19,12 @@ const ItemDetailsScreen = ({ route, navigation }) => {
         const doc = await db.collection("users").doc(auth.currentUser.uid).get();
         if (doc.exists) {
           const userData = doc.data();
-          console.log("User Data:", JSON.stringify(userData, null, 2));
+          // console.log("User Data:", JSON.stringify(userData, null, 2));
           setUserEmail(userData.email);
-          console.log("User Email:", userEmail);
-          setUserName(userData.DisplayName);
-          console.log("User Name:", userName);
+          setDisplayName(userData.displayName);
+          // console.log("User Email:", userEmail);
+          // console.log("User Name:", displayName);
+
         }
       }
       catch (error) {
@@ -64,28 +65,49 @@ const ItemDetailsScreen = ({ route, navigation }) => {
     const totalCount = equipmentList.reduce((total, equipment) => total + equipment.quantity, 0);
 
     if (totalCount > 0) {
-      Alert.alert(
-        "Confirm Booking",
-        `Book ${totalCount} ${totalCount === 1 ? 'Item' : 'Items'} for ${selectedTimeSlot.duration}?`,
-        [
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel",
-          },
-          {
-            text: 'Confirm',
-            onPress: () => {
-              alert(`Booking confirmed for ${totalCount} ${totalCount === 1 ? 'Item' : 'Items'} at ${selectedTimeSlot.duration}`);
-            }
-          },
-        ],
-        { cancelable: false }
-      );
+      const selectedEquipments = equipmentList.filter(equipment => equipment.quantity > 0);
+      const equipmentNames = selectedEquipments.map(equipment => `${equipment.name} `).join(', ');
+      const equipmentDates = selectedEquipments.map(equipment => equipment.date).join(', ');
+// const rollNumber = userEmail.match(/([a-z]\d+)/i)[0];
+// console.log(rollNumber);
+      const bookingData = {
+        type: type,
+        name: equipmentNames,
+        count: totalCount,
+        date: equipmentDates,
+        timeSlotDuration: selectedTimeSlot.duration,
+        userEmail,
+        displayName: displayName,
+      };
+
+      fetch('http://192.168.10.3:5001/booking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingData),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Booking Response Data:', JSON.stringify(data, null, 2));
+          // Handle the response data or display messages to the user
+        })
+        .catch(error => {
+          console.error('Error making booking request:', error);
+        });
+
     } else {
       alert('Please select at least one item to book');
     }
   };
+
+
+
 
   const onPressBack = () => {
     navigation.navigate('Equipment Booking');
