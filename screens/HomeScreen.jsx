@@ -151,7 +151,7 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.sectionTitle}>Gallery</Text>
       </View>
 
-      {/* <Carousel
+      <Carousel
         ref={(c) => {
           this._carousel = c;
         }}
@@ -160,7 +160,7 @@ const HomeScreen = ({ navigation }) => {
         sliderWidth={windowWidth - 40}
         itemWidth={300}
         loop={true}
-      /> */}
+      />
 
       <View style={styles.switchContainer}>
         <CustomSwitch

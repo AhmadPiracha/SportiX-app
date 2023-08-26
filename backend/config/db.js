@@ -91,6 +91,30 @@ app.get('/getProducts', (req, res) => {
 
 });
 
+app.post('/booking', (req, res) => {
+    const Type = req.body.type;
+    const Name = req.body.name;
+    const Count = req.body.count;
+    const date = req.body.date;
+    const timeSlotDuration = req.body.timeSlotDuration; // Add time slot duration
+    const userEmail = req.body.userEmail;
+    const displayName = req.body.displayName;
+
+    const sql = "INSERT INTO bookings (type, name, count, date, timeSlotDuration, userEmail, displayName) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const values = [Type, Name, Count, date, timeSlotDuration, userEmail, displayName];
+
+    connection.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).json({ message: "Error inserting data" });
+        }
+
+        // console.log("Query result:", result);
+
+        res.status(200).json({ message: "Booking data inserted successfully" });
+    });
+});
+
 
 
 
