@@ -48,7 +48,7 @@ const HomeScreen = ({ navigation }) => {
         // console.log("PKT Current Date:", pktDate.toISO()); // Log PKT current date
 
         const response = await axios.get(
-          `http://localhost:5001/teamSchedule?date=${pktDate.toISO()}`,
+          `http://192.168.10.2:5001/teamSchedule?date=${pktDate.toISO()}`,
           {
             headers: {
               "Content-Type": "application/json",

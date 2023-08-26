@@ -22,9 +22,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
           // console.log("User Data:", JSON.stringify(userData, null, 2));
           setUserEmail(userData.email);
           setDisplayName(userData.displayName);
-          // console.log("User Email:", userEmail);
-          // console.log("User Name:", displayName);
-
+        
         }
       }
       catch (error) {
@@ -38,7 +36,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://192.168.10.3:5001/getProducts?type=${type}`);
+        const response = await fetch(`http://192.168.10.2:5001/getProducts?type=${type}`);
         const data = await response.json();
 
         // console.log("Data fetched successfully:", JSON.stringify(data, null, 2));
@@ -58,56 +56,69 @@ const ItemDetailsScreen = ({ route, navigation }) => {
 
   const handleBooking = () => {
     if (selectedTimeSlot === null) {
-      alert('Please select a time slot to book');
+      // alert('Please select a time slot to book');
+      Alert.alert('Alert', 'Please select a time slot to book');
+
       return;
     }
 
     const totalCount = equipmentList.reduce((total, equipment) => total + equipment.quantity, 0);
-
-    if (totalCount > 0) {
+    if (totalCount === 0) {
+      Alert.alert('Alert', 'Please select at least one item to book');
+      return;
+    }
+    else if (totalCount > 0) {
       const selectedEquipments = equipmentList.filter(equipment => equipment.quantity > 0);
-      const equipmentNames = selectedEquipments.map(equipment => `${equipment.name} `).join(', ');
-      const equipmentDates = selectedEquipments.map(equipment => equipment.date).join(', ');
-// const rollNumber = userEmail.match(/([a-z]\d+)/i)[0];
-// console.log(rollNumber);
-      const bookingData = {
-        type: type,
-        name: equipmentNames,
-        count: totalCount,
-        date: equipmentDates,
-        timeSlotDuration: selectedTimeSlot.duration,
-        userEmail,
-        displayName: displayName,
-      };
+      const equipmentNames = selectedEquipments.map(equipment => `${equipment.name} (${equipment.quantity})`).join(', ');
+      Alert.alert(
+        'Confirm Booking',
+        `Are you sure you want to book the following items?\n\n${equipmentNames}`,
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'Book',
+            onPress: () => {
+              // Perform the booking
+              const userRollNo = userEmail.match(/([a-z]\d+)/i)[0];
+              const bookingData = {
+                type: type,
+                name: equipmentNames,
+                count: totalCount,
+                timeSlotDuration: selectedTimeSlot.duration,
+                userRollNo,
+                displayName: displayName,
+              };
 
-      fetch('http://192.168.10.3:5001/booking', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bookingData),
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Booking Response Data:', JSON.stringify(data, null, 2));
-          // Handle the response data or display messages to the user
-        })
-        .catch(error => {
-          console.error('Error making booking request:', error);
-        });
-
-    } else {
-      alert('Please select at least one item to book');
+              fetch('http://192.168.10.2:5001/equipment_booking', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(bookingData),
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  console.log('Booking Response Data:', JSON.stringify(data, null, 2));
+                  resetStateValues();
+                  Alert.alert('Success', 'Booking successful!');
+                })
+                .catch(error => {
+                  console.error('Error making booking request:', error);
+                });
+            },
+          },
+        ]
+      );
     }
   };
-
-
-
 
   const onPressBack = () => {
     navigation.navigate('Equipment Booking');
@@ -127,16 +138,18 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   };
 
   const incrementQuantity = (equipmentId) => {
-    setEquipmentList((prevList) =>
-      prevList.map((equipment) =>
-        equipment.id === equipmentId
-          ? {
+    const updatedEquipmentList = equipmentList.map((equipment) => {
+      if (equipment.id === equipmentId) {
+        if (equipment.quantity < equipment.count) {
+          return {
             ...equipment,
-            quantity: Math.min(equipment.quantity + 1, equipment.count),
-          }
-          : equipment
-      )
-    );
+            quantity: equipment.quantity + 1,
+          };
+        }
+      }
+      return equipment;
+    });
+    setEquipmentList(updatedEquipmentList);
   };
 
   const resetEquipmentQuantity = () => {
@@ -149,6 +162,11 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   };
 
   const clearSelections = () => {
+    setSelectedTimeSlot(null);
+    resetEquipmentQuantity();
+  };
+
+  const resetStateValues = () => {
     setSelectedTimeSlot(null);
     resetEquipmentQuantity();
   };
@@ -203,17 +221,25 @@ const ItemDetailsScreen = ({ route, navigation }) => {
                       <Text style={styles.buttonText}>-</Text>
                     </TouchableOpacity>
                     <Text style={styles.quantityText}>{equipment.quantity}</Text>
-                    <TouchableOpacity
-                      onPress={() => incrementQuantity(equipment.id)}
-                      style={[
-                        styles.quantityButton,
-                        equipment.quantity === equipment.count && styles.disabledButton,
-                        equipment.count === 0 && styles.disabledButton,
-                      ]}
-                      disabled={equipment.quantity === equipment.count || equipment.count === 0}
-                    >
-                      <Text style={styles.buttonText}>+</Text>
-                    </TouchableOpacity>
+
+                    {equipment.count - equipment.quantity > 0 ? (
+                      <TouchableOpacity
+                        onPress={() => incrementQuantity(equipment.id)}
+                        style={[
+                          styles.quantityButton,
+                          equipment.quantity === equipment.count && styles.disabledButton,
+                          equipment.count === 0 && styles.disabledButton,
+                        ]}
+                        disabled={equipment.quantity === equipment.count || equipment.count === 0}
+                      >
+                        <Text style={styles.buttonText}>+</Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <View style={[styles.quantityButton, styles.disabledButton]}>
+                        <Text style={styles.buttonText}>+</Text>
+                      </View>
+                    )}
+
                   </View>
                 </View>
                 <Text style={styles.maxCountText}>Remaining: {equipment.count - equipment.quantity}</Text>
@@ -224,7 +250,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
               style={[styles.bookButton, totalItemCount === 0 && styles.disabledButton]}
               disabled={totalItemCount === 0}
             >
-              <Text style={styles.buttonText}>Book {totalItemCount} {totalItemCount === 1 ? 'Item' : 'Items'}</Text>
+              <Text style={styles.buttonText}>Book {totalItemCount} {totalItemCount <= 1 ? 'Item' : 'Items'}</Text>
             </TouchableOpacity>
             {selectedTimeSlot || totalItemCount > 0 ? (
               <TouchableOpacity onPress={clearSelections} style={styles.clearButton}>

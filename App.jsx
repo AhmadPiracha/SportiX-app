@@ -27,6 +27,9 @@ import BasketBall from "./screens/SportsTypeOptions/BasketBall";
 import EquipmentBooking from "./screens/EquipmentBookingScreen";
 import SportsVenueBooking from "./screens/SportsVenueBooking";
 import ItemDetailsScreen from "./screens/ItemDetailsScreen";
+import ViewYourBookingsScreen from "./screens/ViewYourBookingsScreen";
+import ViewEquipmentBookingScreen from "./screens/ViewEquipmentBookingScreen";
+import ViewVenueBookingScreen from "./screens/ViewVenueBookingScreen";
 
 // View Results Screen
 import ViewResultsScreen from "./screens/ViewResultsScreen";
@@ -104,6 +107,19 @@ const DrawerNavigator = () => {
         }}
       />
        <Drawer.Screen
+        name="View Booking"
+        component={ViewYourBookingsScreen}
+        options={{
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name={focused ? "clipboard" : "clipboard-outline"}
+              size={size}
+              color={focused ? "#00B4D8" : "#000"}
+            />
+          ),
+        }}
+      />
+       <Drawer.Screen
         name="View Results"
         component={ViewResultsScreen}
         options={{
@@ -168,6 +184,8 @@ const App = () => {
             <Stack.Screen name="MatchDetails" component={MatchDetails} />
             {/* Sports Equipment Booking Items Screen */}
             <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{ title: "Item Details" }}/>
+           <Stack .Screen name="ViewEquipmentBookings" component={ViewEquipmentBookingScreen} options={{ title: "View Equipment Bookings" }}/>
+           <Stack .Screen name="ViewVenueBookings" component={ViewVenueBookingScreen} options={{ title: "View Venue Bookings" }}/>
           </>
         ) : (
           <>

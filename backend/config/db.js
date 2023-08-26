@@ -31,7 +31,7 @@ app.get("/getTeams", function(req, res) {
 });
 
 app.get("/teamSchedule", function(req, res) {
-    const type = req.query.type || null; // No default type
+    const type = req.query.type || null;
     let sql = "SELECT * FROM sportix.teamschedule";
 
     if (type) {
@@ -73,7 +73,7 @@ app.get('/getSportsType', (req, res) => {
 });
 
 app.get('/getProducts', (req, res) => {
-    const type = req.query.type || null; // No default type
+    const type = req.query.type || null;
     let sql = "SELECT * FROM sportix.product";
 
     if (type) {
@@ -91,31 +91,45 @@ app.get('/getProducts', (req, res) => {
 
 });
 
-app.post('/booking', (req, res) => {
+app.post('/equipment_booking', (req, res) => {
     const Type = req.body.type;
     const Name = req.body.name;
     const Count = req.body.count;
-    const date = req.body.date;
-    const timeSlotDuration = req.body.timeSlotDuration; // Add time slot duration
-    const userEmail = req.body.userEmail;
+    const timeSlotDuration = req.body.timeSlotDuration;
+    const userRollNo = req.body.userRollNo;
     const displayName = req.body.displayName;
+    const status = 'pending';
 
-    const sql = "INSERT INTO bookings (type, name, count, date, timeSlotDuration, userEmail, displayName) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const values = [Type, Name, Count, date, timeSlotDuration, userEmail, displayName];
+    const sql = "INSERT INTO equip_booking (type, name, count, timeSlotDuration, userRollNo, displayName,status) VALUES (?, ?, ?, ?, ?, ?,?)";
+    const values = [Type, Name, Count, timeSlotDuration, userRollNo, displayName, status];
 
-    connection.query(sql, values, (err, result) => {
+    connection.query(sql, values, (err) => {
         if (err) {
             console.error("Error executing SQL query:", err);
             return res.status(500).json({ message: "Error inserting data" });
         }
-
-        // console.log("Query result:", result);
-
         res.status(200).json({ message: "Booking data inserted successfully" });
     });
 });
 
+app.get('/getBookings', (req, res) => {
+    const userRollNo = req.query.userRollNo || null;
+    let sql = "SELECT * FROM sportix.equip_booking";
 
+    if (userRollNo) {
+        sql += " WHERE userRollNo = ?";
+    }
+
+    connection.query(sql, [userRollNo], (err, result) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).send("Error fetching data");
+        }
+
+        res.send(result);
+    });
+
+});
 
 
 
