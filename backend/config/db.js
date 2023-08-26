@@ -48,8 +48,6 @@ app.get("/teamSchedule", function(req, res) {
     });
 });
 
-
-
 app.get("/getPlayers", function(req, res) {
     const team = req.query.team;
     connection.query("SELECT playername,rollno FROM sportix.player WHERE team = ?", [team],
@@ -62,17 +60,39 @@ app.get("/getPlayers", function(req, res) {
         });
 });
 
-
-
-app.get('/getEquipment', (req, res) => {
-    connection.query("SELECT * FROM product", (err, result) => {
+app.get('/getSportsType', (req, res) => {
+    const sql = "SELECT DISTINCT type FROM sportix.product";
+    connection.query(sql, (err, result) => {
         if (err) {
-            res.send("Error fetching data");
-        } else {
-            res.send(result);
+            console.error("Error executing SQL query:", err);
+            return res.status(500).send("Error fetching data");
         }
+
+        res.send(result);
     });
 });
+
+app.get('/getProducts', (req, res) => {
+    const type = req.query.type || null; // No default type
+    let sql = "SELECT * FROM sportix.product";
+
+    if (type) {
+        sql += " WHERE type = ?";
+    }
+
+    connection.query(sql, [type], (err, result) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).send("Error fetching data");
+        }
+
+        res.send(result);
+    });
+
+});
+
+
+
 
 
 app.listen(5001, () => {

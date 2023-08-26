@@ -48,7 +48,7 @@ const HomeScreen = ({ navigation }) => {
         // console.log("PKT Current Date:", pktDate.toISO()); // Log PKT current date
 
         const response = await axios.get(
-          `http://192.168.10.8:5001/teamSchedule?date=${pktDate.toISO()}`,
+          `http://localhost:5001/teamSchedule?date=${pktDate.toISO()}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -70,7 +70,8 @@ const HomeScreen = ({ navigation }) => {
           );
 
           setMatches({ todayMatches, upcomingMatches });
-         
+          // console.log("Today's Matches:", JSON.stringify(todayMatches, null, 2));
+          // console.log("Upcoming Matches:", JSON.stringify(upcomingMatches, null, 2));
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -150,7 +151,7 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.sectionTitle}>Gallery</Text>
       </View>
 
-      <Carousel
+      {/* <Carousel
         ref={(c) => {
           this._carousel = c;
         }}
@@ -159,7 +160,7 @@ const HomeScreen = ({ navigation }) => {
         sliderWidth={windowWidth - 40}
         itemWidth={300}
         loop={true}
-      />
+      /> */}
 
       <View style={styles.switchContainer}>
         <CustomSwitch

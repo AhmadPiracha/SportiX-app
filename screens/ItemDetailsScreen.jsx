@@ -1,24 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Alert } from 'react-native';
 import { timeSlots } from '../model/matchesData';
-import { windowWidth,windowHeight } from "../utils/dimensions";
+import { auth, db } from "../database/firebase";
 
 const ItemDetailsScreen = ({ route, navigation }) => {
-  const { item } = route.params;
-  const [equipmentList, setEquipmentList] = useState(item.equipment);
+  const { type } = route.params;
+  const [equipmentList, setEquipmentList] = useState([]);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+
+  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const doc = await db.collection("users").doc(auth.currentUser.uid).get();
+        if (doc.exists) {
+          const userData = doc.data();
+          console.log("User Data:", JSON.stringify(userData, null, 2));
+          setUserEmail(userData.email);
+          console.log("User Email:", userEmail);
+          setUserName(userData.DisplayName);
+          console.log("User Name:", userName);
+        }
+      }
+      catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://192.168.10.3:5001/getProducts?type=${type}`);
+        const data = await response.json();
+
+        // console.log("Data fetched successfully:", JSON.stringify(data, null, 2));
+
+        const equipmentDataWithQuantity = data.map(equipment => ({
+          ...equipment,
+          quantity: 0,
+        }));
+
+        setEquipmentList(equipmentDataWithQuantity);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [type]);
 
   const handleBooking = () => {
     if (selectedTimeSlot === null) {
-      alert('Please select a time slot to book'); // Step 4: Check if a time slot is selected
+      alert('Please select a time slot to book');
       return;
     }
 
     const totalCount = equipmentList.reduce((total, equipment) => total + equipment.quantity, 0);
+
     if (totalCount > 0) {
-      // Rest of the booking logic
       Alert.alert(
         "Confirm Booking",
         `Book ${totalCount} ${totalCount === 1 ? 'Item' : 'Items'} for ${selectedTimeSlot.duration}?`,
@@ -53,7 +98,6 @@ const ItemDetailsScreen = ({ route, navigation }) => {
           ? {
             ...equipment,
             quantity: Math.max(equipment.quantity - 1, 0),
-            maxQuantity: Math.min(equipment.maxQuantity + 1, equipment.maxQuantity),
           }
           : equipment
       )
@@ -66,8 +110,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
         equipment.id === equipmentId
           ? {
             ...equipment,
-            quantity: Math.min(equipment.quantity + 1, equipment.maxQuantity),
-            maxQuantity: Math.max(equipment.maxQuantity - 1, equipment.maxQuantity),
+            quantity: Math.min(equipment.quantity + 1, equipment.count),
           }
           : equipment
       )
@@ -93,14 +136,12 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   return (
     <SafeAreaView style={styles.mainContainer}>
       <Ionicons onPress={onPressBack} name="arrow-back-outline" size={20} color="#fff" style={styles.containerBtn} />
-
       <View style={styles.container}>
         <View style={styles.containerOne}>
-          <Text style={styles.itemText}>{item.title}</Text>
+          <Text style={styles.itemText}>{type}</Text>
         </View>
         <ScrollView>
           <View style={styles.containerTwo}>
-            {/* Time Slots Section */}
             <View style={styles.timeSlotContainer}>
               <Text style={styles.timeSlotHeading}>Time Slots</Text>
               {timeSlots.map((timeSlot) => (
@@ -123,44 +164,39 @@ const ItemDetailsScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
               ))}
             </View>
-            {/* Equipment Section */}
             {equipmentList.map((equipment) => (
-              
-             <View>
-               <View key={equipment.id} style={styles.equipmentContainer}>
-                
-                <Text style={styles.equipmentName}>{equipment.name}</Text>
-                <View style={styles.quantityContainer}>
-                  <TouchableOpacity
-                    onPress={() => decrementQuantity(equipment.id)}
-                    style={[
-                      styles.quantityButton,
-                      equipment.quantity === 0 && styles.disabledButton,
-                      equipment.maxQuantity === 0 && styles.disabledButton,
-                    ]}
-                    disabled={equipment.quantity === 0 || equipment.maxQuantity === 0}
-                  >
-                    <Text style={styles.buttonText}>-</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.quantityText}>{equipment.quantity}</Text>
-                  <TouchableOpacity
-                    onPress={() => incrementQuantity(equipment.id)}
-                    style={[
-                      styles.quantityButton,
-                      equipment.quantity === equipment.maxQuantity && styles.disabledButton,
-                      equipment.maxQuantity === 0 && styles.disabledButton,
-                    ]}
-                    disabled={equipment.quantity === equipment.maxQuantity || equipment.maxQuantity === 0}
-                  >
-                    <Text style={styles.buttonText}>+</Text>
-                  </TouchableOpacity>
+              <View key={equipment.id}>
+                <View style={styles.equipmentContainer}>
+                  <Text style={styles.equipmentName}>{equipment.name}</Text>
+                  <View style={styles.quantityContainer}>
+                    <TouchableOpacity
+                      onPress={() => decrementQuantity(equipment.id)}
+                      style={[
+                        styles.quantityButton,
+                        equipment.quantity === 0 && styles.disabledButton,
+                        equipment.count === 0 && styles.disabledButton,
+                      ]}
+                      disabled={equipment.quantity === 0 || equipment.count === 0}
+                    >
+                      <Text style={styles.buttonText}>-</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.quantityText}>{equipment.quantity}</Text>
+                    <TouchableOpacity
+                      onPress={() => incrementQuantity(equipment.id)}
+                      style={[
+                        styles.quantityButton,
+                        equipment.quantity === equipment.count && styles.disabledButton,
+                        equipment.count === 0 && styles.disabledButton,
+                      ]}
+                      disabled={equipment.quantity === equipment.count || equipment.count === 0}
+                    >
+                      <Text style={styles.buttonText}>+</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-              <Text style={styles.maxCountText}>Remaining: {equipment.maxQuantity - equipment.quantity}</Text>
-
+                <Text style={styles.maxCountText}>Remaining: {equipment.count - equipment.quantity}</Text>
               </View>
             ))}
-            {/* Book Button Section */}
             <TouchableOpacity
               onPress={handleBooking}
               style={[styles.bookButton, totalItemCount === 0 && styles.disabledButton]}
@@ -168,7 +204,6 @@ const ItemDetailsScreen = ({ route, navigation }) => {
             >
               <Text style={styles.buttonText}>Book {totalItemCount} {totalItemCount === 1 ? 'Item' : 'Items'}</Text>
             </TouchableOpacity>
-            {/* Clear Selections Button Section */}
             {selectedTimeSlot || totalItemCount > 0 ? (
               <TouchableOpacity onPress={clearSelections} style={styles.clearButton}>
                 <Text style={styles.clearButtonText}>Clear Selections</Text>

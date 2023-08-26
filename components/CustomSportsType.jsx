@@ -1,4 +1,4 @@
-// import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,32 +9,30 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { windowHeight, windowWidth } from "../utils/dimensions";
-import { SportsType } from "../model/matchesData";
+import axios from "axios";
+const CustomSportsType = () => {
+  const navigation = useNavigation();
+  const [sportsType, setSportsType] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://192.168.10.3:5001/getSportsType");
+        if (response?.data) {
+          // console.log("Data fetched successfully:", JSON.stringify(response.data, null, 2));
+          setSportsType(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-const CustomSportsType = ({title}) => {
-    // const [sportsType, setSportsType] = useState([]);
-    // useEffect(() => {
-    //   const fetchData = async () => {
-    //     try {
-    //       const response = await axios.get(`http://192.168.10.8:5001`, {
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //       });
-    //       if (response?.data) {
-    //         setSportsType(response.data);
-    //       }
-    //     } catch (error) {
-    //       console.error("Error fetching data:", error);
-    //     }
-    //   };
-  
-    //   fetchData();
-    // }, []);
+    fetchData();
+  }, []);
+
   const onPressBack = () => {
     navigation.navigate("Home");
   };
-const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.containerOne}>
@@ -46,22 +44,22 @@ const navigation = useNavigation();
           style={styles.containerBtn}
         />
         <View style={styles.headerGameContainer}>
-          <Text style={styles.headerGameTxt}>{title}</Text>
+          <Text style={styles.headerGameTxt}>Sports Equipment Booking</Text>
         </View>
       </View>
 
+
       <View style={styles.mainContainer}>
         <View style={styles.containerTwo}>
-          {SportsType.map((item, index) => (
-            <View key={index}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("ItemDetails", { item })}
-              >
-                <View style={styles.containerItemBtn}>
-                  <Text style={styles.itemTitle}>{item.title}</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+          {sportsType.map((item) => (
+            <TouchableOpacity
+              key={item.type}
+              onPress={() => navigation.navigate("ItemDetails", { type: item.type })}
+            >
+              <View style={styles.containerItemBtn}>
+                <Text style={styles.itemTitle}>{item.type}</Text>
+              </View>
+            </TouchableOpacity>
           ))}
         </View>
       </View>
@@ -92,7 +90,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   containerBtn: {
-    marginTop: 40,  
+    marginTop: 40,
     marginLeft: 10,
   },
 
