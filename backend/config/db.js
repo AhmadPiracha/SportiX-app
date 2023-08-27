@@ -112,9 +112,69 @@ app.post('/equipment_booking', (req, res) => {
     });
 });
 
-app.get('/getBookings', (req, res) => {
+
+app.get('/getVenue', (req, res) => {
+    const type = req.query.type || null;
+    let sql = "SELECT * FROM sportix.venue";
+
+    if (type) {
+        sql += " WHERE type = ?";
+    }
+
+    connection.query(sql, [type], (err, result) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).send("Error fetching data");
+        }
+
+        res.send(result);
+    });
+
+});
+
+app.post('/venue_booking', (req, res) => {
+    const name = req.body.name;
+    const type = req.body.type;
+    const location = req.body.location;
+    const timeSlotDuration = req.body.timeSlotDuration;
+    const userRollNo = req.body.userRollNo;
+    const displayName = req.body.displayName;
+    const status = 'pending';
+
+    const sql = "INSERT INTO venue_booking (name, type, location,timeSlotDuration,userRollNo,displayName,status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const values = [name, type, location, timeSlotDuration, userRollNo, displayName, status];
+
+    connection.query(sql, values, (err) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).json({ message: "Error inserting data" });
+        }
+        res.status(200).json({ message: "Booking data inserted successfully" });
+    });
+});
+
+app.get('/viewEquipBookings', (req, res) => {
     const userRollNo = req.query.userRollNo || null;
     let sql = "SELECT * FROM sportix.equip_booking";
+
+    if (userRollNo) {
+        sql += " WHERE userRollNo = ?";
+    }
+
+    connection.query(sql, [userRollNo], (err, result) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).send("Error fetching data");
+        }
+
+        res.send(result);
+    });
+
+});
+
+app.get('/viewVenueBookings', (req, res) => {
+    const userRollNo = req.query.userRollNo || null;
+    let sql = "SELECT * FROM sportix.venue_booking";
 
     if (userRollNo) {
         sql += " WHERE userRollNo = ?";

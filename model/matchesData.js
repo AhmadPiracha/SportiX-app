@@ -113,12 +113,6 @@ export const SportsType = [
 ];
 
 export const Grounds = [{
-        id: 0,
-        name: "Select Ground",
-        type: "Select Type",
-        location: "Select Location",
-
-    }, {
         id: 1,
         name: "Cricket Ground",
         type: "Cricket",

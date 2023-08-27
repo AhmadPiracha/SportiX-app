@@ -106,7 +106,7 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-       <Drawer.Screen
+      <Drawer.Screen
         name="View Booking"
         component={ViewYourBookingsScreen}
         options={{
@@ -119,7 +119,7 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-       <Drawer.Screen
+      <Drawer.Screen
         name="View Results"
         component={ViewResultsScreen}
         options={{
@@ -183,9 +183,9 @@ const App = () => {
             <Stack.Screen name="MatchTeamCard" component={MatchTeamCard} />
             <Stack.Screen name="MatchDetails" component={MatchDetails} />
             {/* Sports Equipment Booking Items Screen */}
-            <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{ title: "Item Details" }}/>
-           <Stack .Screen name="ViewEquipmentBookings" component={ViewEquipmentBookingScreen} options={{ title: "View Equipment Bookings" }}/>
-           <Stack .Screen name="ViewVenueBookings" component={ViewVenueBookingScreen} options={{ title: "View Venue Bookings" }}/>
+            <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{ title: "Item Details" }} />
+            <Stack.Screen name="ViewEquipmentBookings" component={ViewEquipmentBookingScreen} options={{ title: "View Equipment Bookings" }} />
+            <Stack.Screen name="ViewVenueBookings" component={ViewVenueBookingScreen} options={{ title: "View Venue Bookings" }} />
           </>
         ) : (
           <>
