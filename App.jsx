@@ -32,7 +32,7 @@ import ViewEquipmentBookingScreen from "./screens/ViewEquipmentBookingScreen";
 import ViewVenueBookingScreen from "./screens/ViewVenueBookingScreen";
 
 // View Results Screen
-import ViewResultsScreen from "./screens/ViewResultsScreen";
+// import ViewResultsScreen from "./screens/ViewResultsScreen";
 // Custom Drawer
 import CustomDrawer from "./components/CustomDrawer";
 
@@ -107,7 +107,7 @@ const DrawerNavigator = () => {
         }}
       />
       <Drawer.Screen
-        name="View Booking"
+        name="View your Bookings"
         component={ViewYourBookingsScreen}
         options={{
           drawerIcon: ({ focused, size }) => (
@@ -119,7 +119,7 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="View Results"
         component={ViewResultsScreen}
         options={{
@@ -131,7 +131,7 @@ const DrawerNavigator = () => {
             />
           ),
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };

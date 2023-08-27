@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import axios from 'axios';
-
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 const ViewEquipmentBookingScreen = ({ route }) => {
+  const navigation = useNavigation();
   const { userRollNo } = route.params;
 
   const [bookings, setBookings] = useState([]);
@@ -21,8 +23,14 @@ const ViewEquipmentBookingScreen = ({ route }) => {
     fetchBookings();
   }, [userRollNo]);
 
+  const onPressBack = () => {
+    navigation.navigate('View your Bookings');
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Ionicons onPress={onPressBack} name="arrow-back-outline" size={20} color="#fff" style={styles.containerBtn} />
+
       <Text style={styles.header}>Your Equipment Bookings</Text>
       {bookings.map((booking, index) => (
         <View key={index} style={styles.bookingItem}>
@@ -46,11 +54,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#0d1b2a",
     flexGrow: 1,
   },
+  containerBtn: {
+    marginTop: 20,
+    marginLeft: 20,
+
+  },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     color: "#fff",
-    marginBottom: 20, 
+    marginBottom: 20,
     marginTop: 40,
     textAlign: 'center',
   },

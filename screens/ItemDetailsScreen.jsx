@@ -9,7 +9,6 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   const { type } = route.params;
   const [equipmentList, setEquipmentList] = useState([]);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
-
   const [userEmail, setUserEmail] = useState('');
   const [displayName, setDisplayName] = useState('');
 
@@ -108,7 +107,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
                 .then(data => {
                   console.log('Booking Response Data:', JSON.stringify(data, null, 2));
                   resetStateValues();
-                  Alert.alert('Success', 'Booking successful!');
+                  Alert.alert('Success', 'Your booking request is Forwarded to Sports Officer.');
                 })
                 .catch(error => {
                   console.error('Error making booking request:', error);

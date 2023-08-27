@@ -25,8 +25,9 @@ const SportsVenueBookingScreen = () => {
     location: '',
     userEmail: '',
     displayName: '',
+    timeSlotDuration: '',
 
-    
+
   });
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const SportsVenueBookingScreen = () => {
           // console.log("User Data:", JSON.stringify(userData, null, 2));
           setUserEmail(userData.email);
           setDisplayName(userData.displayName);
-        
+
         }
       }
       catch (error) {
@@ -89,13 +90,13 @@ const SportsVenueBookingScreen = () => {
     const sportType = sportGround.toLowerCase().split(' ')[0];
     const capitalizedType = sportType.charAt(0).toUpperCase() + sportType.slice(1);
     const userRollNo = userEmail.match(/([a-z]\d+)/i)[0];
-     const bookingInfo = {
+    const bookingInfo = {
       name: sportGround,
       type: capitalizedType,
       location: sportVenue,
       userRollNo,
       displayName,
-      timeSlotDuration: selectedTimeSlot.duration, 
+      timeSlotDuration: selectedTimeSlot.duration,
     };
 
 
@@ -137,7 +138,7 @@ const SportsVenueBookingScreen = () => {
 
 
             Alert.alert(
-              "Booking Successful",
+              "Successful",
               "Your booking request is Forwarded to Sports Officer.",
               [
                 {
@@ -145,8 +146,6 @@ const SportsVenueBookingScreen = () => {
                   onPress: () => {
                     // Reset all data to default values
                     setSelectedTimeSlot(null); // Reset selected time slot
-                    // setSportGround('Select Sport Ground'); // Reset selected sport ground
-                    // setSportVenue('Select Sport Venue'); // Reset selected sport venue
                     setSelectedDate(new Date()); // Reset selected date
                     setSelectedTime(new Date()); // Reset selected time;
                   },
@@ -184,31 +183,29 @@ const SportsVenueBookingScreen = () => {
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Sports Venue Booking</Text>
       </View>
-
-
       <View style={styles.mainContainer} >
-      <View style={styles.timeSlotContainer}>
-        <Text style={styles.timeSlotHeading}>Time Slots</Text>
-        {timeSlots.map((timeSlot) => (
-          <TouchableOpacity
-            key={timeSlot.id}
-            style={[
-              styles.timeSlotButton,
-              selectedTimeSlot && selectedTimeSlot.id === timeSlot.id && styles.selectedTimeSlotButton,
-            ]}
-            onPress={() => setSelectedTimeSlot(timeSlot)}
-          >
-            <Text
+        <View style={styles.timeSlotContainer}>
+          <Text style={styles.timeSlotHeading}>Time Slots</Text>
+          {timeSlots.map((timeSlot) => (
+            <TouchableOpacity
+              key={timeSlot.id}
               style={[
-                styles.timeSlotText,
-                selectedTimeSlot && selectedTimeSlot.id === timeSlot.id && styles.selectedTimeSlotText,
+                styles.timeSlotButton,
+                selectedTimeSlot && selectedTimeSlot.id === timeSlot.id && styles.selectedTimeSlotButton,
               ]}
+              onPress={() => setSelectedTimeSlot(timeSlot)}
             >
-              {timeSlot.duration}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+              <Text
+                style={[
+                  styles.timeSlotText,
+                  selectedTimeSlot && selectedTimeSlot.id === timeSlot.id && styles.selectedTimeSlotText,
+                ]}
+              >
+                {timeSlot.duration}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
         <View style={styles.pickerContainer}>
           <Picker
             style={styles.picker}
@@ -274,10 +271,10 @@ const SportsVenueBookingScreen = () => {
         </TouchableOpacity>
 
         {selectedTimeSlot ? (
-              <TouchableOpacity onPress={clearSelections} style={styles.clearButton}>
-                <Text style={styles.clearButtonText}>Clear Selections</Text>
-              </TouchableOpacity>
-            ) : null}
+          <TouchableOpacity onPress={clearSelections} style={styles.clearButton}>
+            <Text style={styles.clearButtonText}>Clear Selections</Text>
+          </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );

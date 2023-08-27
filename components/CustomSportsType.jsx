@@ -47,8 +47,6 @@ const CustomSportsType = () => {
           <Text style={styles.headerGameTxt}>Sports Equipment Booking</Text>
         </View>
       </View>
-
-
       <View style={styles.mainContainer}>
         <View style={styles.containerTwo}>
           {sportsType.map((item) => (
