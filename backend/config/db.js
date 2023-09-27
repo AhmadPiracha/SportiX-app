@@ -3,6 +3,7 @@ const mysql = require("mysql2");
 const app = express();
 
 const cors = require("cors");
+const os = require('os'); // Import the os package
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.json({ type: "application/json" }));
@@ -20,6 +21,14 @@ const connection = mysql.createConnection({
     password: "fast@19cfd",
 });
 module.exports = connection;
+
+app.get('/getIPv4', (req, res) => {
+    const networkInterfaces = os.networkInterfaces();
+    const wifiInterface = networkInterfaces['Wi-Fi'] || networkInterfaces['wlan0']; // Adapt this to your network interface name
+    const ipv4Address = wifiInterface.find(interface => interface.family === 'IPv4').address;
+
+    res.json({ ipv4Address });
+});
 
 app.get("/getTeams", function(req, res) {
     let sql = "SELECT * FROM sportix.teams WHERE type='cricket'";

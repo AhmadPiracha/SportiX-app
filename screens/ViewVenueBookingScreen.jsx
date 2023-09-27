@@ -12,7 +12,7 @@ const ViewVenueBookingScreen = ({ route }) => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`http://192.168.10.2:5001/viewVenueBookings?userRollNo=${userRollNo}`);
+        const response = await axios.get(`http://192.168.10.6:5001/viewVenueBookings?userRollNo=${userRollNo}`);
         const bookingData = response.data;
         setBookings(bookingData);
       } catch (error) {

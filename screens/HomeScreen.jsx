@@ -19,13 +19,12 @@ import CustomSwitch from "../components/CustomSwitch";
 import { sliderData } from "../model/matchesData";
 import { windowWidth } from "../utils/dimensions";
 import axios from "axios";
-
 const HomeScreen = ({ navigation }) => {
+
   const [searchInput, setSearchInput] = useState("");
   const [matchTab, setMatchTab] = useState(1);
   const [displayName, setDisplayName] = useState("");
   const [matches, setMatches] = useState({ todayMatches: [], upcomingMatches: [] });
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -48,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
         // console.log("PKT Current Date:", pktDate.toISO()); // Log PKT current date
 
         const response = await axios.get(
-          `http://192.168.10.2:5001/teamSchedule?date=${pktDate.toISO()}`,
+          `http://192.168.1.10:5001/teamSchedule?date=${pktDate.toISO()}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -151,7 +150,7 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.sectionTitle}>Gallery</Text>
       </View>
 
-      <Carousel
+      {/* <Carousel
         ref={(c) => {
           this._carousel = c;
         }}
@@ -160,7 +159,7 @@ const HomeScreen = ({ navigation }) => {
         sliderWidth={windowWidth - 40}
         itemWidth={300}
         loop={true}
-      />
+      /> */}
 
       <View style={styles.switchContainer}>
         <CustomSwitch

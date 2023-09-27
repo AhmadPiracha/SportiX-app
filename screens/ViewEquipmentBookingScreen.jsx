@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import BookingCard from '../components/BookingCard';
 import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -12,9 +13,10 @@ const ViewEquipmentBookingScreen = ({ route }) => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`http://192.168.10.2:5001/viewEquipBookings?userRollNo=${userRollNo}`);
+        const response = await axios.get(`http://192.168.10.6:5001/viewEquipBookings?userRollNo=${userRollNo}`);
         const bookingData = response.data;
         setBookings(bookingData);
+        console.log('bookingData:',JSON.stringify(bookingData, null, 2));
       } catch (error) {
         console.error("Error fetching bookings:", error);
       }
@@ -33,16 +35,7 @@ const ViewEquipmentBookingScreen = ({ route }) => {
 
       <Text style={styles.header}>Your Equipment Bookings</Text>
       {bookings.map((booking, index) => (
-        <View key={index} style={styles.bookingItem}>
-          <View style={styles.cardContainer}>
-            <Text style={styles.bookingInfo}>Name: {booking.displayName}</Text>
-            <Text style={styles.bookingInfo}>Roll No: {booking.userRollNo}</Text>
-            <Text style={styles.bookingInfo}>Type: {booking.type}</Text>
-            <Text style={styles.bookingInfo}>Items: {booking.name}</Text>
-            <Text style={styles.bookingInfo}>Time Slot: {booking.timeSlotDuration}</Text>
-            <Text style={styles.bookingInfo}>Status: {booking.status}</Text>
-          </View>
-        </View>
+        <BookingCard key={index} booking={booking} />
       ))}
     </ScrollView>
   );
