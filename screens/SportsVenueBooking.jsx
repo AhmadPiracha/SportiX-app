@@ -53,7 +53,7 @@ const SportsVenueBookingScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://192.168.10.6:5001/getVenue");
+        const response = await axios.get("http://192.168.10.7:5001/getVenue");
         if (response?.data) {
           setSportGrounds(response.data); // Update state with fetched data
         }
@@ -127,7 +127,7 @@ const SportsVenueBookingScreen = () => {
           text: "Book Now", onPress: async () => {
             try {
               const response = await axios.post(
-                'http://192.168.10.6:5001/venue_booking',
+                'http://192.168.10.7:5001/venue_booking',
                 bookingInfo
               );
               console.log('Booking response:', response.data);

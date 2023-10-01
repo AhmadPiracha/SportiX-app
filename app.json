@@ -1,40 +1,41 @@
 {
-  "expo": {
-    "name": "SportiX-v1.2",
-    "slug": "sportiX-v1.2",
-    "plugins": [
-      "@react-native-google-signin/google-signin"
-    ],
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/logo/sportix-logo.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/logo/sportix-logo.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/logo/sportix-logo.png",
-        "backgroundColor": "#ffffff"
-      },
-      "googleServicesFile": "./google-services.json",
-      "package": "com.ahmadpiracha.sportix"
-    },
-    "web": {
-      "favicon": "./assets/logo/sportix-logo.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "0f593b9f-74b6-4d47-b659-1ba95e233425"
-      }
+    "expo": {
+        "name": "SportiX",
+        "slug": "SportiX",
+        "plugins": [
+            "@react-native-google-signin/google-signin"
+        ],
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/logo/sportix-logo.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./assets/logo/sportix-logo.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/logo/sportix-logo.png",
+                "backgroundColor": "#ffffff"
+            },
+            "googleServicesFile": "./google-services.json",
+            "package": "com.ahmadpiracha.sportix"
+        },
+        "web": {
+            "favicon": "./assets/logo/sportix-logo.png"
+        },
+        "extra": {
+            "eas": {
+                "projectId": "3a609adf-8aa2-4546-a055-7d9474a49335"
+            }
+        },
+        "owner": "ahmadpiracha"
     }
-  }
 }

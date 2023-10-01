@@ -35,7 +35,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://192.168.10.6:5001/getProducts?type=${type}`);
+        const response = await fetch(`http://192.168.10.7:5001/getProducts?type=${type}`);
         const data = await response.json();
 
         // console.log("Data fetched successfully:", JSON.stringify(data, null, 2));
@@ -91,7 +91,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
                 displayName: displayName,
               };
 
-              fetch('http://192.168.10.6:5001/equipment_booking', {
+              fetch('http://192.168.10.7:5001/equipment_booking', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',

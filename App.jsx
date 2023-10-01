@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { auth } from "./database/firebase";
+import { auth, db } from './database/firebase';
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Alert, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 
 // Icons
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -31,14 +33,61 @@ import ViewYourBookingsScreen from "./screens/ViewYourBookingsScreen";
 import ViewEquipmentBookingScreen from "./screens/ViewEquipmentBookingScreen";
 import ViewVenueBookingScreen from "./screens/ViewVenueBookingScreen";
 
+
+// import messaging from '@react-native-firebase/messaging';
+
 // View Results Screen
 // import ViewResultsScreen from "./screens/ViewResultsScreen";
 // Custom Drawer
+
+
 import CustomDrawer from "./components/CustomDrawer";
+import CustomNestedDrawer from "./components/CustomNestedDrawer";
 
 // Initialize navigators
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
+const NestedDrawer = createDrawerNavigator();
+
+
+// Custom Nested Drawer Navigator
+
+const NestedDrawerMenu = () => {
+  return (
+    <NestedDrawer.Navigator
+      initialRouteName="View Equipment Bookings"
+      drawerContent={(props) => <CustomNestedDrawer {...props} />}
+    >
+      <NestedDrawer.Screen
+        name="View Equipment Bookings"
+        component={ViewEquipmentBookingScreen}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "ios-basketball" : "ios-basketball-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <NestedDrawer.Screen
+        name="View Venue Bookings"
+        component={ViewVenueBookingScreen}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "ios-pin" : "ios-pin-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+    </NestedDrawer.Navigator>
+  );
+};
+
 
 // Custom Drawer Navigator
 const DrawerNavigator = () => {
@@ -106,35 +155,27 @@ const DrawerNavigator = () => {
           ),
         }}
       />
+
+      {/* Nested Navigator for View Your Bookings */}
       <Drawer.Screen
-        name="View your Bookings"
-        component={ViewYourBookingsScreen}
+        name="View Your Bookings"
+        component={NestedDrawerMenu}
         options={{
+          drawerLabel: "View Your Bookings",
           drawerIcon: ({ focused, size }) => (
             <Ionicons
-              name={focused ? "clipboard" : "clipboard-outline"}
+              name={focused ? "menu" : "menu-outline"}
               size={size}
               color={focused ? "#00B4D8" : "#000"}
             />
           ),
         }}
       />
-      {/* <Drawer.Screen
-        name="View Results"
-        component={ViewResultsScreen}
-        options={{
-          drawerIcon: ({ focused, size }) => (
-            <Ionicons
-              name={focused ? "clipboard" : "clipboard-outline"}
-              size={size}
-              color={focused ? "#00B4D8" : "#000"}
-            />
-          ),
-        }}
-      /> */}
+      {/* Add more screens as needed */}
     </Drawer.Navigator>
   );
 };
+
 
 const LoadingScreen = () => {
   return (
@@ -165,8 +206,71 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
+
+  // useEffect(() => {
+
+  //   if (requestUserPermission()) {
+  //     // messaging().onMessage(async remoteMessage => {
+  //     //   Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+  //     // });
+  //     messaging().getToken().then(token => {
+  //       console.log(token);
+  //     });
+  //   }
+  //   else {
+  //     console.log("Permission not granted", authStatus);
+  //   }
+
+  //   // Check whether an initial notification is available
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(async (remoteMessage) => {
+  //       if (remoteMessage) {
+  //         console.log(
+  //           'Notification caused app to open from quit state:',
+  //           remoteMessage.notification,
+  //         );
+  //       }
+  //     });
+
+  //   // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+  //   messaging().onNotificationOpenedApp(async (remoteMessage) => {
+  //     console.log(
+  //       'Notification caused app to open from background state:',
+  //       remoteMessage.notification,
+  //     );
+  //   });
+
+
+  //   // Register background handler
+  //   messaging().setBackgroundMessageHandler(async remoteMessage => {
+  //     console.log('Message handled in the background!', remoteMessage);
+  //   });
+
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+  //   });
+
+  //   return unsubscribe;
+
+  // }, []);
+
+
+
   if (isLoading) {
     <LoadingScreen />;
+  }
+
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+    }
   }
 
   return (
@@ -184,8 +288,7 @@ const App = () => {
             <Stack.Screen name="MatchDetails" component={MatchDetails} />
             {/* Sports Equipment Booking Items Screen */}
             <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{ title: "Item Details" }} />
-            <Stack.Screen name="ViewEquipmentBookings" component={ViewEquipmentBookingScreen} options={{ title: "View Equipment Bookings" }} />
-            <Stack.Screen name="ViewVenueBookings" component={ViewVenueBookingScreen} options={{ title: "View Venue Bookings" }} />
+
           </>
         ) : (
           <>
