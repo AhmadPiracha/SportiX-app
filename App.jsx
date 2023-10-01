@@ -33,6 +33,10 @@ import ViewYourBookingsScreen from "./screens/ViewYourBookingsScreen";
 import ViewEquipmentBookingScreen from "./screens/ViewEquipmentBookingScreen";
 import ViewVenueBookingScreen from "./screens/ViewVenueBookingScreen";
 
+// FAST Leagues Screens
+
+import FCL from "./screens/FASTLeagues/FCL";
+import FPL from "./screens/FASTLeagues/FPL";
 
 // import messaging from '@react-native-firebase/messaging';
 
@@ -43,6 +47,7 @@ import ViewVenueBookingScreen from "./screens/ViewVenueBookingScreen";
 
 import CustomDrawer from "./components/CustomDrawer";
 import CustomNestedDrawer from "./components/CustomNestedDrawer";
+import FCLMatchCard from "./screens/FCLMatchCard";
 
 // Initialize navigators
 const Drawer = createDrawerNavigator();
@@ -50,12 +55,11 @@ const Stack = createNativeStackNavigator();
 const NestedDrawer = createDrawerNavigator();
 
 
-// Custom Nested Drawer Navigator
+// Custom Nested Booking Navigator
 
-const NestedDrawerMenu = () => {
+const NestedBookingMenu = () => {
   return (
     <NestedDrawer.Navigator
-      initialRouteName="View Equipment Bookings"
       drawerContent={(props) => <CustomNestedDrawer {...props} />}
     >
       <NestedDrawer.Screen
@@ -88,6 +92,42 @@ const NestedDrawerMenu = () => {
   );
 };
 
+// Custom Nested Booking Navigator
+
+const NestedLeaguesMenu = () => {
+  return (
+    <NestedDrawer.Navigator
+      drawerContent={(props) => <CustomNestedDrawer {...props} />}
+    >
+      <NestedDrawer.Screen
+        name="FAST Cricket League"
+        component={FCL}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "ios-basketball" : "ios-basketball-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <NestedDrawer.Screen
+        name="FAST Premier League"
+        component={FPL}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "ios-pin" : "ios-pin-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+    </NestedDrawer.Navigator>
+  );
+};
 
 // Custom Drawer Navigator
 const DrawerNavigator = () => {
@@ -159,19 +199,35 @@ const DrawerNavigator = () => {
       {/* Nested Navigator for View Your Bookings */}
       <Drawer.Screen
         name="View Your Bookings"
-        component={NestedDrawerMenu}
+        component={NestedBookingMenu}
         options={{
           drawerLabel: "View Your Bookings",
           drawerIcon: ({ focused, size }) => (
             <Ionicons
-              name={focused ? "menu" : "menu-outline"}
+              name={focused ? "bookmark" : "bookmark-outline"}
               size={size}
               color={focused ? "#00B4D8" : "#000"}
             />
           ),
         }}
       />
-      {/* Add more screens as needed */}
+
+      {/* {/* Nested Navigator for Fast Leagues */}
+      <Drawer.Screen
+        name="Fast Leagues"
+        component={NestedLeaguesMenu}
+        options={{
+          drawerLabel: "FAST NU Leagues",
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name={focused ? "basketball" : "basketball-outline"}
+              size={size}
+              color={focused ? "#00B4D8" : "#000"}
+            />
+          ),
+        }}
+      />
+
     </Drawer.Navigator>
   );
 };
@@ -288,7 +344,8 @@ const App = () => {
             <Stack.Screen name="MatchDetails" component={MatchDetails} />
             {/* Sports Equipment Booking Items Screen */}
             <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{ title: "Item Details" }} />
-
+            {/* FAST Sports League */}
+            <Stack.Screen name="FCLMatchCard" component={FCLMatchCard} />
           </>
         ) : (
           <>

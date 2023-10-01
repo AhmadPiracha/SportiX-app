@@ -3,11 +3,11 @@ import { View, Text, StyleSheet } from 'react-native';
 
 const EquipBookingCard = ({ booking }) => {
 
-    const {type,displayName,userRollNo,name,status,timeSlotDuration} = booking;
+    const { type, displayName, userRollNo, name, status, timeSlotDuration } = booking;
     return (
         <View style={styles.container}>
             <View style={styles.leftCard}>
-                <Text style={styles.eventName}>{name}</Text>
+                <Text style={styles.eventName}>Booked Item: {name}</Text>
                 <Text style={styles.ticketHead}>Name</Text>
                 <Text style={styles.ticketInfo}>{displayName}</Text>
                 <Text style={styles.ticketHead}>Roll No</Text>
@@ -25,19 +25,19 @@ const EquipBookingCard = ({ booking }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row', 
+        flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginBottom: 10,
         padding: 5,
 
     },
     leftCard: {
-        flex: 2, 
+        flex: 2,
         backgroundColor: '#007BFF',
         padding: 10,
         borderTopLeftRadius: 10,
-        borderBottomLeftRadius: 10,    
-        
+        borderBottomLeftRadius: 10,
+
     },
     rightCard: {
         flex: 1,
@@ -45,18 +45,22 @@ const styles = StyleSheet.create({
         padding: 10,
         borderTopRightRadius: 10,
         borderBottomRightRadius: 10,
+        alignContent: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
         
+
     },
 
     eventName: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 10,
         textAlign: 'center',
-marginTop: 5,
+        marginTop: 5,
     },
-    ticketHead:{
+    ticketHead: {
         fontSize: 16,
         fontWeight: 'bold',
         color: '#fff',

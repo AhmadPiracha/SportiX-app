@@ -99,7 +99,7 @@ const SportsSchedule = ({ activeSport }) => {
           )}
         </View>
 
-        {/* <DateTImePicker /> */}
+        <DateTImePicker />
 
         <MatchDetails type={activeSport} />
 

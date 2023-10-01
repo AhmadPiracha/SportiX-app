@@ -29,7 +29,7 @@ const CustomNestedDrawer = (props) => {
               }}
             >
               <Text style={{ color: "#fff", fontSize: 18 }}>
-                View Your Bookings
+                Home
               </Text>
             </View>
           </TouchableOpacity>

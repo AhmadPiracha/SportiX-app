@@ -18,7 +18,7 @@ const MatchDetails = ({ type }) => {
         });
         if (response?.data) {
           setCricket(response.data);
-          console.log("Match Details: ", JSON.stringify(response.data));
+          console.log("Match Details: ", JSON.stringify(response.data, null, 2));
         }
       } catch (error) {
         console.error("Error fetching data:", error);

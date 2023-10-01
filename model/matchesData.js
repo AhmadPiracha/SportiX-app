@@ -14,17 +14,98 @@ export const sliderData = [{
 
 export const TodaysMatch = [{
     id: 1,
-    homeTeam: "Manchester United",
-    awayTeam: "Liverpool",
+    TeamA: "Manchester United",
+    TeamB: "Liverpool",
     venue: "Old Trafford",
     time: "19:45",
     date: "29th April 2023",
 }, ];
+export const Matches = [{
+        id: 1,
+        TeamA: "Manchester United",
+        TeamB: "Liverpool",
+        venue: "Old Trafford",
+        time: "19:45",
+        date: "29th April 2023",
+    },
+    {
+        id: 2,
+        TeamA: "Real Madrid",
+        TeamB: "Barcelona",
+        venue: "Santiago Bernabeu",
+        time: "20:00",
+        date: "1st May 2023",
+    },
+    {
+        id: 3,
+        TeamA: "Chelsea",
+        TeamB: "Arsenal",
+        venue: "Stamford Bridge",
+        time: "18:30",
+        date: "3rd May 2023",
+    },
+    {
+        id: 4,
+        TeamA: "Bayern Munich",
+        TeamB: "Borussia Dortmund",
+        venue: "Allianz Arena",
+        time: "19:00",
+        date: "5th May 2023",
+    },
+    {
+        id: 5,
+        TeamA: "Paris Saint-Germain",
+        TeamB: "Marseille",
+        venue: "Parc des Princes",
+        time: "20:15",
+        date: "7th May 2023",
+    },
+    {
+        id: 6,
+        TeamA: "Manchester City",
+        TeamB: "Tottenham Hotspur",
+        venue: "Etihad Stadium",
+        time: "18:45",
+        date: "9th May 2023",
+    },
+    {
+        id: 7,
+        TeamA: "AC Milan",
+        TeamB: "Inter Milan",
+        venue: "San Siro",
+        time: "19:30",
+        date: "11th May 2023",
+    },
+    {
+        id: 8,
+        TeamA: "Ajax",
+        TeamB: "PSV Eindhoven",
+        venue: "Johan Cruyff Arena",
+        time: "20:00",
+        date: "13th May 2023",
+    },
+    {
+        id: 9,
+        TeamA: "Atletico Madrid",
+        TeamB: "Sevilla",
+        venue: "Wanda Metropolitano",
+        time: "19:45",
+        date: "15th May 2023",
+    },
+    {
+        id: 10,
+        TeamA: "Juventus",
+        TeamB: "Napoli",
+        venue: "Allianz Stadium",
+        time: "18:30",
+        date: "17th May 2023",
+    }
+];
 
 export const UpcomingMatches = [{
         id: 1,
-        homeTeam: "Bayern Munich",
-        awayTeam: "Borussia Dortmund",
+        TeamA: "Bayern Munich",
+        TeamB: "Borussia Dortmund",
         venue: "Allianz Arena",
         time: "18:30",
         date: "7th May 2023",
@@ -256,4 +337,16 @@ export const TeamBPlayers = [{
         name: "Christopher Turner",
         number: 12,
     },
+];
+
+export const TeamLogo = [{
+        id: 1,
+        name: "Islamabad United",
+        islLogo: require("../assets/logo/islamabad-united.jpg"),
+    },
+    {
+        id: 2,
+        name: "Lahore Qalandars",
+        lhrLogo: require("../assets/logo/lahore-qalandars.jpg"),
+    }
 ];
