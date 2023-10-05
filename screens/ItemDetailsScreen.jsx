@@ -21,7 +21,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
           // console.log("User Data:", JSON.stringify(userData, null, 2));
           setUserEmail(userData.email);
           setDisplayName(userData.displayName);
-        
+
         }
       }
       catch (error) {
@@ -38,11 +38,13 @@ const ItemDetailsScreen = ({ route, navigation }) => {
         const response = await fetch(`http://192.168.10.4:5001/getProducts?type=${type}`);
         const data = await response.json();
 
-        console.log("Data fetched successfully:", JSON.stringify(data, null, 2));
+        // console.log("Data fetched successfully:", JSON.stringify(data, null, 2));
 
+        // update's done here
         const equipmentDataWithQuantity = data.map(equipment => ({
           ...equipment,
           quantity: 0,
+          remainingCount: equipment.count, // Initialize remaining count
         }));
 
         setEquipmentList(equipmentDataWithQuantity);
@@ -53,76 +55,85 @@ const ItemDetailsScreen = ({ route, navigation }) => {
     fetchData();
   }, [type]);
 
+  // update's done here
   const handleBooking = () => {
     if (selectedTimeSlot === null) {
-      // alert('Please select a time slot to book');
       Alert.alert('Alert', 'Please select a time slot to book');
-
       return;
     }
 
-    const totalCount = equipmentList.reduce((total, equipment) => total + equipment.quantity, 0);
-    if (totalCount === 0) {
+    const selectedEquipments = equipmentList.filter(equipment => equipment.quantity > 0);
+
+    if (selectedEquipments.length === 0) {
       Alert.alert('Alert', 'Please select at least one item to book');
       return;
     }
-    else if (totalCount > 0) {
-      const selectedEquipments = equipmentList.filter(equipment => equipment.quantity > 0);
-      const equipmentNames = selectedEquipments.map(equipment => `${equipment.name} (${equipment.quantity})`).join(', ');
-      Alert.alert(
-        'Confirm Booking',
-        `Are you sure you want to book the following items?\n\n${equipmentNames}`,
-        [
-          {
-            text: 'Cancel',
-            style: 'cancel',
-          },
-          {
-            text: 'Book',
-            onPress: () => {
-              // Perform the booking
+
+    // Create an array to hold promises for each booking
+
+    Alert.alert('Confirm Booking',
+      `Are you sure you want to book the following items?\n\n` + 
+      selectedEquipments.map(equipment => `${equipment.name} (${equipment.quantity})`).join('\n') + '\n\n',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Book',
+          onPress: () => {
+            const bookingPromises = selectedEquipments.map(equipment => {
               const userRollNo = userEmail.match(/([a-z]\d+)/i)[0];
               const bookingData = {
                 type: type,
-                name: equipmentNames,
-                count: totalCount,
+                name: `${equipment.name}`,
+                count: equipment.quantity,
                 timeSlotDuration: selectedTimeSlot.duration,
                 userRollNo,
                 displayName: displayName,
               };
 
-              fetch('http://192.168.10.4:5001/equipment_booking', {
+              return fetch('http://192.168.10.4:5001/equipment_booking', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(bookingData),
-              })
-                .then(response => {
-                  if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                  }
-                  return response.json();
-                })
-                .then(data => {
-                  console.log('Booking Response Data:', JSON.stringify(data, null, 2));
+              });
+            });
+
+            // Use Promise.all to wait for all booking promises to complete
+            Promise.all(bookingPromises)
+              .then(responses => {
+                const successfulBookings = responses.filter(response => response.ok);
+
+                if (successfulBookings.length === selectedEquipments.length) {
+                  // All bookings were successful
                   resetStateValues();
                   Alert.alert('Success', 'Your booking request is Forwarded to Sports Officer.');
-                })
-                .catch(error => {
-                  console.error('Error making booking request:', error);
-                });
-            },
+                } else {
+                  // Some bookings failed
+                  Alert.alert('Error', 'Some items could not be booked. Please try again.');
+                }
+              })
+              .catch(error => {
+                console.error('Error making booking request:', error);
+                Alert.alert('Error', 'An error occurred while booking. Please try again.');
+              });
           },
-        ]
-      );
-    }
+        },
+      ],
+      { cancelable: false },
+    );
   };
+
 
   const onPressBack = () => {
     navigation.navigate('Equipment Booking');
   };
 
+
+  // update's done here
   const decrementQuantity = (equipmentId) => {
     setEquipmentList((prevList) =>
       prevList.map((equipment) =>
@@ -130,6 +141,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
           ? {
             ...equipment,
             quantity: Math.max(equipment.quantity - 1, 0),
+            remainingCount: equipment.remainingCount + 1, // Increment remaining count
           }
           : equipment
       )
@@ -139,10 +151,11 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   const incrementQuantity = (equipmentId) => {
     const updatedEquipmentList = equipmentList.map((equipment) => {
       if (equipment.id === equipmentId) {
-        if (equipment.quantity < equipment.count) {
+        if (equipment.quantity < equipment.count && equipment.remainingCount > 0) {
           return {
             ...equipment,
             quantity: equipment.quantity + 1,
+            remainingCount: equipment.remainingCount - 1, // Decrement remaining count
           };
         }
       }
@@ -150,6 +163,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
     });
     setEquipmentList(updatedEquipmentList);
   };
+
 
   const resetEquipmentQuantity = () => {
     setEquipmentList((prevList) =>
@@ -204,9 +218,12 @@ const ItemDetailsScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
               ))}
             </View>
+
+            {/* EQUIP CONTAINER */}
+            {/* update's done here */}
+
             {equipmentList.map((equipment) => (
               <View key={equipment.id}>
-                {/* Equipment Container */}
                 <View style={styles.equipmentContainer}>
                   <Text style={styles.equipmentName}>{equipment.name}</Text>
                   <View style={styles.quantityContainer}>
@@ -215,37 +232,40 @@ const ItemDetailsScreen = ({ route, navigation }) => {
                       style={[
                         styles.quantityButton,
                         equipment.quantity === 0 && styles.disabledButton,
-                        equipment.count === 0 && styles.disabledButton,
                       ]}
-                      disabled={equipment.quantity === 0 || equipment.count === 0}
+                      disabled={equipment.quantity === 0}
                     >
                       <Text style={styles.buttonText}>-</Text>
                     </TouchableOpacity>
                     <Text style={styles.quantityText}>{equipment.quantity}</Text>
-
-                    {equipment.count - equipment.quantity > 0 ? (
+                    {equipment.remainingCount > 0 && (
                       <TouchableOpacity
                         onPress={() => incrementQuantity(equipment.id)}
                         style={[
                           styles.quantityButton,
-                          equipment.quantity === equipment.count && styles.disabledButton,
+                          equipment.quantity === equipment.count &&
+                          styles.disabledButton,
                           equipment.count === 0 && styles.disabledButton,
                         ]}
-                        disabled={equipment.quantity === equipment.count || equipment.count === 0}
+                        disabled={
+                          equipment.quantity === equipment.count ||
+                          equipment.count === 0 ||
+                          equipment.remainingCount === 0
+                        }
                       >
                         <Text style={styles.buttonText}>+</Text>
                       </TouchableOpacity>
-                    ) : (
-                      <View style={[styles.quantityButton, styles.disabledButton]}>
-                        <Text style={styles.buttonText}>+</Text>
-                      </View>
                     )}
-
                   </View>
                 </View>
-                <Text style={styles.maxCountText}>Remaining: {equipment.count - equipment.quantity}</Text>
+                <Text style={styles.maxCountText}>
+                  Remaining: {equipment.remainingCount}
+                </Text>
               </View>
             ))}
+
+
+
             <TouchableOpacity
               onPress={handleBooking}
               style={[styles.bookButton, totalItemCount === 0 && styles.disabledButton]}
@@ -268,7 +288,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    padding: 20,
+    padding: 10,
     backgroundColor: "#0d1b2a",
 
   },
@@ -278,13 +298,10 @@ const styles = StyleSheet.create({
 
   },
   containerOne: {
-    backgroundColor: "#0d1b2a",
-    padding: 10,
     justifyContent: "center",
     alignItems: "center",
   },
   containerTwo: {
-    backgroundColor: "#0d1b2a",
     padding: 10,
   },
   itemText: {
@@ -418,3 +435,4 @@ const styles = StyleSheet.create({
 });
 
 export default ItemDetailsScreen;
+
