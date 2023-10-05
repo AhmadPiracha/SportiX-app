@@ -20,7 +20,7 @@ const CustomSportsType = () => {
       try {
         const response = await axios.get("http://192.168.10.4:5001/getSportsType");
         if (response?.data) {
-          console.log("Data fetched successfully:", JSON.stringify(response.data, null, 2));
+          // console.log("Data fetched successfully:", JSON.stringify(response.data, null, 2));
           setSportsType(response.data);
         }
       } catch (error) {

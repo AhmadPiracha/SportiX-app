@@ -99,7 +99,7 @@ app.get('/getProducts', (req, res) => {
     });
 
 });
-
+// update's done here
 app.post('/equipment_booking', (req, res) => {
     const Type = req.body.type;
     const Name = req.body.name;
@@ -109,15 +109,29 @@ app.post('/equipment_booking', (req, res) => {
     const displayName = req.body.displayName;
     const status = 'pending';
 
-    const sql = "INSERT INTO equip_booking (type, name, count, timeSlotDuration, userRollNo, displayName,status) VALUES (?, ?, ?, ?, ?, ?,?)";
-    const values = [Type, Name, Count, timeSlotDuration, userRollNo, displayName, status];
+    const insertSql = "INSERT INTO sportix.equip_booking (type, name, count, timeSlotDuration, userRollNo, displayName, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const insertValues = [Type, Name, Count, timeSlotDuration, userRollNo, displayName, status];
 
-    connection.query(sql, values, (err) => {
-        if (err) {
-            console.error("Error executing SQL query:", err);
+    // Execute the INSERT query to insert booking data
+    connection.query(insertSql, insertValues, (insertErr) => {
+        if (insertErr) {
+            console.error("Error executing INSERT SQL query:", insertErr);
             return res.status(500).json({ message: "Error inserting data" });
         }
-        res.status(200).json({ message: "Booking data inserted successfully" });
+
+        // After successful insertion, decrement the count in the products table
+        const updateSql = "UPDATE sportix.product SET count = count - ? WHERE name = ?";
+        const updateValues = [Count, Name];
+
+        connection.query(updateSql, updateValues, (updateErr) => {
+            if (updateErr) {
+                console.error("Error executing UPDATE SQL query:", updateErr);
+                return res.status(500).json({ message: "Error updating product count" });
+            }
+
+            // If both INSERT and UPDATE are successful, respond with success
+            res.status(200).json({ message: "Booking data inserted successfully" });
+        });
     });
 });
 
