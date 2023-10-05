@@ -1,21 +1,30 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
-import { Modal, View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
+
 import CustomSwitch from "../components/CustomSwitch";
 import PlayersList from "../components/PlayerList";
 import { useNavigation } from "@react-navigation/native";
+import { windowWidth, windowHeight } from "../utils/dimensions";
+
 const MatchTeamCard = ({ route }) => {
-  const { team1_name, team2_name, venue, date, time } = route.params;
+  const { id, team1_name, team2_name, venue, date, time } = route.params;
   const [playersList, setPlayersList] = useState(1);
   const navigation = useNavigation();
-
 
   const onSelectSwitch = (value) => {
     setPlayersList(value);
   };
-  
+
   const handleGoBack = () => {
-    navigation.navigate("Schedule")
+    navigation.navigate("Schedule");
   };
 
   return (
@@ -26,7 +35,7 @@ const MatchTeamCard = ({ route }) => {
             <Ionicons
               onPress={handleGoBack}
               name="arrow-back-outline"
-              size={20}
+              size={windowWidth * 0.05}
               color="#fff"
               style={styles.containerBtn}
             />
@@ -34,7 +43,7 @@ const MatchTeamCard = ({ route }) => {
           <View style={styles.shareBtn}>
             <Ionicons
               name="share-social-outline"
-              size={20}
+              size={windowWidth * 0.05}
               color="#fff"
               style={styles.containerBtn}
             />
@@ -60,13 +69,11 @@ const MatchTeamCard = ({ route }) => {
           </View>
 
           <View style={styles.VenueTeamContainer}>
-            <Text style={styles.venue}>{venue}</Text>
-          </View>
-          <View style={styles.VenueTeamContainer}>
             <Text style={styles.venue}>{date}</Text>
+            <Text style={styles.venue}>{time}</Text>
           </View>
           <View style={styles.VenueTeamContainer}>
-            <Text style={styles.venue}>{time}</Text>
+            <Text style={styles.venue}>{venue}</Text>
           </View>
         </View>
 
@@ -74,15 +81,19 @@ const MatchTeamCard = ({ route }) => {
 
         <View style={styles.switchContainer}>
           <CustomSwitch
-          Option1={team1_name}
+            Option1={team1_name}
             Option2={team2_name}
             selectionMode={playersList}
             onSelectSwitch={onSelectSwitch}
           />
         </View>
 
-        {playersList === 1 && <PlayersList key={team1_name} team={team1_name} />}
-        {playersList === 2 && <PlayersList key={team2_name} team={team2_name} />}
+        {playersList === 1 && (
+          <PlayersList key={id} team={team1_name} />
+        )}
+        {playersList === 2 && (
+          <PlayersList key={id} team={team2_name} />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -91,26 +102,28 @@ const MatchTeamCard = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1b263b",
+    backgroundColor: "#0d1b2a",
   },
   mainContainer: {
     flex: 1,
-    backgroundColor: "#0d1b2a",
+    margin: windowWidth * 0.02,
+    borderRadius: windowWidth * 0.02,
+    marginTop: windowWidth * 0.06,
+
   },
   headerBar: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 10,
+    padding: windowWidth * 0.02,
   },
 
   card: {
     elevation: 5,
-    padding: 10,
-    backgroundColor: "#1b263b",
-    borderRadius: 10,
-    marginHorizontal: 10,
-    marginVertical: 10,
+    padding: windowWidth * 0.03,
+    borderRadius: windowWidth * 0.05,
+    margin: windowWidth * 0.02,
+    backgroundColor: '#ffffff',
   },
   headerContainer: {
     flexDirection: "row",
@@ -121,50 +134,50 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   teamLogo: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
+    width: windowWidth * 0.15,
+    height: windowWidth * 0.15,
+    borderRadius: windowWidth * 0.075,
   },
   teamName: {
-    fontSize: 18,
+    fontSize: windowWidth * 0.04,
     fontWeight: "600",
     textAlign: "center",
-    color: "#ffffff",
+    color: "#000000",
   },
   versus: {
-    fontSize: 14,
-    color: "#ffffff",
+    fontSize: windowWidth * 0.03,
+    color: "#000000",
   },
   VenueTeamContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
+    marginTop: windowWidth * 0.02,
   },
   venue: {
-    fontSize: 16,
+    fontSize: windowWidth * 0.035,
     textAlign: "center",
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
     flex: 1,
-    color: "#ffffff",
+    color: "#000000",
   },
 
   containerBtn: {
-    top: 10,
+    top: windowWidth * 0.02,
     zIndex: 1,
-    padding: 5,
-    margin: 5,
+    padding: windowWidth * 0.005,
+    margin: windowWidth * 0.005,
   },
   matchId: {
-    marginTop: 10,
-    fontSize: 16,
+    marginTop: windowWidth * 0.02,
+    fontSize: windowWidth * 0.035,
     textAlign: "center",
   },
 
   switchContainer: {
-    marginVertical: 20,
+    margin: windowHeight * 0.03,
   },
 });
 

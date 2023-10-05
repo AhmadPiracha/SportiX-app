@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, SafeAreaView } from "react-native";
+import { Text, View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { windowWidth } from "../utils/dimensions";
 import axios from "axios";
 
@@ -9,7 +9,7 @@ const PlayersList = ({ team }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://192.168.10.7:5001/getPlayers?team=${team}`, {
+        const response = await axios.get(`http://192.168.10.4:5001/getPlayers?team=${team}`, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -27,7 +27,7 @@ const PlayersList = ({ team }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
         {playerData.map((item) => (
           <View key={item.id} style={styles.playerContainer}>
             <View style={styles.playerMain}>
@@ -37,7 +37,7 @@ const PlayersList = ({ team }) => {
             <View style={styles.separator} />
           </View>
         ))}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -45,12 +45,14 @@ const PlayersList = ({ team }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 8,
+    paddingHorizontal: windowWidth * 0.04,
+    paddingTop: windowWidth * 0.02,
+  },
+  scrollViewContent: {
+    paddingBottom: windowWidth * 0.02,
   },
   playerContainer: {
-    backgroundColor: "#0d1b2a",
-    paddingVertical: 12,
+    paddingVertical: windowWidth * 0.03,
   },
   playerMain: {
     flexDirection: 'row',
@@ -58,21 +60,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   playerName: {
-    fontSize: 16,
+    fontSize: windowWidth * 0.04,
     fontWeight: "bold",
+    color: "#ffffff",
   },
   rollNumber: {
-    fontSize: 16,
-    color: "#ffffff", 
-  },
-  playerName: {
-    fontSize: 16,
+    fontSize: windowWidth * 0.04,
     color: "#ffffff", 
   },
   separator: {
     height: 1,
     backgroundColor: "#ffffff",
-    marginTop: 8,
+    marginTop: windowWidth * 0.02,
   },
 });
 

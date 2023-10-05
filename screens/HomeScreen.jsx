@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   Image,
+  Dimensions
 } from "react-native";
 import Carousel from "react-native-snap-carousel";
 import { DateTime } from "luxon"; // Import DateTime from luxon
@@ -17,8 +18,10 @@ import { auth, db } from "../database/firebase";
 import BannerSlider from "../components/BannerSlider";
 import CustomSwitch from "../components/CustomSwitch";
 import { sliderData } from "../model/matchesData";
-import { windowWidth } from "../utils/dimensions";
 import axios from "axios";
+
+const { width, height } = Dimensions.get("window");
+
 const HomeScreen = ({ navigation }) => {
 
   const [searchInput, setSearchInput] = useState("");
@@ -40,14 +43,14 @@ const HomeScreen = ({ navigation }) => {
     };
 
     fetchUserData();
- 
+
     const fetchData = async () => {
       try {
         const pktDate = DateTime.local().setZone("Asia/Karachi"); // Get PKT current date and time
         // console.log("PKT Current Date:", pktDate.toISO()); // Log PKT current date
 
         const response = await axios.get(
-          `http://192.168.1.10:5001/teamSchedule?date=${pktDate.toISO()}`,
+          `http://192.168.10.4:5001/teamSchedule?date=${pktDate.toISO()}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -119,83 +122,84 @@ const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
 
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Hello {displayName}</Text>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <Ionicons
-            name="reorder-three-outline"
-            size={28}
-            color="#ffffff"
-            style={styles.drawerIcon}
+      <View style={styles.contentContainer}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Ionicons
+              name="reorder-three-outline"
+              size={28}
+              color="#ffffff"
+              style={styles.drawerIcon}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.searchBarContainer}>
+          <Feather
+            name="search"
+            size={20}
+            color="#1b263b"
+            style={styles.searchIcon}
           />
-        </TouchableOpacity>
-      </View>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search matches..."
+            value={searchInput}
+            onChangeText={(text) => setSearchInput(text)}
+          />
+        </View>
 
-      <View style={styles.searchBarContainer}>
-        <Feather
-          name="search"
-          size={20}
-          color="#1b263b"
-          style={styles.searchIcon}
-        />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search matches..."
-          value={searchInput}
-          onChangeText={(text) => setSearchInput(text)}
-        />
-      </View>
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Gallery</Text>
+        </View>
 
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Gallery</Text>
-      </View>
-
-      {/* <Carousel
+        <Carousel
         ref={(c) => {
           this._carousel = c;
         }}
         data={sliderData}
         renderItem={renderBanner}
-        sliderWidth={windowWidth - 40}
+        sliderWidth={width - 40}
         itemWidth={300}
         loop={true}
-      /> */}
+      />
 
-      <View style={styles.switchContainer}>
-        <CustomSwitch
-          selectionMode={matchTab}
-          Option1="Today's Match"
-          Option2="Upcoming Match"
-          onSelectSwitch={onSelectSwitch}
-        />
-      </View>
-
-      {/* Display match schedule */}
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <View style={styles.matchesContainer}>
-          {matchTab === 1 ? (
-            // Filter and map today's matches
-            matches.todayMatches
-              .filter((match) =>
-                match.teamA.toLowerCase().includes(searchInput.toLowerCase()) ||
-                match.teamB.toLowerCase().includes(searchInput.toLowerCase()) ||
-                match.venue.toLowerCase().includes(searchInput.toLowerCase())
-              )
-              .map(renderMatchDetails)
-          ) : (
-            // Filter and map upcoming matches
-            matches.upcomingMatches
-              .filter((match) =>
-                match.teamA.toLowerCase().includes(searchInput.toLowerCase()) ||
-                match.teamB.toLowerCase().includes(searchInput.toLowerCase()) ||
-                match.venue.toLowerCase().includes(searchInput.toLowerCase())
-              )
-              .map(renderMatchDetails)
-          )}
+        <View style={styles.switchContainer}>
+          <CustomSwitch
+            selectionMode={matchTab}
+            Option1="Today's Match"
+            Option2="Upcoming Match"
+            onSelectSwitch={onSelectSwitch}
+          />
         </View>
-      </ScrollView>
+
+        {/* Display match schedule */}
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <View style={styles.matchesContainer}>
+            {matchTab === 1 ? (
+              // Filter and map today's matches
+              matches.todayMatches
+                .filter((match) =>
+                  match.teamA.toLowerCase().includes(searchInput.toLowerCase()) ||
+                  match.teamB.toLowerCase().includes(searchInput.toLowerCase()) ||
+                  match.venue.toLowerCase().includes(searchInput.toLowerCase())
+                )
+                .map(renderMatchDetails)
+            ) : (
+              // Filter and map upcoming matches
+              matches.upcomingMatches
+                .filter((match) =>
+                  match.teamA.toLowerCase().includes(searchInput.toLowerCase()) ||
+                  match.teamB.toLowerCase().includes(searchInput.toLowerCase()) ||
+                  match.venue.toLowerCase().includes(searchInput.toLowerCase())
+                )
+                .map(renderMatchDetails)
+            )}
+          </View>
+        </ScrollView>
 
 
+      </View>
 
     </SafeAreaView>
   );
@@ -206,10 +210,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1b263b",
-    padding: 20,
+    padding: width * 0.05, // Use percentage-based padding
   },
   contentContainer: {
-    padding: 20,
+    flex: 1,
+    padding: width * 0.05, // Use percentage-based padding
+  },
+  card: {
+    elevation: 5,
+    padding: width * 0.04, // Use percentage-based padding
+    backgroundColor: "#ffffff",
+    borderRadius: width * 0.03, // Use percentage-based borderRadius
+    marginHorizontal: width * 0.02, // Use percentage-based margins
+    marginVertical: height * 0.02, // Use percentage-based margins
+    width: "100%", // Use 100% width for responsiveness
   },
   header: {
     flexDirection: "row",
@@ -266,16 +280,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
 
   },
-  card: {
-    elevation: 5,
-    padding: 10,
-    backgroundColor: "#ffffff",
-    borderRadius: 10,
-    marginHorizontal: 10,
-    marginVertical: 10,
-    width: windowWidth - 40,
 
-  },
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",

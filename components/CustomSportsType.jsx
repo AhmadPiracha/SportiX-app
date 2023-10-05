@@ -10,15 +10,17 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { windowHeight, windowWidth } from "../utils/dimensions";
 import axios from "axios";
+
 const CustomSportsType = () => {
   const navigation = useNavigation();
   const [sportsType, setSportsType] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://192.168.10.7:5001/getSportsType");
+        const response = await axios.get("http://192.168.10.4:5001/getSportsType");
         if (response?.data) {
-          // console.log("Data fetched successfully:", JSON.stringify(response.data, null, 2));
+          console.log("Data fetched successfully:", JSON.stringify(response.data, null, 2));
           setSportsType(response.data);
         }
       } catch (error) {
@@ -76,44 +78,47 @@ const styles = StyleSheet.create({
     backgroundColor: "#0d1b2a",
     width: windowWidth,
     height: windowHeight,
+    padding: windowWidth * 0.04,
   },
   containerOne: {
     backgroundColor: "#0d1b2a",
-    padding: 10,
+    padding: windowWidth * 0.02,
   },
   containerTwo: {
     backgroundColor: "#0d1b2a",
-    padding: 10,
-    marginTop: 20,
-    marginLeft: 10,
+    padding: windowWidth * 0.02,
+    marginTop: windowWidth * 0.02,
+    marginLeft: windowWidth * 0.02,
   },
   containerBtn: {
-    marginTop: 40,
-    marginLeft: 10,
+    marginTop: windowWidth * 0.03,
+    marginLeft: windowWidth * 0.02,
   },
-
   headerGameContainer: {
     flexDirection: "row",
-    marginHorizontal: 10,
-    marginVertical: 10,
+    marginHorizontal: windowWidth * 0.02,
+    marginVertical: windowWidth * 0.02,
     justifyContent: "center",
     alignItems: "center",
   },
   headerGameTxt: {
-    fontSize: 25,
+    fontSize: windowWidth * 0.05,
     fontWeight: "600",
     color: "#fff",
+    
+  
   },
   containerItemBtn: {
     backgroundColor: "#283442",
-    padding: 16,
+    padding: windowWidth * 0.04,
     borderRadius: 8,
-    marginBottom: 12,
+    marginBottom: windowWidth * 0.03,
   },
   itemTitle: {
-    fontSize: 18,
+    fontSize: windowWidth * 0.04,
     fontWeight: "500",
     color: "#fff",
+    
   },
 });
 
