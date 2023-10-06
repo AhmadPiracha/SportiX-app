@@ -100,6 +100,42 @@ app.get('/getProducts', (req, res) => {
 
 });
 // update's done here
+// app.post('/equipment_booking', (req, res) => {
+//     const Type = req.body.type;
+//     const Name = req.body.name;
+//     const Count = req.body.count;
+//     const timeSlotDuration = req.body.timeSlotDuration;
+//     const userRollNo = req.body.userRollNo;
+//     const displayName = req.body.displayName;
+//     const status = 'pending';
+
+//     const insertSql = "INSERT INTO sportix.equip_booking (type, name, count, timeSlotDuration, userRollNo, displayName, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+//     const insertValues = [Type, Name, Count, timeSlotDuration, userRollNo, displayName, status];
+
+//     // Execute the INSERT query to insert booking data
+//     connection.query(insertSql, insertValues, (insertErr) => {
+//         if (insertErr) {
+//             console.error("Error executing INSERT SQL query:", insertErr);
+//             return res.status(500).json({ message: "Error inserting data" });
+//         }
+
+//         // After successful insertion, decrement the count in the products table
+//         const updateSql = "UPDATE sportix.product SET count = count - ? WHERE name = ?";
+//         const updateValues = [Count, Name];
+
+//         connection.query(updateSql, updateValues, (updateErr) => {
+//             if (updateErr) {
+//                 console.error("Error executing UPDATE SQL query:", updateErr);
+//                 return res.status(500).json({ message: "Error updating product count" });
+//             }
+
+//             // If both INSERT and UPDATE are successful, respond with success
+//             res.status(200).json({ message: "Booking data inserted successfully" });
+//         });
+//     });
+// });
+
+
 app.post('/equipment_booking', (req, res) => {
     const Type = req.body.type;
     const Name = req.body.name;
@@ -119,19 +155,24 @@ app.post('/equipment_booking', (req, res) => {
             return res.status(500).json({ message: "Error inserting data" });
         }
 
-        // After successful insertion, decrement the count in the products table
-        const updateSql = "UPDATE sportix.product SET count = count - ? WHERE name = ?";
-        const updateValues = [Count, Name];
+        // Check the status and conditionally decrement the count in the products table
+        if (status === 'confirmed') {
+            const updateSql = "UPDATE sportix.product SET count = count - ? WHERE name = ?";
+            const updateValues = [Count, Name];
 
-        connection.query(updateSql, updateValues, (updateErr) => {
-            if (updateErr) {
-                console.error("Error executing UPDATE SQL query:", updateErr);
-                return res.status(500).json({ message: "Error updating product count" });
-            }
+            connection.query(updateSql, updateValues, (updateErr) => {
+                if (updateErr) {
+                    console.error("Error executing UPDATE SQL query:", updateErr);
+                    return res.status(500).json({ message: "Error updating product count" });
+                }
 
-            // If both INSERT and UPDATE are successful, respond with success
+                // If both INSERT and UPDATE are successful, respond with success
+                res.status(200).json({ message: "Booking data inserted and product count updated successfully" });
+            });
+        } else {
+            // If status is 'pending', respond with success without updating the count
             res.status(200).json({ message: "Booking data inserted successfully" });
-        });
+        }
     });
 });
 
@@ -214,6 +255,54 @@ app.get('/viewVenueBookings', (req, res) => {
 
 });
 
+app.get('/getLeague', (req, res) => {
+    const name = "SELECT DISTINCT nname FROM sportix.league";
+
+    connection.query(name, (err, result) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).send("Error fetching data");
+        }
+
+        res.send(result);
+
+    });
+
+});
+
+app.get('/getLeagueTeams', (req, res) => {
+    const LeagueName = req.query.League_Name || null;
+    const sql = "SELECT name FROM sportix.leagueteams WHERE League_Name = ?";
+    connection.query(sql, [LeagueName], (err, result) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).json({ error: "Error fetching data" });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: "No data found for the specified League_Name" });
+        }
+
+        res.json(result);
+    });
+});
+
+app.get('/getLeagueSchedule', (req, res) => {
+    const LeagueName = req.query.League_Name || null;
+    const sql = "SELECT * FROM sportix.matches WHERE League_Name = ?";
+    connection.query(sql, [LeagueName], (err, result) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).json({ error: "Error fetching data" });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: "No data found for the specified League_Name" });
+        }
+
+        res.json(result);
+    });
+});
 
 
 app.listen(5001, () => {

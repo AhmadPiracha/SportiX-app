@@ -18,7 +18,7 @@ const CustomSportsType = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://192.168.10.4:5001/getSportsType");
+        const response = await axios.get("http://192.168.10.5:5001/getSportsType");
         if (response?.data) {
           // console.log("Data fetched successfully:", JSON.stringify(response.data, null, 2));
           setSportsType(response.data);
@@ -37,17 +37,17 @@ const CustomSportsType = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.containerOne}>
-        <Ionicons
-          onPress={onPressBack}
-          name="arrow-back-outline"
-          size={20}
-          color="#fff"
-          style={styles.containerBtn}
-        />
-        <View style={styles.headerGameContainer}>
-          <Text style={styles.headerGameTxt}>Sports Equipment Booking</Text>
-        </View>
+        <View style={styles.containerOne}>
+          <Ionicons
+            onPress={onPressBack}
+            name="arrow-back-outline"
+            size={20}
+            color="#fff"
+            style={styles.containerBtn}
+          />
+          <View style={styles.headerGameContainer}>
+            <Text style={styles.headerGameTxt}>Sports Equipment Booking</Text>
+          </View>
       </View>
       <View style={styles.mainContainer}>
         <View style={styles.containerTwo}>

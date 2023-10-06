@@ -5,12 +5,10 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from "
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Alert, TouchableOpacity } from "react-native";
 import { View, Text } from "react-native";
-
 // Icons
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 // Screens
-
 // Authentication Screens
 import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
@@ -33,12 +31,10 @@ import ViewYourBookingsScreen from "./screens/ViewYourBookingsScreen";
 import ViewEquipmentBookingScreen from "./screens/ViewEquipmentBookingScreen";
 import ViewVenueBookingScreen from "./screens/ViewVenueBookingScreen";
 
-// FAST Leagues Screens
+import FASTLeagues from "./screens/FASTLeagues/FASTLeagues";
+import FASTLeaguesMenu from "./screens/FASTLeaguesMenu";
+import LeagueMatchCardDetails from "./screens/FASTLeagues/LeagueMatchCardDetails";
 
-import FCL from "./screens/FASTLeagues/FCL";
-import FPL from "./screens/FASTLeagues/FPL";
-
-// import messaging from '@react-native-firebase/messaging';
 
 // View Results Screen
 // import ViewResultsScreen from "./screens/ViewResultsScreen";
@@ -47,7 +43,7 @@ import FPL from "./screens/FASTLeagues/FPL";
 
 import CustomDrawer from "./components/CustomDrawer";
 import CustomNestedDrawer from "./components/CustomNestedDrawer";
-import FCLMatchCard from "./screens/FCLMatchCard";
+
 
 // Initialize navigators
 const Drawer = createDrawerNavigator();
@@ -92,42 +88,6 @@ const NestedBookingMenu = () => {
   );
 };
 
-// Custom Nested Booking Navigator
-
-const NestedLeaguesMenu = () => {
-  return (
-    <NestedDrawer.Navigator
-      drawerContent={(props) => <CustomNestedDrawer {...props} />}
-    >
-      <NestedDrawer.Screen
-        name="FAST Cricket League"
-        component={FCL}
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? "ios-basketball" : "ios-basketball-outline"}
-              size={size}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <NestedDrawer.Screen
-        name="FAST Premier League"
-        component={FPL}
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? "ios-pin" : "ios-pin-outline"}
-              size={size}
-              color={color}
-            />
-          ),
-        }}
-      />
-    </NestedDrawer.Navigator>
-  );
-};
 
 // Custom Drawer Navigator
 const DrawerNavigator = () => {
@@ -215,7 +175,7 @@ const DrawerNavigator = () => {
       {/* {/* Nested Navigator for Fast Leagues */}
       <Drawer.Screen
         name="Fast Leagues"
-        component={NestedLeaguesMenu}
+        component={FASTLeagues}
         options={{
           drawerLabel: "FAST NU Leagues",
           drawerIcon: ({ focused, size }) => (
@@ -258,75 +218,11 @@ const App = () => {
       setIsLoading(false);
     });
 
-    // Clean up the listener on unmount
     return () => unsubscribe();
   }, []);
 
-
-  // useEffect(() => {
-
-  //   if (requestUserPermission()) {
-  //     // messaging().onMessage(async remoteMessage => {
-  //     //   Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-  //     // });
-  //     messaging().getToken().then(token => {
-  //       console.log(token);
-  //     });
-  //   }
-  //   else {
-  //     console.log("Permission not granted", authStatus);
-  //   }
-
-  //   // Check whether an initial notification is available
-  //   messaging()
-  //     .getInitialNotification()
-  //     .then(async (remoteMessage) => {
-  //       if (remoteMessage) {
-  //         console.log(
-  //           'Notification caused app to open from quit state:',
-  //           remoteMessage.notification,
-  //         );
-  //       }
-  //     });
-
-  //   // Assume a message-notification contains a "type" property in the data payload of the screen to open
-
-  //   messaging().onNotificationOpenedApp(async (remoteMessage) => {
-  //     console.log(
-  //       'Notification caused app to open from background state:',
-  //       remoteMessage.notification,
-  //     );
-  //   });
-
-
-  //   // Register background handler
-  //   messaging().setBackgroundMessageHandler(async remoteMessage => {
-  //     console.log('Message handled in the background!', remoteMessage);
-  //   });
-
-  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
-  //     Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-  //   });
-
-  //   return unsubscribe;
-
-  // }, []);
-
-
-
   if (isLoading) {
     <LoadingScreen />;
-  }
-
-  const requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-    }
   }
 
   return (
@@ -345,7 +241,8 @@ const App = () => {
             {/* Sports Equipment Booking Items Screen */}
             <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{ title: "Item Details" }} />
             {/* FAST Sports League */}
-            <Stack.Screen name="FCLMatchCard" component={FCLMatchCard} />
+            <Stack.Screen name="FASTLeaguesMenu" component={FASTLeaguesMenu} />
+            <Stack.Screen name="LeagueMatchCardDetails" component={LeagueMatchCardDetails} />
           </>
         ) : (
           <>

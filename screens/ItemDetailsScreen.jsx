@@ -35,7 +35,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://192.168.10.4:5001/getProducts?type=${type}`);
+        const response = await fetch(`http://192.168.10.5:5001/getProducts?type=${type}`);
         const data = await response.json();
 
         // console.log("Data fetched successfully:", JSON.stringify(data, null, 2));
@@ -44,7 +44,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
         const equipmentDataWithQuantity = data.map(equipment => ({
           ...equipment,
           quantity: 0,
-          remainingCount: equipment.count, // Initialize remaining count
+          remainingCount: equipment.count,
         }));
 
         setEquipmentList(equipmentDataWithQuantity);
@@ -57,6 +57,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
 
   // update's done here
   const handleBooking = () => {
+    let status = 'pending';
     if (selectedTimeSlot === null) {
       Alert.alert('Alert', 'Please select a time slot to book');
       return;
@@ -72,7 +73,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
     // Create an array to hold promises for each booking
 
     Alert.alert('Confirm Booking',
-      `Are you sure you want to book the following items?\n\n` + 
+      `Are you sure you want to book the following items?\n\n` +
       selectedEquipments.map(equipment => `${equipment.name} (${equipment.quantity})`).join('\n') + '\n\n',
       [
         {
@@ -93,7 +94,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
                 displayName: displayName,
               };
 
-              return fetch('http://192.168.10.4:5001/equipment_booking', {
+              return fetch('http://192.168.10.5:5001/equipment_booking', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -103,12 +104,32 @@ const ItemDetailsScreen = ({ route, navigation }) => {
             });
 
             // Use Promise.all to wait for all booking promises to complete
+            // Promise.all(bookingPromises)
+            //   .then(responses => {
+            //     const successfulBookings = responses.filter(response => response.ok);
+
+            //     if (successfulBookings.length === selectedEquipments.length) {
+            //       // All bookings were successful
+            //       resetStateValues();
+            //       Alert.alert('Success', 'Your booking request is Forwarded to Sports Officer.');
+            //     } else {
+            //       // Some bookings failed
+            //       Alert.alert('Error', 'Some items could not be booked. Please try again.');
+            //     }
+            //   })
+            //   .catch(error => {
+            //     console.error('Error making booking request:', error);
+            //     Alert.alert('Error', 'An error occurred while booking. Please try again.');
+            //   });
             Promise.all(bookingPromises)
               .then(responses => {
                 const successfulBookings = responses.filter(response => response.ok);
 
                 if (successfulBookings.length === selectedEquipments.length) {
-                  // All bookings were successful
+                  if (status === 'confirmed') {
+                    // Decrement count in UI if status is 'confirmed'
+                    decrementCountInUI(selectedEquipments);
+                  }
                   resetStateValues();
                   Alert.alert('Success', 'Your booking request is Forwarded to Sports Officer.');
                 } else {
@@ -120,6 +141,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
                 console.error('Error making booking request:', error);
                 Alert.alert('Error', 'An error occurred while booking. Please try again.');
               });
+
           },
         },
       ],

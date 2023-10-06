@@ -50,7 +50,7 @@ const HomeScreen = ({ navigation }) => {
         // console.log("PKT Current Date:", pktDate.toISO()); // Log PKT current date
 
         const response = await axios.get(
-          `http://192.168.10.4:5001/teamSchedule?date=${pktDate.toISO()}`,
+          `http://192.168.10.5:5001/teamSchedule?date=${pktDate.toISO()}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -210,21 +210,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1b263b",
-    padding: width * 0.05, // Use percentage-based padding
+    padding: width * 0.05, 
   },
   contentContainer: {
     flex: 1,
-    padding: width * 0.05, // Use percentage-based padding
+    padding: width * 0.05, 
   },
   card: {
     elevation: 5,
-    padding: width * 0.04, // Use percentage-based padding
+    padding: width * 0.04, 
     backgroundColor: "#ffffff",
-    borderRadius: width * 0.03, // Use percentage-based borderRadius
-    marginHorizontal: width * 0.02, // Use percentage-based margins
-    marginVertical: height * 0.02, // Use percentage-based margins
-    width: "100%", // Use 100% width for responsiveness
-  },
+    borderRadius: width * 0.03,
+    marginHorizontal: width * 0.02,
+    marginVertical: height * 0.02,
+    width: "100%",
+    },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
