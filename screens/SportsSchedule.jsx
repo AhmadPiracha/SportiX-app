@@ -4,7 +4,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  FlatList,
+  ScrollView,
   SafeAreaView,
 } from "react-native";
 
@@ -23,30 +23,29 @@ const SportsSchedule = ({ activeSport }) => {
     setShowList((prevShowList) => !prevShowList);
   };
 
-  const renderListItem = ({ item }) => {
+  const RenderListItem = ({ item }) => {
     const { logo, title } = item;
 
     const onPressListItem = () => {
       setActiveType(title);
       setShowList(false);
 
-      if (title === "Cricket") {
-        navigation.navigate("Cricket");
+      switch (title) {
+        case "Cricket":
+          navigation.navigate("Cricket");
+          break;
+        case "Badminton":
+          navigation.navigate("Badminton");
+          break;
+        case "Futsal":
+          navigation.navigate("Futsal");
+          break;
+        case "Basketball":
+          navigation.navigate("Basketball");
+          break;
+        default:
+          console.log("No match found");
       }
-      if (title === "Badminton") {
-        navigation.navigate("Badminton");
-      }
-      if (title === "Futsal") {
-        navigation.navigate("Futsal");
-      }
-      if (title === "Basketball") {
-        navigation.navigate("Basketball");
-      }
-      else {
-        console.log("No match found");
-      }
-
-
     };
 
     return (
@@ -60,49 +59,48 @@ const SportsSchedule = ({ activeSport }) => {
   };
 
   const onPressBack = () => {
-    navigation.navigate("Home")
+    navigation.navigate("Home");
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainContainer}>
         <View style={styles.containerOne}>
-          <Ionicons
-            onPress={onPressBack}
-            name="arrow-back-outline"
-            size={20}
-            color="#fff"
-            style={styles.containerBtn}
-          />
-          <TouchableOpacity onPress={toggleList}>
-            <View style={styles.headerGameContainer}>
-              <Text style={styles.headerGameTxt}>{activeType}</Text>
-              <Ionicons
-                style={styles.caretIcon}
-                name="caret-down-outline"
-                size={24}
-                color="#fff"
-              />
-            </View>
-          </TouchableOpacity>
+          <View style={styles.headerContainer}>
+            <Ionicons
+              onPress={onPressBack}
+              name="arrow-back-outline"
+              size={20}
+              color="#fff"
+              style={styles.containerBtn}
+            />
+            <TouchableOpacity onPress={toggleList}>
+              <View style={styles.headerGameContainer}>
+                <Text style={styles.headerGameTxt}>{activeType}</Text>
+                <Ionicons
+                  style={styles.caretIcon}
+                  name="caret-down-outline"
+                  size={24}
+                  color="#fff"
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
 
           {showList && (
-            <View>
-              <FlatList
-                data={SportsType}
-                renderItem={renderListItem}
-                keyExtractor={(item) => item.id.toString()}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              />
-            </View>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              style={styles.scrollView}
+            >
+              {SportsType.map((item) => (
+                <RenderListItem key={item.id} item={item} />
+              ))}
+            </ScrollView>
           )}
         </View>
 
-        {/* <DateTImePicker /> */}
-
         <MatchDetails type={activeSport} />
-
       </View>
     </SafeAreaView>
   );
@@ -111,6 +109,9 @@ const SportsSchedule = ({ activeSport }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: windowWidth,
+    height: windowHeight,
+
   },
   mainContainer: {
     flex: 1,
@@ -121,6 +122,10 @@ const styles = StyleSheet.create({
   containerOne: {
     backgroundColor: "#0d1b2a",
     padding: 10,
+  },
+  headerContainer: {
+    flexDirection: "row", 
+    marginTop: 20,
   },
   headerGameContainer: {
     flexDirection: "row",
@@ -157,6 +162,9 @@ const styles = StyleSheet.create({
     zIndex: 1,
     padding: 5,
     margin: 5,
+  },
+  scrollView: {
+    flexDirection: "row",
   },
 });
 

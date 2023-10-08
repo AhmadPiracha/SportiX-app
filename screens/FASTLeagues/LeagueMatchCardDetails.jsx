@@ -22,6 +22,7 @@ const LeagueMatchCardDetails = ({ route }) => {
         if (playersList === 1) {
             return (
                 <View>
+                    {/* Dummy Data of Players */}
                     {/* Content for Team 1 */}
                     {TeamAPlayers.map((player) => (
                         <View key={player.id} style={styles.playerItem}>

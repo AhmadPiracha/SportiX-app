@@ -16,8 +16,8 @@ import SignUpScreen from "./screens/SignUpScreen";
 import HomeScreen from "./screens/HomeScreen";
 // Sports Schedule Screens
 import SportsSchedule from "./screens/SportsSchedule";
-import MatchTeamCard from "./screens/MatchTeamCard";
 import MatchDetails from "./screens/MatchDetails";
+import MatchTeamCard from "./screens/MatchTeamCard";
 // Sports Type Options Screens
 import Cricket from "./screens/SportsTypeOptions/Cricket";
 import Badminton from "./screens/SportsTypeOptions/Badminton";
@@ -31,6 +31,8 @@ import ViewYourBookingsScreen from "./screens/ViewYourBookingsScreen";
 import ViewEquipmentBookingScreen from "./screens/ViewEquipmentBookingScreen";
 import ViewVenueBookingScreen from "./screens/ViewVenueBookingScreen";
 
+
+// Leagues Screens
 import FASTLeagues from "./screens/FASTLeagues/FASTLeagues";
 import FASTLeaguesMenu from "./screens/FASTLeaguesMenu";
 import LeagueMatchCardDetails from "./screens/FASTLeagues/LeagueMatchCardDetails";

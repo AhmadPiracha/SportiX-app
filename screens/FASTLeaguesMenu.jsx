@@ -14,7 +14,7 @@ import {
 import { LeaguesOptionSwitch } from '../components/leaguesOptionSwitch';
 import { Ionicons } from "@expo/vector-icons";
 import Feather from "react-native-vector-icons/Feather";
-
+import Carousel from 'react-native-snap-carousel';
 import { windowWidth } from '../utils/dimensions';
 import axios from 'axios';
 
@@ -25,13 +25,17 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   const [switchTab, setSwitchTab] = useState(1);
   const [teamsName, setTeamName] = useState([]);
   const [matchSchedule, setMatchSchedule] = useState([]);
-
+  const [filteredTeams, setFilteredTeams] = useState([]);
+  const [teamSliderData, setTeamSliderData] = useState([]);
+  const [matchesSliderData, setMatchesSliderData] = useState([]);
   useEffect(() => {
     const fetchTeamsName = async () => {
       try {
-        const response = await axios.get(`http://192.168.10.5:5001/getLeagueTeams?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.10.7:5001/getLeagueTeams?League_Name=${nname}`);
         if (response?.data) {
           setTeamName(response.data);
+          setFilteredTeams(response.data);
+
 
         }
       } catch (error) {
@@ -45,7 +49,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchMatchesSchedule = async () => {
       try {
-        const response = await axios.get(`http://192.168.10.5:5001/getLeagueSchedule?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.10.7:5001/getLeagueSchedule?League_Name=${nname}`);
         if (response?.data) {
           setMatchSchedule(response.data);
           // console.log("Match Schedule:", JSON.stringify(response.data, null, 2));
@@ -57,6 +61,42 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
 
     fetchMatchesSchedule();
   }, []);
+
+  // Fetch team data and set it for the team slider
+  useEffect(() => {
+    const fetchTeamsForSlider = async () => {
+      try {
+        // Fetch team data from your API
+        const response = await axios.get(`http://192.168.10.7:5001/getLeagueTeams?League_Name=${nname}`);
+        if (response?.data) {
+          setTeamSliderData(response.data);
+          console.log("Team Slider Data:", JSON.stringify(response.data, null, 2));
+        }
+      } catch (error) {
+        console.error("Error fetching team data:", error);
+      }
+    };
+
+    fetchTeamsForSlider();
+  }, [nname]);
+
+  // Fetch match data and set it for the matches slider
+  useEffect(() => {
+    const fetchMatchesForSlider = async () => {
+      try {
+        // Fetch match data from your API
+        const response = await axios.get(`http://192.168.10.7:5001/getLeagueSchedule?League_Name=${nname}`);
+        if (response?.data) {
+          setMatchesSliderData(response.data);
+          console.log("Match Slider Data:", JSON.stringify(response.data, null, 2));
+        }
+      } catch (error) {
+        console.error("Error fetching match data:", error);
+      }
+    };
+
+    fetchMatchesForSlider();
+  }, [nname]);
 
   const formatDate = (dateString) => {
     const matchDate = new Date(dateString);
@@ -71,54 +111,111 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   const onPressBack = () => {
     navigation.navigate("Fast Leagues");
   };
-  
-const renderHomeView = () => {
-  return (
-    <View style={styles.contentContainer}>
-      <Text>Home View</Text>
-    </View>
-  );
-};
 
+  const handleSearchInput = (text) => {
+    setSearchInput(text);
+    const filtered = teamsName.filter((team) =>
+      team.name.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredTeams(filtered);
+  };
 
+  const renderHomeView = () => {
+    return (
+      <ScrollView style={styles.homeContainer}>
+        {/* Team Slider */}
+        <Text style={styles.sectionHeader}>Teams</Text>
+        <FlatList
+          data={teamSliderData}
+          horizontal={true} // Make it horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item, index }) => (
+            <View style={styles.teamCard}>
+              <Image source={require('../assets/logo/islamabad-united.jpg')} style={styles.teamCardImage} />
+              <Text style={styles.teamCardName}>{item.name}</Text>
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={styles.teamSlider} // Add some padding to the list
+        />
+
+        {/* Upcoming Matches Slider */}
+        <Text style={styles.sectionHeader}>Upcoming Matches</Text>
+        <Carousel
+          data={matchesSliderData}
+          renderItem={({ item }) => (
+            <View style={styles.matchCard}>
+            <View style={styles.matchContent}>
+              <View style={styles.teamLogoContainer}>
+                <Image
+                  source={require("../assets/logo/islamabad-united.jpg")}
+                  style={styles.teamLogo}
+                />
+                <Text style={styles.teamName}>{item.team1}</Text>
+              </View>
+              <Text style={styles.vsText}>vs</Text>
+              <View style={styles.teamLogoContainer}>
+                <Image
+                  source={require("../assets/logo/lahore-qalandars.jpg")}
+                  style={styles.teamLogo}
+                />
+                <Text style={styles.teamName}>{item.team2}</Text>
+              </View>
+            </View>
+            <Text style={styles.matchCardDate}>{formatDate(item.Match_Date)}</Text>
+            <Text style={styles.matchCardVenue}>{item.League_Name}</Text>
+          </View>
+          
+          )}
+          sliderWidth={windowWidth}
+          itemWidth={windowWidth - 100} 
+          loop={true} // Set to true for infinite looping
+          autoplay={true} // Set to true for automatic sliding
+          autoplayDelay={5000} // Set the delay between slides (milliseconds)
+          layout="default" // Use "default" layout
+        />
+
+      </ScrollView>
+    );
+  };
 
   const renderTeamsView = () => {
-    
     const renderTeamItem = ({ item }) => (
-      <>
-      {/* <View style={styles.searchBarContainer}>
-       <Feather
-         name="search"
-         size={20}
-         color="#1b263b"
-         style={styles.searchIcon}
-       />
-       <TextInput
-         style={styles.searchInput}
-         placeholder="Search matches..."
-         value={searchInput}
-         onChangeText={(text) => setSearchInput(text)}
-       />
-     </View> */}
-       <View style={styles.teamItem}>
-        <Image source={require('../assets/logo/islamabad-united.jpg')} style={styles.teamLogo} />
+      <View style={styles.teamItem}>
+        <Image
+          source={require('../assets/logo/islamabad-united.jpg')}
+          style={styles.teamLogo}
+        />
         <Text style={styles.teamName}>{item.name}</Text>
       </View>
-       </>
     );
 
     return (
       <View style={styles.teamContainer}>
+        <View style={styles.searchBarContainer}>
+          <Feather
+            name="search"
+            size={20}
+            color="#ffffff"
+            style={styles.searchIcon}
+          />
+          <TextInput
+            style={styles.searchInput}
+            value={searchInput}
+            onChangeText={handleSearchInput}
+          />
+        </View>
         <FlatList
-          data={teamsName}
+          data={filteredTeams}
           renderItem={renderTeamItem}
-          keyExtractor={(item) => item.name}
+          keyExtractor={(item, index) => index.toString()}
           numColumns={2}
           contentContainerStyle={styles.teamList}
         />
       </View>
     );
   };
+
 
   const handleMatchPress = (match) => {
     navigation.navigate("LeagueMatchCardDetails", {
@@ -128,7 +225,7 @@ const renderHomeView = () => {
       venue: match.League_Name,
       date: match.Match_Date,
       time: match.slot,
-      name:match.nname,
+      name: match.nname,
     });
   };
 
@@ -138,7 +235,7 @@ const renderHomeView = () => {
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           {matchSchedule.map((match) => (
             <TouchableOpacity
-              key={match.name}
+              key={match.Match_Id}
               onPress={() => handleMatchPress(match)}
               style={styles.card}
             >
@@ -159,11 +256,11 @@ const renderHomeView = () => {
                   <Text style={styles.scheduleTeamName}>{match.team2}</Text>
                 </View>
               </View>
-  
+
               <View style={styles.VenueTeamContainer}>
                 <Text style={styles.venue}>{match.League_Name}</Text>
               </View>
-              
+
               <View style={styles.VenueTeamContainer}>
                 <Text style={styles.venue}>{formatDate(match.Match_Date)}</Text>
               </View>
@@ -264,7 +361,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
-    
+
   },
   teamName: {
     fontSize: 18,
@@ -274,22 +371,24 @@ const styles = StyleSheet.create({
   teamList: {
     padding: 16,
   },
+  // Search Bar
   searchBarContainer: {
     flexDirection: "row",
-    borderColor: "#ffffff",
+    borderColor: "#1b263b",
     borderRadius: 8,
     borderWidth: 1,
     paddingVertical: 8,
     paddingHorizontal: 10,
     marginBottom: 15,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#1b263b",
   },
   searchIcon: {
-    marginRight: 5,
+    marginRight: windowWidth * 0.02,
+    marginTop: windowWidth * 0.01,
   },
   searchInput: {
     flex: 1,
-    color: "#1b263b",
+    color: "#ffffff",
   },
   // Schedule Match
 
@@ -374,6 +473,80 @@ const styles = StyleSheet.create({
   switchContainer: {
     marginVertical: 20,
   },
+
+  // New styles for home screen
+  homeContainer: {
+    flex: 1,
+    backgroundColor: "#f2f2f2",
+
+  },
+  sectionHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 10,
+  },
+  teamCard: {
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  teamCardImage: {
+    width: 100,
+    height: 100,
+    resizeMode: 'cover',
+    borderRadius: 50,
+  },
+  teamCardName: {
+    marginTop: 10,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
+    // New styles for match card on home screen
+    matchCard: {
+      backgroundColor: 'white',
+      borderRadius: 10,
+      padding: 10,
+      marginBottom: 10,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    matchContent: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    teamLogosContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    teamLogo: {
+      width: 50,
+      height: 50,
+      resizeMode: 'contain',
+    },
+    matchDetails: {
+      marginLeft: 10,
+    },
+    matchCardTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    vsText: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginHorizontal: 10,
+    },
+    matchCardDate: {
+      fontSize: 16,
+    },
+    matchCardVenue: {
+      fontSize: 16,
+      color: '#888',
+    },
+    
+
 });
 
 export default FASTLeaguesMenu;

@@ -256,7 +256,7 @@ app.get('/viewVenueBookings', (req, res) => {
 });
 
 app.get('/getLeague', (req, res) => {
-    const name = "SELECT DISTINCT nname FROM sportix.league";
+    const name = "SELECT DISTINCT nname,ground_name FROM sportix.league";
 
     connection.query(name, (err, result) => {
         if (err) {
