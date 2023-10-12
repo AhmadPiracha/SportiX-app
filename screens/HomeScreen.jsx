@@ -20,6 +20,9 @@ import CustomSwitch from "../components/CustomSwitch";
 import { sliderData } from "../model/matchesData";
 import axios from "axios";
 
+// import SkeletonContent from 'react-native-skeleton-content';
+
+
 const { width, height } = Dimensions.get("window");
 
 const HomeScreen = ({ navigation }) => {
@@ -50,7 +53,7 @@ const HomeScreen = ({ navigation }) => {
         // console.log("PKT Current Date:", pktDate.toISO()); // Log PKT current date
 
         const response = await axios.get(
-          `http://192.168.10.7:5001/teamSchedule?date=${pktDate.toISO()}`,
+          `http://192.168.1.8:5001/teamSchedule?date=${pktDate.toISO()}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -120,6 +123,18 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
+
+  //   <SkeletonContent
+  //   containerStyle={{ flex: 1, width: 300 }}
+  //   isLoading={false}
+  //   layout={[
+  //     { key: 'someId', width: 220, height: 20, marginBottom: 6 },
+  //     { key: 'someOtherId', width: 180, height: 20, marginBottom: 6 }
+  //   ]}
+  // >
+  //   <Text style={styles.normalText}>Your content</Text>
+  //   <Text style={styles.bigText}>Other content</Text>
+  // </SkeletonContent>
     <SafeAreaView style={styles.container}>
 
       <View style={styles.contentContainer}>
@@ -153,7 +168,7 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.sectionTitle}>Gallery</Text>
         </View>
 
-        {/* <Carousel
+        <Carousel
         ref={(c) => {
           this._carousel = c;
         }}
@@ -162,7 +177,7 @@ const HomeScreen = ({ navigation }) => {
         sliderWidth={width - 40}
         itemWidth={300}
         loop={true}
-      /> */}
+      />
 
         <View style={styles.switchContainer}>
           <CustomSwitch
@@ -210,21 +225,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1b263b",
-    padding: width * 0.05, 
+    padding: width * 0.05,
   },
   contentContainer: {
     flex: 1,
-    padding: width * 0.05, 
+    padding: width * 0.05,
   },
   card: {
     elevation: 5,
-    padding: width * 0.04, 
+    padding: width * 0.04,
     backgroundColor: "#ffffff",
     borderRadius: width * 0.03,
     marginHorizontal: width * 0.02,
     marginVertical: height * 0.02,
     width: "100%",
-    },
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",

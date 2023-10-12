@@ -3,7 +3,6 @@ import { auth, db } from './database/firebase';
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Alert, TouchableOpacity } from "react-native";
 import { View, Text } from "react-native";
 // Icons
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -27,11 +26,8 @@ import BasketBall from "./screens/SportsTypeOptions/BasketBall";
 import EquipmentBooking from "./screens/EquipmentBookingScreen";
 import SportsVenueBooking from "./screens/SportsVenueBooking";
 import ItemDetailsScreen from "./screens/ItemDetailsScreen";
-import ViewYourBookingsScreen from "./screens/ViewYourBookingsScreen";
 import ViewEquipmentBookingScreen from "./screens/ViewEquipmentBookingScreen";
 import ViewVenueBookingScreen from "./screens/ViewVenueBookingScreen";
-
-
 // Leagues Screens
 import FASTLeagues from "./screens/FASTLeagues/FASTLeagues";
 import FASTLeaguesMenu from "./screens/FASTLeaguesMenu";

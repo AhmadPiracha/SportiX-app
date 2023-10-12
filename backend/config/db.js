@@ -22,13 +22,13 @@ const connection = mysql.createConnection({
 });
 module.exports = connection;
 
-app.get('/getIPv4', (req, res) => {
-    const networkInterfaces = os.networkInterfaces();
-    const wifiInterface = networkInterfaces['Wi-Fi'] || networkInterfaces['wlan0']; // Adapt this to your network interface name
-    const ipv4Address = wifiInterface.find(interface => interface.family === 'IPv4').address;
+// app.get('/getIPv4', (req, res) => {
+//     const networkInterfaces = os.networkInterfaces();
+//     const wifiInterface = networkInterfaces['Wi-Fi'] || networkInterfaces['wlan0']; // Adapt this to your network interface name
+//     const ipv4Address = wifiInterface.find(interface => interface.family === 'IPv4').address;
 
-    res.json({ ipv4Address });
-});
+//     res.json({ ipv4Address });
+// });
 
 app.get("/getTeams", function(req, res) {
     let sql = "SELECT * FROM sportix.teams WHERE type='cricket'";

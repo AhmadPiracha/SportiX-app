@@ -13,7 +13,6 @@ import { windowHeight, windowWidth } from "../utils/dimensions";
 import { SportsType } from "../model/matchesData";
 import MatchDetails from "./MatchDetails";
 import { useNavigation } from "@react-navigation/native";
-import DateTImePicker from "../components/DateTImePickerComponent";
 const SportsSchedule = ({ activeSport }) => {
   const navigation = useNavigation();
   const [showList, setShowList] = useState(false);
