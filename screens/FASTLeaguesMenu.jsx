@@ -96,7 +96,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchTeamsName = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.8:5001/getLeagueTeams?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.1.9:5001/getLeagueTeams?League_Name=${nname}`);
         if (response?.data) {
           setTeamName(response.data);
           console.log("Team Name:", JSON.stringify(response.data, null, 2));
@@ -115,7 +115,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchMatchesSchedule = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.8:5001/getLeagueSchedule?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.1.9:5001/getLeagueSchedule?League_Name=${nname}`);
         if (response?.data) {
           setMatchSchedule(response.data);
           console.log("Match Schedule:", JSON.stringify(response.data, null, 2));
@@ -365,7 +365,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
           Option1="HOME"
           Option2="TEAMS"
           Option3="MATCHES"
-          Option4="POINTS TABLE"
+          // Option4="POINTS TABLE"
           onSelectSwitch={onSelectSwitch}
         />
       </View>
@@ -373,7 +373,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
       {switchTab === 1 && renderHomeView()}
       {switchTab === 2 && renderTeamsView()}
       {switchTab === 3 && renderMatchesView()}
-      {switchTab === 4 && renderPointsTableView()}
+      {/* {switchTab === 4 && renderPointsTableView()} */}
       
     </SafeAreaView>
   );
