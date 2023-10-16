@@ -15,7 +15,7 @@ import { LeaguesOptionSwitch } from '../components/leaguesOptionSwitch';
 import { Ionicons } from "@expo/vector-icons";
 import Feather from "react-native-vector-icons/Feather";
 import Carousel from 'react-native-snap-carousel';
-import { windowWidth } from '../utils/dimensions';
+import { windowWidth,windowHeight } from '../utils/dimensions';
 import { sliderData } from "../model/matchesData";
 import BannerSlider from "../components/BannerSlider";
 
@@ -96,10 +96,10 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchTeamsName = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.8:5001/getLeagueTeams?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.1.7:5001/getLeagueTeams?League_Name=${nname}`);
         if (response?.data) {
           setTeamName(response.data);
-          console.log("Team Name:", JSON.stringify(response.data, null, 2));
+          // console.log("Team Name:", JSON.stringify(response.data, null, 2));
           setFilteredTeams(response.data);
 
 
@@ -115,10 +115,10 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchMatchesSchedule = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.8:5001/getLeagueSchedule?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.1.7:5001/getLeagueSchedule?League_Name=${nname}`);
         if (response?.data) {
           setMatchSchedule(response.data);
-          console.log("Match Schedule:", JSON.stringify(response.data, null, 2));
+          // console.log("Match Schedule:", JSON.stringify(response.data, null, 2));
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -339,9 +339,33 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
 
   const renderPointsTableView = () => {
     return (
-      <View style={styles.contentContainer}>
-        <Text>Points Table View</Text>
-        {/* Add your Points Table content here */}
+      <View style={styles.winnerCard}>
+        <View style={styles.matchCardContainer}>
+            <View style={styles.matchCard}>
+                <View style={styles.matchContent}>
+                  <View style={styles.teamLogoContainer}>
+                    <Image
+                      source={require("../assets/logo/islamabad-united.jpg")}
+                      style={styles.teamLogo}
+                    />
+                    <Text style={styles.matchCardTitle}>A</Text>
+                  </View>
+                  <View style={styles.teamLogoContainer}>
+                    <Image
+                      source={require("../assets/logo/lahore-qalandars.jpg")}
+                      style={styles.teamLogo}
+                    />
+                    <Text style={styles.matchCardTitle}>B</Text>
+                  </View>
+                </View>
+                <View style={styles.matchDetails}>
+                  <Text style={styles.matchCardDate}>WINNER</Text>
+                </View>
+              </View>
+              <View style={styles.matchDetails}>
+                <Text style={styles.matchCardVenue}>FCL</Text>
+              </View>
+            </View>
       </View>
     );
   };
@@ -365,7 +389,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
           Option1="HOME"
           Option2="TEAMS"
           Option3="MATCHES"
-          // Option4="POINTS TABLE"
+          Option4="WINNERS"
           onSelectSwitch={onSelectSwitch}
         />
       </View>
@@ -373,7 +397,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
       {switchTab === 1 && renderHomeView()}
       {switchTab === 2 && renderTeamsView()}
       {switchTab === 3 && renderMatchesView()}
-      {/* {switchTab === 4 && renderPointsTableView()} */}
+      {switchTab === 4 && renderPointsTableView()}
       
     </SafeAreaView>
   );
@@ -610,7 +634,15 @@ const styles = StyleSheet.create({
     color: '#888',
     textAlign: 'center',
     flex: 1,
+    color:'#ffffff',
   },
+
+  // Winner Card
+
+  winnerCard:{
+    margin:windowWidth*0.04,
+    
+  }
 
 });
 

@@ -97,8 +97,8 @@ const CustomDrawer = (props) => {
       </DrawerContentScrollView>
       <View style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccc" }}>
         
-        <CustomDrawerButton title="Settings" logoName="settings-outline" handleButtonCLick={()=>{}} />
-        <CustomDrawerButton title="Tell a Friend" logoName="share-social-outline" handleButtonCLick={()=>{}} />
+        {/* <CustomDrawerButton title="Settings" logoName="settings-outline" handleButtonCLick={()=>{}} />
+        <CustomDrawerButton title="Tell a Friend" logoName="share-social-outline" handleButtonCLick={()=>{}} /> */}
         <CustomDrawerButton title="Sign Out" logoName="exit-outline" handleButtonCLick={signOutConfirmBtn} />
       </View>
     </View>

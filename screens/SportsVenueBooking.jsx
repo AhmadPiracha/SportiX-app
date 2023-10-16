@@ -6,8 +6,9 @@ import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import { auth, db } from "../database/firebase";
 import { timeSlots } from '../model/matchesData';
-
-const SportsVenueBookingScreen = () => {
+import { Ionicons } from "@expo/vector-icons";
+import { windowWidth,windowHeight } from '../utils/dimensions';
+const SportsVenueBookingScreen = ({navigation}) => {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
   const [sportGrounds, setSportGrounds] = useState([]);
   const [sportGround, setSportGround] = useState(sportGround || 'Select Sport Ground');
@@ -26,8 +27,6 @@ const SportsVenueBookingScreen = () => {
     userEmail: '',
     displayName: '',
     timeSlotDuration: '',
-
-
   });
 
   useEffect(() => {
@@ -53,7 +52,7 @@ const SportsVenueBookingScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://192.168.1.8:5001/getVenue");
+        const response = await axios.get("http://192.168.1.7:5001/getVenue");
         if (response?.data) {
           setSportGrounds(response.data); // Update state with fetched data
         }
@@ -98,17 +97,7 @@ const SportsVenueBookingScreen = () => {
       displayName,
       timeSlotDuration: selectedTimeSlot.duration,
     };
-
-
     setBookingData(bookingInfo);
-
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); // Set time to 00:00:00
-
-    if (selectedDate < currentDate) {
-      Alert.alert("Invalid Date", "Please select a date for future bookings.");
-      return;
-    }
     Alert.alert(
       "Booking Details",
       "Name: " + displayName + "\n" +
@@ -127,7 +116,7 @@ const SportsVenueBookingScreen = () => {
           text: "Book Now", onPress: async () => {
             try {
               const response = await axios.post(
-                'http://192.168.1.8:5001/venue_booking',
+                'http://192.168.1.7:5001/venue_booking',
                 bookingInfo
               );
               console.log('Booking response:', response.data);
@@ -144,10 +133,11 @@ const SportsVenueBookingScreen = () => {
                 {
                   text: "OK",
                   onPress: () => {
-                    // Reset all data to default values
-                    setSelectedTimeSlot(null); // Reset selected time slot
-                    setSelectedDate(new Date()); // Reset selected date
-                    setSelectedTime(new Date()); // Reset selected time;
+                    setSportGround(null);
+                    setSportVenue(null)
+                    setSelectedTimeSlot(null);
+                    setSelectedDate(new Date());
+                    setSelectedTime(new Date());
                   },
                   style: "cancel"
                 },
@@ -163,7 +153,28 @@ const SportsVenueBookingScreen = () => {
   const handleDateChange = (event, selected) => {
     const currentDate = selected || selectedDate;
     setShowDatePicker(false);
-    setSelectedDate(currentDate);
+
+    // Get the current date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to 00:00:00
+
+    if (currentDate >= today) {
+      setSelectedDate(currentDate);
+    } else {
+      Alert.alert("Invalid Date", "Please select a date for future bookings.", [
+        {
+          text: "OK",
+          onPress: () => {
+            setSportGround(null);
+            setSportVenue(null)
+            setSelectedTimeSlot(null);
+            setSelectedDate(new Date());
+            setSelectedTime(new Date());
+          },
+          style: "cancel"
+        }
+      ]);
+    }
   };
 
   const handleTimeChange = (event, selected) => {
@@ -172,16 +183,27 @@ const SportsVenueBookingScreen = () => {
     setSelectedTime(currentTime);
   };
 
-
   const clearSelections = () => {
     setSelectedTimeSlot(null);
   };
 
+  const onPressBack = () => {
+    navigation.navigate("Home");
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>Sports Venue Booking</Text>
+      <View style={styles.containerOne}>
+        <Ionicons
+          onPress={onPressBack}
+          name="arrow-back-outline"
+          size={20}
+          color="#fff"
+          style={styles.containerBtn}
+        />
+        <View style={styles.headerGameContainer}>
+          <Text style={styles.headerGameTxt}>Sports Equipment Booking</Text>
+        </View>
       </View>
       <View style={styles.mainContainer} >
         <View style={styles.timeSlotContainer}>
@@ -284,9 +306,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: "#0d1b2a",
+  },
+  containerOne: {
+    padding: windowWidth * 0.02,
   },
   mainContainer: {
     width: '100%',
@@ -385,6 +408,24 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     backgroundColor: 'gray',
+  },
+  containerBtn: {
+    marginTop: windowWidth * 0.03,
+    marginLeft: windowWidth * 0.02,
+  },
+  headerGameContainer: {
+    flexDirection: "row",
+    marginHorizontal: windowWidth * 0.02,
+    marginVertical: windowWidth * 0.02,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerGameTxt: {
+    fontSize: windowWidth * 0.05,
+    fontWeight: "600",
+    color: "#fff",
+    
+  
   },
 });
 
