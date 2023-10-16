@@ -38,6 +38,9 @@ import LeagueMatchCardDetails from "./screens/FASTLeagues/LeagueMatchCardDetails
 // import ViewResultsScreen from "./screens/ViewResultsScreen";
 // Custom Drawer
 
+// Settings Screen
+import SettingsScreen from "./screens/SettingsScreen";
+
 
 import CustomDrawer from "./components/CustomDrawer";
 import CustomNestedDrawer from "./components/CustomNestedDrawer";
@@ -241,6 +244,8 @@ const App = () => {
             {/* FAST Sports League */}
             <Stack.Screen name="FASTLeaguesMenu" component={FASTLeaguesMenu} />
             <Stack.Screen name="LeagueMatchCardDetails" component={LeagueMatchCardDetails} />
+            {/* Settings Screen */}
+            <Stack.Screen name="Settings" component={SettingsScreen} />
           </>
         ) : (
           <>

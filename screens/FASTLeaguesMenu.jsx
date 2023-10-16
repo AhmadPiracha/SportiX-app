@@ -337,14 +337,14 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
     );
   };
 
-  const renderPointsTableView = () => {
-    return (
-      <View style={styles.contentContainer}>
-        <Text>Points Table View</Text>
-        {/* Add your Points Table content here */}
-      </View>
-    );
-  };
+  // const renderPointsTableView = () => {
+  //   return (
+  //     <View style={styles.contentContainer}>
+  //       <Text>Points Table View</Text>
+  //       {/* Add your Points Table content here */}
+  //     </View>
+  //   );
+  // };
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -373,7 +373,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
       {switchTab === 1 && renderHomeView()}
       {switchTab === 2 && renderTeamsView()}
       {switchTab === 3 && renderMatchesView()}
-      {switchTab === 4 && renderPointsTableView()}
+      {/* {switchTab === 4 && renderPointsTableView()} */}
       
     </SafeAreaView>
   );
