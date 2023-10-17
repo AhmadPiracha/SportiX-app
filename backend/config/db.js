@@ -3,11 +3,11 @@ const mysql = require("mysql2");
 const app = express();
 
 const cors = require("cors");
-const os = require('os'); // Import the os package
+const os = require('os');
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.json({ type: "application/json" }));
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(express.json());
 app.use(cors());
 
@@ -21,14 +21,6 @@ const connection = mysql.createConnection({
     password: "password",
 });
 module.exports = connection;
-
-// app.get('/getIPv4', (req, res) => {
-//     const networkInterfaces = os.networkInterfaces();
-//     const wifiInterface = networkInterfaces['Wi-Fi'] || networkInterfaces['wlan0']; // Adapt this to your network interface name
-//     const ipv4Address = wifiInterface.find(interface => interface.family === 'IPv4').address;
-
-//     res.json({ ipv4Address });
-// });
 
 app.get("/getTeams", function(req, res) {
     let sql = "SELECT * FROM sportix.teams WHERE type='cricket'";
@@ -109,7 +101,7 @@ app.post('/equipment_booking', (req, res) => {
     const userRollNo = req.body.userRollNo;
     const displayName = req.body.displayName;
     const status = 'pending';
-    const booking_date = req.body.booking_date; // Get the user-selected booking date
+    const booking_date = req.body.booking_date;
 
     const insertSql = "INSERT INTO sportix.equip_booking (type, name, count, timeSlotDuration, userRollNo, displayName, status, booking_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     const insertValues = [Type, Name, Count, timeSlotDuration, userRollNo, displayName, status, booking_date];
@@ -121,7 +113,7 @@ app.post('/equipment_booking', (req, res) => {
             return res.status(500).json({ message: "Error inserting data" });
         }
 
-        // Check the status and conditionally decrement the count in the products table
+        // status and conditionally decrement the count in the products table
         if (status === 'confirmed') {
             const updateSql = "UPDATE sportix.product SET count = count - ? WHERE name = ?";
             const updateValues = [Count, Name];
@@ -132,11 +124,9 @@ app.post('/equipment_booking', (req, res) => {
                     return res.status(500).json({ message: "Error updating product count" });
                 }
 
-                // If both INSERT and UPDATE are successful, respond with success
                 res.status(200).json({ message: "Booking data inserted and product count updated successfully" });
             });
         } else {
-            // If status is 'pending', respond with success without updating the count
             res.status(200).json({ message: "Booking data inserted successfully" });
         }
     });
@@ -170,7 +160,7 @@ app.post('/venue_booking', (req, res) => {
     const userRollNo = req.body.userRollNo;
     const displayName = req.body.displayName;
     const status = 'pending';
-    const booking_date = req.body.booking_date; // Add this line
+    const booking_date = req.body.booking_date;
 
     const sql = "INSERT INTO venue_booking (name, type, location, timeSlotDuration, userRollNo, displayName, status, booking_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [name, type, location, timeSlotDuration, userRollNo, displayName, status, booking_date]; // Include booking_date in the values array
