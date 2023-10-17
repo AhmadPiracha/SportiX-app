@@ -42,8 +42,6 @@ const ItemDetailsScreen = ({ route, navigation }) => {
         const data = await response.json();
 
         // console.log("Data fetched successfully:", JSON.stringify(data, null, 2));
-
-        // update's done here
         const equipmentDataWithQuantity = data.map(equipment => ({
           ...equipment,
           quantity: 0,
@@ -58,83 +56,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
     fetchData();
   }, [type]);
 
-  // const handleBooking = () => {
-  //   let status = 'pending';
-  //   if (selectedTimeSlot === null) {
-  //     Alert.alert('Alert', 'Please select a time slot to book');
-  //     return;
-  //   }
-
-  //   const selectedEquipments = equipmentList.filter(equipment => equipment.quantity > 0);
-
-  //   if (selectedEquipments.length === 0) {
-  //     Alert.alert('Alert', 'Please select at least one item to book');
-  //     return;
-  //   }
-
-  //   // Create an array to hold promises for each booking
-
-  //   Alert.alert('Confirm Booking',
-  //     `Are you sure you want to book the following items?\n\n` +
-  //     selectedEquipments.map(equipment => `${equipment.name} (${equipment.quantity})`).join('\n') + '\n\n',
-  //     [
-  //       {
-  //         text: 'Cancel',
-  //         style: 'cancel',
-  //       },
-  //       {
-  //         text: 'Book',
-  //         onPress: () => {
-  //           const bookingPromises = selectedEquipments.map(equipment => {
-  //             const userRollNo = userEmail.match(/([a-z]\d+)/i)[0];
-  //             const bookingData = {
-  //               type: type,
-  //               name: `${equipment.name}`,
-  //               count: equipment.quantity,
-  //               timeSlotDuration: selectedTimeSlot.duration,
-  //               userRollNo,
-  //               displayName: displayName,
-  //             };
-
-  //             return fetch('http://192.168.1.9:5001/equipment_booking', {
-  //               method: 'POST',
-  //               headers: {
-  //                 'Content-Type': 'application/json',
-  //               },
-  //               body: JSON.stringify(bookingData),
-  //             });
-  //           });
-
-
-  //           Promise.all(bookingPromises)
-  //             .then(responses => {
-  //               const successfulBookings = responses.filter(response => response.ok);
-
-  //               if (successfulBookings.length === selectedEquipments.length) {
-  //                 if (status === 'confirmed') {
-  //                   // Decrement count in UI if status is 'confirmed'
-  //                   decrementCountInUI(selectedEquipments);
-  //                 }
-  //                 resetStateValues();
-  //                 Alert.alert('Success', 'Your booking request is Forwarded to Sports Officer.');
-  //               } else {
-  //                 // Some bookings failed
-  //                 Alert.alert('Error', 'Some items could not be booked. Please try again.');
-  //               }
-  //             })
-  //             .catch(error => {
-  //               console.error('Error making booking request:', error);
-  //               Alert.alert('Error', 'An error occurred while booking. Please try again.');
-  //             });
-
-  //         },
-  //       },
-  //     ],
-  //     { cancelable: false },
-  //   );
-  // };
-
-  const handleBooking = () => {
+    const handleBooking = () => {
     let status = 'pending';
   
     if (selectedTimeSlot === null) {
@@ -232,11 +154,8 @@ const ItemDetailsScreen = ({ route, navigation }) => {
         {
           text: "OK",
           onPress: () => {
-            setSportGround(null);
-            setSportVenue(null)
             setSelectedTimeSlot(null);
             setSelectedDate(new Date());
-            setSelectedTime(new Date());
           },
           style: "cancel"
         }
@@ -390,8 +309,6 @@ const ItemDetailsScreen = ({ route, navigation }) => {
                 </Text>
               </View>
             ))}
-
-
 
             <TouchableOpacity
               onPress={handleBooking}

@@ -183,7 +183,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={styles.teamSlider} // Add some padding to the list
+          contentContainerStyle={styles.teamSlider}
         />
 
         {/* Upcoming Matches Slider */}
@@ -229,14 +229,14 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
           autoplayDelay={5000}
           layout="default"
           layoutCardOffset={18} // Space between cards
-          activeAnimationType="spring" // Animation type for active card
+          activeAnimationType="spring"
           useScrollView={true} // Use ScrollView for navigation
           enableSnap={true}
           lockScrollWhileSnapping={true}
           removeClippedSubviews={true}
-          inactiveSlideScale={0.9} // Scale of inactive slides
-          inactiveSlideOpacity={0.7} // Opacity of inactive slides
-          activeSlideAlignment="start" // Alignment of the active slide
+          inactiveSlideScale={0.9} 
+          inactiveSlideOpacity={0.7}
+          activeSlideAlignment="start" 
         />
       </ScrollView>
     );
@@ -318,9 +318,6 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
                   <Text style={styles.scheduleTeamName}>{match.team2}</Text>
                 </View>
               </View>
-
-
-
               <View style={styles.VenueTeamContainer}>
                 <Text style={styles.venue}>{formatDate(match.Match_Date)}</Text>
               </View>
@@ -456,7 +453,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
           Option1="HOME"
           Option2="TEAMS"
           Option3="MATCHES"
-          Option4="WINNERS"
+          Option4="TABLE"
           onSelectSwitch={onSelectSwitch}
         />
       </View>

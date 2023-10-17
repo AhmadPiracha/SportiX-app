@@ -20,9 +20,6 @@ import CustomSwitch from "../components/CustomSwitch";
 import { sliderData } from "../model/matchesData";
 import axios from "axios";
 
-// import SkeletonContent from 'react-native-skeleton-content';
-
-
 const { width, height } = Dimensions.get("window");
 
 const HomeScreen = ({ navigation }) => {
@@ -123,18 +120,6 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-
-  //   <SkeletonContent
-  //   containerStyle={{ flex: 1, width: 300 }}
-  //   isLoading={false}
-  //   layout={[
-  //     { key: 'someId', width: 220, height: 20, marginBottom: 6 },
-  //     { key: 'someOtherId', width: 180, height: 20, marginBottom: 6 }
-  //   ]}
-  // >
-  //   <Text style={styles.normalText}>Your content</Text>
-  //   <Text style={styles.bigText}>Other content</Text>
-  // </SkeletonContent>
     <SafeAreaView style={styles.container}>
 
       <View style={styles.contentContainer}>
@@ -212,8 +197,6 @@ const HomeScreen = ({ navigation }) => {
             )}
           </View>
         </ScrollView>
-
-
       </View>
 
     </SafeAreaView>

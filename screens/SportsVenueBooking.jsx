@@ -13,7 +13,6 @@ const SportsVenueBookingScreen = ({navigation}) => {
   const [sportGrounds, setSportGrounds] = useState([]);
   const [sportGround, setSportGround] = useState(sportGround || 'Select Sport Ground');
   const [sportVenue, setSportVenue] = useState(sportVenue || 'Select Sport Venue');
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -27,6 +26,7 @@ const SportsVenueBookingScreen = ({navigation}) => {
     userEmail: '',
     displayName: '',
     timeSlotDuration: '',
+    booking_date: '',
   });
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const SportsVenueBookingScreen = ({navigation}) => {
       try {
         const response = await axios.get("http://192.168.1.9:5001/getVenue");
         if (response?.data) {
-          setSportGrounds(response.data); // Update state with fetched data
+          setSportGrounds(response.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -71,11 +71,6 @@ const SportsVenueBookingScreen = ({navigation}) => {
         setSportVenue(selectedGround.location);
       }
     }
-    // if (sportGround !== 'Select Sport Ground' && sportVenue !== 'Select Sport Venue') {
-    //   setIsButtonDisabled(false);
-    // } else {
-    //   setIsButtonDisabled(true);
-    // }
   }, [sportGround, sportGrounds]);
 
   const handleBooking = () => {
@@ -105,7 +100,7 @@ const SportsVenueBookingScreen = ({navigation}) => {
       userRollNo,
       displayName,
       timeSlotDuration: selectedTimeSlot.duration,
-      booking_date: formattedBookingDate, // Include the formatted booking_date
+      booking_date: formattedBookingDate,
     };
   
     Alert.alert(
@@ -187,17 +182,10 @@ const SportsVenueBookingScreen = ({navigation}) => {
     }
   };
 
-  // const handleTimeChange = (event, selected) => {
-  //   const currentTime = selected || selectedTime;
-  //   setShowTimePicker(false);
-  //   setSelectedTime(currentTime);
-  // };
-
-
   const handleTimeChange = (event, selected) => {
   const currentTime = selected || selectedTime;
-  if (event.type === "set") { // Ensure the user has made a selection
-    const newSelectedTime = new Date(selectedDate); // Copy the selected date
+  if (event.type === "set") {
+    const newSelectedTime = new Date(selectedDate);
     newSelectedTime.setHours(currentTime.getHours());
     newSelectedTime.setMinutes(currentTime.getMinutes());
     setSelectedTime(newSelectedTime);
@@ -307,9 +295,7 @@ const SportsVenueBookingScreen = ({navigation}) => {
         )}
         <TouchableOpacity
           onPress={handleBooking}
-          // style={[styles.bookButton, isButtonDisabled && styles.disabledButton]}
           style={styles.bookButton}
-        // disabled={isButtonDisabled}
         >
           <Text style={styles.bookButtonText}>Book Now</Text>
         </TouchableOpacity>

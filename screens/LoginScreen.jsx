@@ -35,7 +35,6 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const validate = () => {
-    // Keyboard.dismiss();
     let isValid = true;
 
     if (!email) {

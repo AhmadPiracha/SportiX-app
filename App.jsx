@@ -34,17 +34,14 @@ import FASTLeagues from "./screens/FASTLeagues/FASTLeagues";
 import FASTLeaguesMenu from "./screens/FASTLeaguesMenu";
 import LeagueMatchCardDetails from "./screens/FASTLeagues/LeagueMatchCardDetails";
 
-
 // Custom Drawer Components
 import CustomDrawer from "./components/CustomDrawer";
 import CustomNestedDrawer from "./components/CustomNestedDrawer";
-
 
 // Initialize navigators
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const NestedDrawer = createDrawerNavigator();
-
 
 // Custom Nested Booking Navigator
 
@@ -82,7 +79,6 @@ const NestedBookingMenu = () => {
     </NestedDrawer.Navigator>
   );
 };
-
 
 // Custom Drawer Navigator
 const DrawerNavigator = () => {
@@ -167,7 +163,7 @@ const DrawerNavigator = () => {
         }}
       />
 
-      {/* {/* Nested Navigator for Fast Leagues */}
+      {/* Nested Navigator for Fast Leagues */}
       <Drawer.Screen
         name="Fast Leagues"
         component={FASTLeagues}

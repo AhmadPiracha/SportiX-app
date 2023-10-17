@@ -2,27 +2,25 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
 import CustomSwitch from "../../components/CustomSwitch";
-import { TeamAPlayers, TeamBPlayers } from "../../model/matchesData";
 import { useNavigation } from "@react-navigation/native";
-
+import PlayersList from "../../components/PlayerList";
 const LeagueMatchCardDetails = ({ route }) => {
-    const { team1_name, team2_name, venue, date, time,name } = route.params;
+    const { id,team1_name, team2_name, venue, date, time, name } = route.params;
     const [playersList, setPlayersList] = useState(1);
     const navigation = useNavigation();
 
     const onSelectSwitch = (value) => {
         setPlayersList(value);
     };
-
+console.log(route.params);
     const handleGoBack = () => {
-        navigation.navigate("FASTLeaguesMenu",{name});
+        navigation.navigate("FASTLeaguesMenu", { name });
     };
 
     const renderPlayerList = () => {
         if (playersList === 1) {
             return (
                 <View>
-                    {/* Dummy Data of Players */}
                     {/* Content for Team 1 */}
                     {TeamAPlayers.map((player) => (
                         <View key={player.id} style={styles.playerItem}>
@@ -113,16 +111,12 @@ const LeagueMatchCardDetails = ({ route }) => {
                         onSelectSwitch={onSelectSwitch}
                     />
                 </View>
-
-                {/* Players List */}
-                <View style={styles.playersListContainer}>
-                    <Text style={styles.playersListHeader}>
-                        {playersList === 1 ? `${team1_name} Players` : `${team2_name} Players`}
-                    </Text>
-                    <View style={styles.playersList}>
-                        {renderPlayerList()}
-                    </View>
-                </View>
+                {playersList === 1 && (
+                    <PlayersList key={id} team={team1_name} />
+                )}
+                {playersList === 2 && (
+                    <PlayersList key={id} team={team2_name} />
+                )}
             </View>
         </SafeAreaView>
     );

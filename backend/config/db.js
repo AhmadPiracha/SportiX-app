@@ -18,7 +18,7 @@ const connection = mysql.createConnection({
     host: "localhost",
     database: "sportix",
     user: "root",
-    password: "password",
+    password: "fast@19cfd",
 });
 module.exports = connection;
 
@@ -106,14 +106,12 @@ app.post('/equipment_booking', (req, res) => {
     const insertSql = "INSERT INTO sportix.equip_booking (type, name, count, timeSlotDuration, userRollNo, displayName, status, booking_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     const insertValues = [Type, Name, Count, timeSlotDuration, userRollNo, displayName, status, booking_date];
 
-    // Execute the INSERT query to insert booking data
     connection.query(insertSql, insertValues, (insertErr) => {
         if (insertErr) {
             console.error("Error executing INSERT SQL query:", insertErr);
             return res.status(500).json({ message: "Error inserting data" });
         }
 
-        // status and conditionally decrement the count in the products table
         if (status === 'confirmed') {
             const updateSql = "UPDATE sportix.product SET count = count - ? WHERE name = ?";
             const updateValues = [Count, Name];
@@ -163,7 +161,7 @@ app.post('/venue_booking', (req, res) => {
     const booking_date = req.body.booking_date;
 
     const sql = "INSERT INTO venue_booking (name, type, location, timeSlotDuration, userRollNo, displayName, status, booking_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    const values = [name, type, location, timeSlotDuration, userRollNo, displayName, status, booking_date]; // Include booking_date in the values array
+    const values = [name, type, location, timeSlotDuration, userRollNo, displayName, status, booking_date];
 
     connection.query(sql, values, (err) => {
         if (err) {
