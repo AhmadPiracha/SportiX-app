@@ -38,7 +38,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://192.168.1.2:5001/getProducts?type=${type}`);
+        const response = await fetch(`http://192.168.1.9:5001/getProducts?type=${type}`);
         const data = await response.json();
 
         // console.log("Data fetched successfully:", JSON.stringify(data, null, 2));
@@ -96,7 +96,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   //               displayName: displayName,
   //             };
 
-  //             return fetch('http://192.168.1.2:5001/equipment_booking', {
+  //             return fetch('http://192.168.1.9:5001/equipment_booking', {
   //               method: 'POST',
   //               headers: {
   //                 'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
                 booking_date: formattedBookingDate,
               };
   
-              return fetch('http://192.168.1.2:5001/equipment_booking', {
+              return fetch('http://192.168.1.9:5001/equipment_booking', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -196,7 +196,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   
                 if (successfulBookings.length === selectedEquipments.length) {
                   // if (status === 'confirmed') {
-                    decrementCountInUI(selectedEquipments);
+                    // decrementCountInUI(selectedEquipments);
                   // }
                   resetStateValues();
                   Alert.alert('Success', 'Your booking request is Forwarded to Sports Officer.');

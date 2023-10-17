@@ -8,6 +8,7 @@ import { View, Text } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 // Screens
+
 // Authentication Screens
 import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
@@ -34,11 +35,7 @@ import FASTLeaguesMenu from "./screens/FASTLeaguesMenu";
 import LeagueMatchCardDetails from "./screens/FASTLeagues/LeagueMatchCardDetails";
 
 
-// View Results Screen
-// import ViewResultsScreen from "./screens/ViewResultsScreen";
-// Custom Drawer
-
-
+// Custom Drawer Components
 import CustomDrawer from "./components/CustomDrawer";
 import CustomNestedDrawer from "./components/CustomNestedDrawer";
 
@@ -236,7 +233,7 @@ const App = () => {
             <Stack.Screen name="Basketball" component={BasketBall} />
             <Stack.Screen name="MatchTeamCard" component={MatchTeamCard} />
             <Stack.Screen name="MatchDetails" component={MatchDetails} />
-            {/* Sports Equipment Booking Items Screen */}
+            {/* Sports Equipment nd Venue Booking Items Screen */}
             <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{ title: "Item Details" }} />
             {/* FAST Sports League */}
             <Stack.Screen name="FASTLeaguesMenu" component={FASTLeaguesMenu} />
@@ -244,6 +241,7 @@ const App = () => {
           </>
         ) : (
           <>
+          {/* Auth Screens */}
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={SignUpScreen} />
           </>

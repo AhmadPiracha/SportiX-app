@@ -96,7 +96,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchTeamsName = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.2:5001/getLeagueTeams?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.1.9:5001/getLeagueTeams?League_Name=${nname}`);
         if (response?.data) {
           setTeamName(response.data);
           // console.log("Team Name:", JSON.stringify(response.data, null, 2));
@@ -115,7 +115,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchMatchesSchedule = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.2:5001/getLeagueSchedule?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.1.9:5001/getLeagueSchedule?League_Name=${nname}`);
         if (response?.data) {
           setMatchSchedule(response.data);
           // console.log("Match Schedule:", JSON.stringify(response.data, null, 2));
@@ -337,38 +337,105 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
     );
   };
 
+  // const renderPointsTableView = () => {
+  //   return (
+  //     <View style={styles.winnerCard}>
+  //       <View style={styles.matchCardContainer}>
+  //           <View style={styles.matchCard}>
+  //               <View style={styles.matchContent}>
+  //                 <View style={styles.teamLogoContainer}>
+  //                   <Image
+  //                     source={require("../assets/logo/islamabad-united.jpg")}
+  //                     style={styles.teamLogo}
+  //                   />
+  //                   <Text style={styles.matchCardTitle}>A</Text>
+  //                 </View>
+  //                 <View style={styles.teamLogoContainer}>
+  //                   <Image
+  //                     source={require("../assets/logo/lahore-qalandars.jpg")}
+  //                     style={styles.teamLogo}
+  //                   />
+  //                   <Text style={styles.matchCardTitle}>B</Text>
+  //                 </View>
+  //               </View>
+  //               <View style={styles.matchDetails}>
+  //                 <Text style={styles.matchCardDate}>WINNER</Text>
+  //               </View>
+  //             </View>
+  //             <View style={styles.matchDetails}>
+  //               <Text style={styles.matchCardVenue}>FCL</Text>
+  //             </View>
+  //           </View>
+  //     </View>
+  //   );
+  // };
+
   const renderPointsTableView = () => {
+    const teams = [
+      {
+        name: 'Taliban XI',
+        matchesPlayed: 4,
+        wins: 4,
+        draws: 0,
+        losses: 0,
+        points: 8,
+        netRunRate: 3.39,
+      },
+      {
+        name: 'Team Hydra',
+        matchesPlayed: 4,
+        wins: 3,
+        draws: 1,
+        losses: 1,
+        points: 6,
+        netRunRate: 0.77,
+      },
+      {
+        name: 'Dire Wolves',
+        matchesPlayed: 5,
+        wins: 2,
+        draws: 0,
+        losses: 3,
+        points: 4,
+        netRunRate: -3.00,
+      },
+      {
+        name: 'Laggards',
+        matchesPlayed: 4,
+        wins: 2,
+        draws: 0,
+        losses: 2,
+        points: 4,
+        netRunRate: -3.39,
+      },
+    ];
+  
     return (
       <View style={styles.winnerCard}>
-        <View style={styles.matchCardContainer}>
-            <View style={styles.matchCard}>
-                <View style={styles.matchContent}>
-                  <View style={styles.teamLogoContainer}>
-                    <Image
-                      source={require("../assets/logo/islamabad-united.jpg")}
-                      style={styles.teamLogo}
-                    />
-                    <Text style={styles.matchCardTitle}>A</Text>
-                  </View>
-                  <View style={styles.teamLogoContainer}>
-                    <Image
-                      source={require("../assets/logo/lahore-qalandars.jpg")}
-                      style={styles.teamLogo}
-                    />
-                    <Text style={styles.matchCardTitle}>B</Text>
-                  </View>
-                </View>
-                <View style={styles.matchDetails}>
-                  <Text style={styles.matchCardDate}>WINNER</Text>
-                </View>
-              </View>
-              <View style={styles.matchDetails}>
-                <Text style={styles.matchCardVenue}>FCL</Text>
-              </View>
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <Text style={[styles.tableCell, styles.tableHeader]}>Team</Text>
+            <Text style={[styles.tableCell, styles.tableHeader]}>M</Text>
+            <Text style={[styles.tableCell, styles.tableHeader]}>W</Text>
+            <Text style={[styles.tableCell, styles.tableHeader]}>D</Text>
+            <Text style={[styles.tableCell, styles.tableHeader]}>L</Text>
+            <Text style={[styles.tableCell, styles.tableHeader]}>NRR</Text>
+          </View>
+          {teams.map((team, index) => (
+            <View key={index} style={styles.tableRow}>
+              <Text style={styles.tableCell}>{team.name}</Text>
+              <Text style={styles.tableCell}>{team.matchesPlayed}</Text>
+              <Text style={styles.tableCell}>{team.wins}</Text>
+              <Text style={styles.tableCell}>{team.draws}</Text>
+              <Text style={styles.tableCell}>{team.losses}</Text>
+              <Text style={styles.tableCell}>{team.netRunRate}</Text>
             </View>
+          ))}
+        </View>
       </View>
     );
   };
+  
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -638,11 +705,36 @@ const styles = StyleSheet.create({
   },
 
   // Winner Card
-
-  winnerCard:{
-    margin:windowWidth*0.04,
-    
-  }
+ 
+  winnerCard: {
+    backgroundColor: 'white',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  heading: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  table: {
+    borderColor: 'black',
+  },
+  tableRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  tableHeader: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  tableCell: {
+    flex: 1,
+    padding: 8,
+    fontSize: 16,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
 
 });
 
