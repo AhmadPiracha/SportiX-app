@@ -63,7 +63,6 @@ const LoginScreen = ({ navigation }) => {
       setPassword("");
       isValid = false;
     }
-
     if (isValid) {
       userLogin();
     }

@@ -44,7 +44,7 @@ const ViewEquipmentBookingScreen = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.2:5001/viewEquipBookings?userRollNo=${userRollNo}`);
+        const response = await axios.get(`http://192.168.1.9:5001/viewEquipBookings?userRollNo=${userRollNo}`);
         const bookingData = response.data;
         setBookings(bookingData);
         setIsLoading(false); // Set loading to false after data is fetched
