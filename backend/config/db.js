@@ -99,41 +99,6 @@ app.get('/getProducts', (req, res) => {
     });
 
 });
-// update's done here
-// app.post('/equipment_booking', (req, res) => {
-//     const Type = req.body.type;
-//     const Name = req.body.name;
-//     const Count = req.body.count;
-//     const timeSlotDuration = req.body.timeSlotDuration;
-//     const userRollNo = req.body.userRollNo;
-//     const displayName = req.body.displayName;
-//     const status = 'pending';
-
-//     const insertSql = "INSERT INTO sportix.equip_booking (type, name, count, timeSlotDuration, userRollNo, displayName, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
-//     const insertValues = [Type, Name, Count, timeSlotDuration, userRollNo, displayName, status];
-
-//     // Execute the INSERT query to insert booking data
-//     connection.query(insertSql, insertValues, (insertErr) => {
-//         if (insertErr) {
-//             console.error("Error executing INSERT SQL query:", insertErr);
-//             return res.status(500).json({ message: "Error inserting data" });
-//         }
-
-//         // After successful insertion, decrement the count in the products table
-//         const updateSql = "UPDATE sportix.product SET count = count - ? WHERE name = ?";
-//         const updateValues = [Count, Name];
-
-//         connection.query(updateSql, updateValues, (updateErr) => {
-//             if (updateErr) {
-//                 console.error("Error executing UPDATE SQL query:", updateErr);
-//                 return res.status(500).json({ message: "Error updating product count" });
-//             }
-
-//             // If both INSERT and UPDATE are successful, respond with success
-//             res.status(200).json({ message: "Booking data inserted successfully" });
-//         });
-//     });
-// });
 
 
 app.post('/equipment_booking', (req, res) => {
@@ -144,9 +109,10 @@ app.post('/equipment_booking', (req, res) => {
     const userRollNo = req.body.userRollNo;
     const displayName = req.body.displayName;
     const status = 'pending';
+    const booking_date = req.body.booking_date; // Get the user-selected booking date
 
-    const insertSql = "INSERT INTO sportix.equip_booking (type, name, count, timeSlotDuration, userRollNo, displayName, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const insertValues = [Type, Name, Count, timeSlotDuration, userRollNo, displayName, status];
+    const insertSql = "INSERT INTO sportix.equip_booking (type, name, count, timeSlotDuration, userRollNo, displayName, status, booking_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    const insertValues = [Type, Name, Count, timeSlotDuration, userRollNo, displayName, status, booking_date];
 
     // Execute the INSERT query to insert booking data
     connection.query(insertSql, insertValues, (insertErr) => {
@@ -204,9 +170,10 @@ app.post('/venue_booking', (req, res) => {
     const userRollNo = req.body.userRollNo;
     const displayName = req.body.displayName;
     const status = 'pending';
+    const booking_date = req.body.booking_date; // Add this line
 
-    const sql = "INSERT INTO venue_booking (name, type, location,timeSlotDuration,userRollNo,displayName,status) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const values = [name, type, location, timeSlotDuration, userRollNo, displayName, status];
+    const sql = "INSERT INTO venue_booking (name, type, location, timeSlotDuration, userRollNo, displayName, status, booking_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    const values = [name, type, location, timeSlotDuration, userRollNo, displayName, status, booking_date]; // Include booking_date in the values array
 
     connection.query(sql, values, (err) => {
         if (err) {
@@ -216,6 +183,7 @@ app.post('/venue_booking', (req, res) => {
         res.status(200).json({ message: "Booking data inserted successfully" });
     });
 });
+
 
 app.get('/viewEquipBookings', (req, res) => {
     const userRollNo = req.query.userRollNo || null;
