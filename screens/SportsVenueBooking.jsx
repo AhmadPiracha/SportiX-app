@@ -195,15 +195,15 @@ const SportsVenueBookingScreen = ({navigation}) => {
 
 
   const handleTimeChange = (event, selected) => {
-    const currentTime = selected || selectedTime;
-    if (event.type === "set") {
-      const newSelectedTime = new Date(selectedDate);
-      newSelectedTime.setHours(currentTime.getHours());
-      newSelectedTime.setMinutes(currentTime.getMinutes());
-      setSelectedTime(newSelectedTime);
-    }
-    setShowTimePicker(false);
-  };
+  const currentTime = selected || selectedTime;
+  if (event.type === "set") { // Ensure the user has made a selection
+    const newSelectedTime = new Date(selectedDate); // Copy the selected date
+    newSelectedTime.setHours(currentTime.getHours());
+    newSelectedTime.setMinutes(currentTime.getMinutes());
+    setSelectedTime(newSelectedTime);
+  }
+  setShowTimePicker(false);
+};
 
   const clearSelections = () => {
     setSelectedTimeSlot(null);
@@ -224,7 +224,7 @@ const SportsVenueBookingScreen = ({navigation}) => {
           style={styles.containerBtn}
         />
         <View style={styles.headerGameContainer}>
-          <Text style={styles.headerGameTxt}>Sports Equipment Booking</Text>
+          <Text style={styles.headerGameTxt}>Sports Venue Booking</Text>
         </View>
       </View>
       <View style={styles.mainContainer} >

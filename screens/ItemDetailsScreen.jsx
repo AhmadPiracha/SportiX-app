@@ -196,7 +196,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   
                 if (successfulBookings.length === selectedEquipments.length) {
                   // if (status === 'confirmed') {
-                    decrementCountInUI(selectedEquipments);
+                    // decrementCountInUI(selectedEquipments);
                   // }
                   resetStateValues();
                   Alert.alert('Success', 'Your booking request is Forwarded to Sports Officer.');
