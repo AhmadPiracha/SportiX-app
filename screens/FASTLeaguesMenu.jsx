@@ -96,7 +96,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchTeamsName = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.9:5001/getLeagueTeams?League_Name=${nname}`);
+        const response = await axios.get(`http://10.54.4.4:5001/getLeagueTeams?League_Name=${nname}`);
         if (response?.data) {
           setTeamName(response.data);
           // console.log("Team Name:", JSON.stringify(response.data, null, 2));
@@ -115,7 +115,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchMatchesSchedule = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.9:5001/getLeagueSchedule?League_Name=${nname}`);
+        const response = await axios.get(`http://10.54.4.4:5001/getLeagueSchedule?League_Name=${nname}`);
         if (response?.data) {
           setMatchSchedule(response.data);
           // console.log("Match Schedule:", JSON.stringify(response.data, null, 2));

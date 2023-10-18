@@ -18,7 +18,7 @@ const CustomSportsType = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://192.168.1.9:5001/getSportsType");
+        const response = await axios.get("http://10.54.4.4:5001/getSportsType");
         if (response?.data) {
           // console.log("Data fetched successfully:", JSON.stringify(response.data, null, 2));
           setSportsType(response.data);

@@ -18,7 +18,7 @@ const connection = mysql.createConnection({
     host: "localhost",
     database: "sportix",
     user: "root",
-    password: "fast@19cfd",
+    password: "password",
 });
 module.exports = connection;
 
@@ -111,22 +111,10 @@ app.post('/equipment_booking', (req, res) => {
             console.error("Error executing INSERT SQL query:", insertErr);
             return res.status(500).json({ message: "Error inserting data" });
         }
-
-        if (status === 'confirmed') {
-            const updateSql = "UPDATE sportix.product SET count = count - ? WHERE name = ?";
-            const updateValues = [Count, Name];
-
-            connection.query(updateSql, updateValues, (updateErr) => {
-                if (updateErr) {
-                    console.error("Error executing UPDATE SQL query:", updateErr);
-                    return res.status(500).json({ message: "Error updating product count" });
-                }
-
-                res.status(200).json({ message: "Booking data inserted and product count updated successfully" });
-            });
-        } else {
+        else {
             res.status(200).json({ message: "Booking data inserted successfully" });
         }
+
     });
 });
 
