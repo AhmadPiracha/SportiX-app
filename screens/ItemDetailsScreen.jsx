@@ -188,7 +188,7 @@ const ItemDetailsScreen = ({ route, navigation }) => {
           return {
             ...equipment,
             quantity: equipment.quantity + 1,
-            remainingCount: equipment.remainingCount - 1, // Decrement remaining count
+            remainingCount: equipment.remainingCount - 1,
           };
         }
       }
@@ -203,6 +203,8 @@ const ItemDetailsScreen = ({ route, navigation }) => {
       prevList.map((equipment) => ({
         ...equipment,
         quantity: 0,
+        remainingCount: equipment.count,
+        
       }))
     );
   };
