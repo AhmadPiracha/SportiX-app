@@ -21,7 +21,6 @@ console.log(route.params);
         if (playersList === 1) {
             return (
                 <View>
-                    {/* Dummy Data of Players */}
                     {/* Content for Team 1 */}
                     {TeamAPlayers.map((player) => (
                         <View key={player.id} style={styles.playerItem}>
@@ -112,16 +111,6 @@ console.log(route.params);
                         onSelectSwitch={onSelectSwitch}
                     />
                 </View>
-
-                {/* Players List */}
-                {/* <View style={styles.playersListContainer}>
-                    <Text style={styles.playersListHeader}>
-                        {playersList === 1 ? `${team1_name} Players` : `${team2_name} Players`}
-                    </Text>
-                    <View style={styles.playersList}>
-                        {renderPlayerList()}
-                    </View>
-                </View> */}
                 {playersList === 1 && (
                     <PlayersList key={id} team={team1_name} />
                 )}

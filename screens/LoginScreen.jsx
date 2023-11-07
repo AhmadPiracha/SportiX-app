@@ -35,7 +35,6 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const validate = () => {
-    // Keyboard.dismiss();
     let isValid = true;
 
     if (!email) {
@@ -63,7 +62,6 @@ const LoginScreen = ({ navigation }) => {
       setPassword("");
       isValid = false;
     }
-
     if (isValid) {
       userLogin();
     }

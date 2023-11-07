@@ -3,21 +3,23 @@ import { View, Text, StyleSheet } from 'react-native';
 
 const VenueBookingCard = ({ booking }) => {
 
-    const { type, displayName, userRollNo, name, status, timeSlotDuration } = booking;
+    const { type, displayName, userRollNo, name, status, timeSlotDuration, booking_date } = booking;
+
+    const dateBook = booking_date.split('T')[0];
+
     return (
         <View style={styles.container}>
             <View style={styles.leftCard}>
-                <Text style={styles.eventName}>{name}</Text>
-                <Text style={styles.ticketHead}>Name</Text>
-                <Text style={styles.ticketInfo}>{displayName}</Text>
-                <Text style={styles.ticketHead}>Roll No</Text>
-                <Text style={styles.ticketInfo}>{userRollNo}</Text>
-                <Text style={styles.ticketHead}>Game</Text>
-                <Text style={styles.ticketInfo}>{type}</Text>
-                <Text style={styles.ticketInfo}>Status: {status}</Text>
+                <Text style={styles.eventName}>Booked Item: {name}</Text>
+                <Text style={styles.ticketHead}>Name: {displayName}</Text>
+                <Text style={styles.ticketHead}>Roll No: {userRollNo}</Text>
+                <Text style={styles.ticketHead}>Sports: {type}</Text>
+                <Text style={styles.ticketHead}>Booked Date: {dateBook}</Text>
             </View>
             <View style={styles.rightCard}>
                 <Text style={styles.ticketInfo}>Time Slot: {timeSlotDuration}</Text>
+                <Text style={styles.ticketInfo}>Status: {status}</Text>
+
             </View>
         </View>
     );

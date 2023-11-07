@@ -19,9 +19,9 @@ const CustomDrawer = (props) => {
 
   useEffect(() => {
     if (auth.currentUser) {
-      const userId = auth.currentUser.uid; // Get the user ID from the currently authenticated user object
+      const userId = auth.currentUser.uid; // Get the user ID from the currently authenticated user
       db.collection("users")
-        .doc(userId) // Provide the user ID as the document ID
+        .doc(userId)
         .get()
         .then((doc) => {
           if (doc.exists) {
@@ -101,10 +101,8 @@ const CustomDrawer = (props) => {
         </View>
       </DrawerContentScrollView>
       <View style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccc" }}>
-        
-        {/* <CustomDrawerButton title="Settings" logoName="settings-outline" handleButtonCLick={settingScreen} />
-        <CustomDrawerButton title="Tell a Friend" logoName="share-social-outline" handleButtonCLick={()=>{}} /> */}
-        <CustomDrawerButton title="Sign Out" logoName="exit-outline" handleButtonCLick={signOutConfirmBtn} />
+
+       <CustomDrawerButton title="Sign Out" logoName="exit-outline" handleButtonCLick={signOutConfirmBtn} />
       </View>
     </View>
   );

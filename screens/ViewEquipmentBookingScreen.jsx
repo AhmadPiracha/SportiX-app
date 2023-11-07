@@ -44,14 +44,15 @@ const ViewEquipmentBookingScreen = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`http://10.54.9.188:5001/viewEquipBookings?userRollNo=${userRollNo}`);
+        const response = await axios.get(`http://192.168.1.6:5001/viewEquipBookings?userRollNo=${userRollNo}`);
         const bookingData = response.data;
         setBookings(bookingData);
-        setIsLoading(false); // Set loading to false after data is fetched
+        console.log("Bookings:", JSON.stringify(bookingData, null, 2));
+        setIsLoading(false); 
       } catch (error) {
         console.error("Error fetching bookings:", error);
-        setError(error); // Set error state in case of an error
-        setIsLoading(false); // Set loading to false even in case of an error
+        setError(error); 
+        setIsLoading(false);
       }
     };
 
@@ -66,7 +67,6 @@ const ViewEquipmentBookingScreen = () => {
     <View style={styles.container}>
       {/* <Ionicons onPress={onPressBack} name="arrow-back-outline" size={20} color="#fff" style={styles.containerBtn} /> */}
 
-      {/* <Text style={styles.header}>Your Equipment Bookings</Text> */}
       {isLoading ? (
         <ActivityIndicator size="large" color="#00B4D8" />
       ) : error ? (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import VenueBookingCard from '../components/VenueBookingCard';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView,ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import { auth, db } from '../database/firebase';
 
@@ -11,9 +11,10 @@ const ViewVenueBookingScreen = () => {
   const navigation = useNavigation();
 
   const [bookings, setBookings] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
   const [userEmail, setUserEmail] = useState('');
   const [userRollNo, setUserRollNo] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -43,11 +44,15 @@ const ViewVenueBookingScreen = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`http://10.54.9.188:5001/viewVenueBookings?userRollNo=${userRollNo}`);
+        const response = await axios.get(`http://192.168.1.6:5001/viewVenueBookings?userRollNo=${userRollNo}`);
         const bookingData = response.data;
         setBookings(bookingData);
+        setIsLoading(false); 
+
       } catch (error) {
         console.error("Error fetching bookings:", error);
+        setError(error);
+        setIsLoading(false);
       }
     };
 
@@ -60,18 +65,25 @@ const ViewVenueBookingScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* <Ionicons onPress={onPressBack} name="arrow-back-outline" size={20} color="#fff" style={styles.containerBtn} />
+   {/* <Ionicons onPress={onPressBack} name="arrow-back-outline" size={20} color="#fff" style={styles.containerBtn} /> */}
 
-      <Text style={styles.header}>Your Sports Venue Bookings</Text> */}
-      {/* Use flex: 1 on the surrounding View */}
-      <View style={{ flex: 1 }}>
-        {/* Set a specific height or use flex for ScrollView */}
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          {bookings.map((booking, index) => (
-            <VenueBookingCard key={index} booking={booking} />
-          ))}
-        </ScrollView>
-      </View>
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#00B4D8" />
+      ) : error ? (
+        <Text style={styles.errorText}>Error: Unable to fetch data</Text>
+      ) : (
+        <View style={{ flex: 1 }}>
+          {bookings.length === 0 ? (
+            <Text style={styles.noBookingsText}>No equipment bookings found.</Text>
+          ) : (
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            {bookings.map((booking, index) => (
+              <VenueBookingCard key={index} booking={booking} />
+            ))}
+          </ScrollView>
+          )}
+        </View>
+      )}
     </View>
   );
 };
@@ -92,6 +104,15 @@ const styles = StyleSheet.create({
     color: "#fff",
     marginBottom: 20,
     marginTop: 40,
+    textAlign: 'center',
+  }, errorText: {
+    fontSize: 16,
+    color: "red",
+    textAlign: 'center',
+  },
+  noBookingsText: {
+    fontSize: 16,
+    color: "#fff",
     textAlign: 'center',
   },
 });

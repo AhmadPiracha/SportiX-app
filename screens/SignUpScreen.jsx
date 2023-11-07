@@ -373,7 +373,7 @@ const SignUpScreen = ({ navigation }) => {
             setPassword("");
             setConfirmPassword("");
            navigation.navigate("Login")
-            console.log("Navigation Called")
+            // console.log("Navigation Called")
           })
           .catch((error) => {
             setIsLoading(false);

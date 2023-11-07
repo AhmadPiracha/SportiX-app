@@ -44,8 +44,6 @@ const CustomNestedDrawer = (props) => {
           <DrawerItemList {...props} />
         </View>
       </DrawerContentScrollView>
-      {/* <View style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccc" }}>
-      </View> */}
     </View>
   );
 };

@@ -15,7 +15,7 @@ import { LeaguesOptionSwitch } from '../components/leaguesOptionSwitch';
 import { Ionicons } from "@expo/vector-icons";
 import Feather from "react-native-vector-icons/Feather";
 import Carousel from 'react-native-snap-carousel';
-import { windowWidth } from '../utils/dimensions';
+import { windowWidth,windowHeight } from '../utils/dimensions';
 import { sliderData } from "../model/matchesData";
 import BannerSlider from "../components/BannerSlider";
 
@@ -96,15 +96,15 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchTeamsName = async () => {
       try {
-        const response = await axios.get(`http://10.54.9.188:5001/getLeagueTeams?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.1.6:5001/getLeagueTeams?League_Name=${nname}`);
         if (response?.data) {
           setTeamName(response.data);
-          console.log("Team Name:", JSON.stringify(response.data, null, 2));
+          // console.log("Team Name:", JSON.stringify(response.data, null, 2));
           setFilteredTeams(response.data);
 
 
         }
-      } catch (error) {
+      } catch (error) {cmd
         console.error("Error fetching data:", error);
       }
     };
@@ -115,10 +115,10 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchMatchesSchedule = async () => {
       try {
-        const response = await axios.get(`http://10.54.9.188:5001/getLeagueSchedule?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.1.6:5001/getLeagueSchedule?League_Name=${nname}`);
         if (response?.data) {
           setMatchSchedule(response.data);
-          console.log("Match Schedule:", JSON.stringify(response.data, null, 2));
+          // console.log("Match Schedule:", JSON.stringify(response.data, null, 2));
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -183,7 +183,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={styles.teamSlider} // Add some padding to the list
+          contentContainerStyle={styles.teamSlider}
         />
 
         {/* Upcoming Matches Slider */}
@@ -229,14 +229,14 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
           autoplayDelay={5000}
           layout="default"
           layoutCardOffset={18} // Space between cards
-          activeAnimationType="spring" // Animation type for active card
+          activeAnimationType="spring"
           useScrollView={true} // Use ScrollView for navigation
           enableSnap={true}
           lockScrollWhileSnapping={true}
           removeClippedSubviews={true}
-          inactiveSlideScale={0.9} // Scale of inactive slides
-          inactiveSlideOpacity={0.7} // Opacity of inactive slides
-          activeSlideAlignment="start" // Alignment of the active slide
+          inactiveSlideScale={0.9} 
+          inactiveSlideOpacity={0.7}
+          activeSlideAlignment="start" 
         />
       </ScrollView>
     );
@@ -318,9 +318,6 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
                   <Text style={styles.scheduleTeamName}>{match.team2}</Text>
                 </View>
               </View>
-
-
-
               <View style={styles.VenueTeamContainer}>
                 <Text style={styles.venue}>{formatDate(match.Match_Date)}</Text>
               </View>
@@ -339,12 +336,45 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
 
   // const renderPointsTableView = () => {
   //   return (
-  //     <View style={styles.contentContainer}>
-  //       <Text>Points Table View</Text>
-  //       {/* Add your Points Table content here */}
+  //     <View style={styles.winnerCard}>
+  //       <View style={styles.matchCardContainer}>
+  //           <View style={styles.matchCard}>
+  //               <View style={styles.matchContent}>
+  //                 <View style={styles.teamLogoContainer}>
+  //                   <Image
+  //                     source={require("../assets/logo/islamabad-united.jpg")}
+  //                     style={styles.teamLogo}
+  //                   />
+  //                   <Text style={styles.matchCardTitle}>A</Text>
+  //                 </View>
+  //                 <View style={styles.teamLogoContainer}>
+  //                   <Image
+  //                     source={require("../assets/logo/lahore-qalandars.jpg")}
+  //                     style={styles.teamLogo}
+  //                   />
+  //                   <Text style={styles.matchCardTitle}>B</Text>
+  //                 </View>
+  //               </View>
+  //               <View style={styles.matchDetails}>
+  //                 <Text style={styles.matchCardDate}>WINNER</Text>
+  //               </View>
+  //             </View>
+  //             <View style={styles.matchDetails}>
+  //               <Text style={styles.matchCardVenue}>FCL</Text>
+  //             </View>
+  //           </View>
   //     </View>
   //   );
   // };
+
+  const renderPointsTableView = () => {
+    return (
+      <View style={styles.contentContainer}>
+        <Text>Points Table View</Text>
+        {/* Add your Points Table content here */}
+      </View>
+    );
+  };
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -365,7 +395,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
           Option1="HOME"
           Option2="TEAMS"
           Option3="MATCHES"
-          Option4="POINTS TABLE"
+          Option4="TABLE"
           onSelectSwitch={onSelectSwitch}
         />
       </View>
@@ -610,6 +640,39 @@ const styles = StyleSheet.create({
     color: '#888',
     textAlign: 'center',
     flex: 1,
+    color:'#ffffff',
+  },
+
+  // Winner Card
+ 
+  winnerCard: {
+    backgroundColor: 'white',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  heading: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  table: {
+    borderColor: 'black',
+  },
+  tableRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  tableHeader: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  tableCell: {
+    flex: 1,
+    padding: 8,
+    fontSize: 16,
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 
 });

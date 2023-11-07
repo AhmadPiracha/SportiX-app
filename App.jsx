@@ -8,6 +8,7 @@ import { View, Text } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 // Screens
+
 // Authentication Screens
 import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
@@ -34,23 +35,13 @@ import FASTLeaguesMenu from "./screens/FASTLeaguesMenu";
 import LeagueMatchCardDetails from "./screens/FASTLeagues/LeagueMatchCardDetails";
 
 
-// View Results Screen
-// import ViewResultsScreen from "./screens/ViewResultsScreen";
-// Custom Drawer
-
-// Settings Screen
-import SettingsScreen from "./screens/SettingsScreen";
-
-
 import CustomDrawer from "./components/CustomDrawer";
 import CustomNestedDrawer from "./components/CustomNestedDrawer";
-
 
 // Initialize navigators
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const NestedDrawer = createDrawerNavigator();
-
 
 // Custom Nested Booking Navigator
 
@@ -88,7 +79,6 @@ const NestedBookingMenu = () => {
     </NestedDrawer.Navigator>
   );
 };
-
 
 // Custom Drawer Navigator
 const DrawerNavigator = () => {
@@ -173,7 +163,7 @@ const DrawerNavigator = () => {
         }}
       />
 
-      {/* {/* Nested Navigator for Fast Leagues */}
+      {/* Nested Navigator for Fast Leagues */}
       <Drawer.Screen
         name="Fast Leagues"
         component={FASTLeagues}
@@ -239,16 +229,17 @@ const App = () => {
             <Stack.Screen name="Basketball" component={BasketBall} />
             <Stack.Screen name="MatchTeamCard" component={MatchTeamCard} />
             <Stack.Screen name="MatchDetails" component={MatchDetails} />
-            {/* Sports Equipment Booking Items Screen */}
+            {/* Sports Equipment nd Venue Booking Items Screen */}
             <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{ title: "Item Details" }} />
             {/* FAST Sports League */}
             <Stack.Screen name="FASTLeaguesMenu" component={FASTLeaguesMenu} />
             <Stack.Screen name="LeagueMatchCardDetails" component={LeagueMatchCardDetails} />
             {/* Settings Screen */}
-            <Stack.Screen name="Settings" component={SettingsScreen} />
+            {/* <Stack.Screen name="Settings" component={SettingsScreen} /> */}
           </>
         ) : (
           <>
+          {/* Auth Screens */}
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={SignUpScreen} />
           </>
