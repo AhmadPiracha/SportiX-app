@@ -52,7 +52,7 @@ const SportsVenueBookingScreen = ({navigation}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://10.54.4.4:5001/getVenue");
+        const response = await axios.get("http://192.168.1.6:5001/getVenue");
         if (response?.data) {
           setSportGrounds(response.data);
         }
@@ -121,7 +121,7 @@ const SportsVenueBookingScreen = ({navigation}) => {
           text: "Book Now", onPress: async () => {
             try {
               const response = await axios.post(
-                'http://10.54.4.4:5001/venue_booking',
+                'http://192.168.1.6:5001/venue_booking',
                 bookingInfo
               );
               console.log('Booking response:', response.data);

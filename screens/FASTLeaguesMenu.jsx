@@ -96,7 +96,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchTeamsName = async () => {
       try {
-        const response = await axios.get(`http://10.54.4.4:5001/getLeagueTeams?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.1.6:5001/getLeagueTeams?League_Name=${nname}`);
         if (response?.data) {
           setTeamName(response.data);
           // console.log("Team Name:", JSON.stringify(response.data, null, 2));
@@ -115,7 +115,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchMatchesSchedule = async () => {
       try {
-        const response = await axios.get(`http://10.54.4.4:5001/getLeagueSchedule?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.1.6:5001/getLeagueSchedule?League_Name=${nname}`);
         if (response?.data) {
           setMatchSchedule(response.data);
           // console.log("Match Schedule:", JSON.stringify(response.data, null, 2));
@@ -368,71 +368,13 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   // };
 
   const renderPointsTableView = () => {
-    const teams = [
-      {
-        name: 'Taliban XI',
-        matchesPlayed: 4,
-        wins: 4,
-        draws: 0,
-        losses: 0,
-        points: 8,
-        netRunRate: 3.39,
-      },
-      {
-        name: 'Team Hydra',
-        matchesPlayed: 4,
-        wins: 3,
-        draws: 1,
-        losses: 1,
-        points: 6,
-        netRunRate: 0.77,
-      },
-      {
-        name: 'Dire Wolves',
-        matchesPlayed: 5,
-        wins: 2,
-        draws: 0,
-        losses: 3,
-        points: 4,
-        netRunRate: -3.00,
-      },
-      {
-        name: 'Laggards',
-        matchesPlayed: 4,
-        wins: 2,
-        draws: 0,
-        losses: 2,
-        points: 4,
-        netRunRate: -3.39,
-      },
-    ];
-  
     return (
-      <View style={styles.winnerCard}>
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, styles.tableHeader]}>Team</Text>
-            <Text style={[styles.tableCell, styles.tableHeader]}>M</Text>
-            <Text style={[styles.tableCell, styles.tableHeader]}>W</Text>
-            <Text style={[styles.tableCell, styles.tableHeader]}>D</Text>
-            <Text style={[styles.tableCell, styles.tableHeader]}>L</Text>
-            <Text style={[styles.tableCell, styles.tableHeader]}>NRR</Text>
-          </View>
-          {teams.map((team, index) => (
-            <View key={index} style={styles.tableRow}>
-              <Text style={styles.tableCell}>{team.name}</Text>
-              <Text style={styles.tableCell}>{team.matchesPlayed}</Text>
-              <Text style={styles.tableCell}>{team.wins}</Text>
-              <Text style={styles.tableCell}>{team.draws}</Text>
-              <Text style={styles.tableCell}>{team.losses}</Text>
-              <Text style={styles.tableCell}>{team.netRunRate}</Text>
-            </View>
-          ))}
-        </View>
+      <View style={styles.contentContainer}>
+        <Text>Points Table View</Text>
+        {/* Add your Points Table content here */}
       </View>
     );
   };
-  
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -461,7 +403,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
       {switchTab === 1 && renderHomeView()}
       {switchTab === 2 && renderTeamsView()}
       {switchTab === 3 && renderMatchesView()}
-      {switchTab === 4 && renderPointsTableView()}
+      {/* {switchTab === 4 && renderPointsTableView()} */}
       
     </SafeAreaView>
   );

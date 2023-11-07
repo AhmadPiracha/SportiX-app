@@ -97,7 +97,7 @@ export function LeaguesOptionSwitch({
       </TouchableOpacity>
 
       {/* 4TH BUTTON */}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         activeOpacity={4}
         onPress={() => updateSwitchData(4)}
         style={[
@@ -120,7 +120,7 @@ export function LeaguesOptionSwitch({
         >
           {Option4}
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }

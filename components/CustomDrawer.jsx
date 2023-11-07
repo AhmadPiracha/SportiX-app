@@ -64,6 +64,11 @@ const CustomDrawer = (props) => {
     );
   };
 
+  // const settingScreen = () =>{
+  //   navigation.navigate("Settings");
+  // }
+
+  
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView
@@ -96,7 +101,7 @@ const CustomDrawer = (props) => {
         </View>
       </DrawerContentScrollView>
       <View style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccc" }}>
-        
+
        <CustomDrawerButton title="Sign Out" logoName="exit-outline" handleButtonCLick={signOutConfirmBtn} />
       </View>
     </View>
