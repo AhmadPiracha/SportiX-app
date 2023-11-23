@@ -37,6 +37,8 @@ import LeagueMatchCardDetails from "./screens/FASTLeagues/LeagueMatchCardDetails
 
 import CustomDrawer from "./components/CustomDrawer";
 import CustomNestedDrawer from "./components/CustomNestedDrawer";
+import FPLBidding from "./screens/Bidding/FPLBidding";
+import FCLBidding from "./screens/Bidding/FCLBidding";
 
 // Initialize navigators
 const Drawer = createDrawerNavigator();
@@ -66,6 +68,43 @@ const NestedBookingMenu = () => {
       <NestedDrawer.Screen
         name="View Venue Bookings"
         component={ViewVenueBookingScreen}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "ios-pin" : "ios-pin-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+    </NestedDrawer.Navigator>
+  );
+};
+
+// Custom Nested Booking Navigator
+
+const NestedBiddingMenu = () => {
+  return (
+    <NestedDrawer.Navigator
+      drawerContent={(props) => <CustomNestedDrawer {...props} />}
+    >
+      <NestedDrawer.Screen
+        name="FAST Premier League"
+        component={FPLBidding}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "ios-basketball" : "ios-basketball-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <NestedDrawer.Screen
+        name="FAST Cricket League"
+        component={FCLBidding}
         options={{
           drawerIcon: ({ focused, color, size }) => (
             <Ionicons
@@ -163,7 +202,6 @@ const DrawerNavigator = () => {
         }}
       />
 
-      {/* Nested Navigator for Fast Leagues */}
       <Drawer.Screen
         name="Fast Leagues"
         component={FASTLeagues}
@@ -178,7 +216,21 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-
+      {/* Nested Navigator for Leagues Bidding */}
+      <Drawer.Screen
+        name="Leagues Bidding"
+        component={NestedBiddingMenu}
+        options={{
+          drawerLabel: "Leagues Bidding",
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name={focused ? "bookmark" : "bookmark-outline"}
+              size={size}
+              color={focused ? "#00B4D8" : "#000"}
+            />
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 };
@@ -239,7 +291,7 @@ const App = () => {
           </>
         ) : (
           <>
-          {/* Auth Screens */}
+            {/* Auth Screens */}
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={SignUpScreen} />
           </>
