@@ -349,43 +349,122 @@ const SignUpScreen = ({ navigation }) => {
   //     });
   // };
 
+  // const registerUser = async () => {
+  //   setIsLoading(true);
+
+  //   const passwordHash = SHA256(password).toString();
+
+  //   auth
+  //     .createUserWithEmailAndPassword(email, passwordHash)
+  //     .then(() => {
+  //       const userData = {
+  //         displayName: displayName,
+  //         email: email,
+  //         password: passwordHash,
+  //       };
+
+  //       db.collection("users")
+  //         .doc(auth.currentUser.uid)
+  //         .set(userData)
+  //         .then(() => {
+  //           console.log("User registered successfully!");
+  //           setIsLoading(false);
+  //           setDisplayName("");
+  //           setEmail("");
+  //           setPassword("");
+  //           setConfirmPassword("");
+  //          navigation.navigate("Login")
+  //           // console.log("Navigation Called")
+  //         })
+  //         .catch((error) => {
+  //           setIsLoading(false);
+  //           Alert.alert(error.message);
+  //         });
+  //     })
+  //     .catch((error) => {
+  //       setIsLoading(false);
+  //       console.log(error);
+  //     });
+  // };
+
   const registerUser = async () => {
     setIsLoading(true);
-
+  
     const passwordHash = SHA256(password).toString();
-
-    auth
-      .createUserWithEmailAndPassword(email, passwordHash)
-      .then(() => {
-        const userData = {
-          displayName: displayName,
-          email: email,
-          password: passwordHash,
-        };
-
-        db.collection("users")
-          .doc(auth.currentUser.uid)
-          .set(userData)
-          .then(() => {
-            console.log("User registered successfully!");
-            setIsLoading(false);
-            setDisplayName("");
-            setEmail("");
-            setPassword("");
-            setConfirmPassword("");
-           navigation.navigate("Login")
-            // console.log("Navigation Called")
-          })
-          .catch((error) => {
-            setIsLoading(false);
-            Alert.alert(error.message);
-          });
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        console.log(error);
-      });
+  
+    try {
+      const userCredential = await auth.createUserWithEmailAndPassword(email, passwordHash);
+      const user = userCredential.user;
+  
+      // Send email verification
+      await user.sendEmailVerification();
+  
+      const userData = {
+        displayName: displayName,
+        email: email,
+        password: passwordHash,
+      };
+  
+      // Add user data to Firestore collection
+      await db.collection("users").doc(user.uid).set(userData);
+  
+      console.log("User registered successfully!");
+      setIsLoading(false);
+      setDisplayName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      navigation.navigate("Welcome");
+    } catch (error) {
+      setIsLoading(false);
+      Alert.alert(error.message);
+    }
   };
+  
+  // const registerUser = async () => {
+  //   setIsLoading(true);
+  
+  //   const passwordHash = SHA256(password).toString();
+  
+  //   try {
+  //     // Create user in Firebase Authentication
+  //     const userCredential = await auth.createUserWithEmailAndPassword(email, passwordHash);
+  //     const user = userCredential.user;
+  
+  //     // Send email verification
+  //     await user.sendEmailVerification();
+  
+  //     // Wait for user to verify email before adding to Firestore
+  //     auth.onAuthStateChanged(async (user) => {
+  //       if (user && user.emailVerified) {
+  //         // Define variables for user data
+  //         const userData = {
+  //           displayName: displayName,
+  //           email: email,
+  //           password: passwordHash,
+  //         };
+  
+  //         // Add user data to Firestore collection
+  //         await db.collection("users").doc(user.uid).set(userData);
+  
+  //         console.log("User registered successfully!");
+  //         setIsLoading(false);
+  //         setDisplayName("");
+  //         setEmail("");
+  //         setPassword("");
+  //         setConfirmPassword("");
+  //         navigation.navigate("Login");
+  //       } else if (user) {
+  //         setIsLoading(false);
+  //         alert("Please verify your email before continuing.");
+  //       }
+  //     });
+  //   } catch (error) {
+  //     setIsLoading(false);
+  //     Alert.alert(error.message);
+  //   }
+  // };
+  
 
   if (isLoading) {
     return (

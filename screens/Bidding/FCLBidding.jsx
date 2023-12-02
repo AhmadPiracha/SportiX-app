@@ -4,8 +4,6 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 const FCLBidding = () => {
   const [events, setEvents] = useState([
     { id: '1', name: 'Football Match 1', bidAmount: 10 },
-    { id: '2', name: 'Basketball Game 1', bidAmount: 15 },
-    // Add more events as needed
   ]);
 
   const handleBid = (eventId) => {

@@ -44,7 +44,7 @@ const ViewEquipmentBookingScreen = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.6:5001/viewEquipBookings?userRollNo=${userRollNo}`);
+        const response = await axios.get(`http://192.168.10.8:5001/viewEquipBookings?userRollNo=${userRollNo}`);
         const bookingData = response.data;
         setBookings(bookingData);
         console.log("Bookings:", JSON.stringify(bookingData, null, 2));

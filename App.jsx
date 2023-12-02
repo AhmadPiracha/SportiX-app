@@ -39,6 +39,7 @@ import CustomDrawer from "./components/CustomDrawer";
 import CustomNestedDrawer from "./components/CustomNestedDrawer";
 import FPLBidding from "./screens/Bidding/FPLBidding";
 import FCLBidding from "./screens/Bidding/FCLBidding";
+import WelcomeScreen from "./screens/WelcomeScreen";
 
 // Initialize navigators
 const Drawer = createDrawerNavigator();
@@ -267,10 +268,12 @@ const App = () => {
   if (isLoading) {
     <LoadingScreen />;
   }
-
+  
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {/* <Stack.Screen name="Welcome" component={WelcomeScreen} /> */}
+
         {user ? (
           <>
             <Stack.Screen name="DrawerRoot" component={DrawerNavigator} />
@@ -292,8 +295,8 @@ const App = () => {
         ) : (
           <>
             {/* Auth Screens */}
-            <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={SignUpScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
           </>
         )}
       </Stack.Navigator>

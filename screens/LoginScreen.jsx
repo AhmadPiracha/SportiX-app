@@ -41,10 +41,14 @@ const LoginScreen = ({ navigation }) => {
     if (!email) {
       handleError("Please input email", "email");
       setEmail("");
+      setPassword("");
+
       isValid = false;
     } else if (!email.match(/^[a-z0-9._%+-]+@cfd\.nu\.edu\.pk$/)) {
       handleError("Please input a valid email", "email");
       setEmail("");
+      setPassword("");
+
       isValid = false;
     }
 
@@ -82,21 +86,7 @@ const LoginScreen = ({ navigation }) => {
       .then(async (res) => {
         const userDoc = db.collection("users").doc(res.user.uid).get();
         const storedPasswordHash = (await userDoc).data().password;
-        // console.log(storedPasswordHash);
-
-        // if (enteredPasswordHash === storedPasswordHash) {
-        //   console.log("User logged in successfully!");
-        //   await AsyncStorage.setItem("user", JSON.stringify(user));
-        //   navigation.navigate("DrawerRoot", { screen: "Home" });
-        //   setIsLoading(false);
-        //   setDisplayName("");
-        //   setEmail("");
-        //   setPassword("");
-        //   setError("");
-        // } else {
-        //   setIsLoading(false);
-        //   Alert.alert("Invalid credentials");
-        // }
+  
         if (enteredPasswordHash === storedPasswordHash) {
           console.log("User logged in successfully!");
 
@@ -124,6 +114,52 @@ const LoginScreen = ({ navigation }) => {
         // console.log(error.message);
       });
   };
+
+  // const userLogin = () => {
+  //   setIsLoading(true);
+  
+  //   // Generate hash of the entered password using SHA-256
+  //   const enteredPasswordHash = SHA256(password).toString();
+    
+  //   auth
+  //     .signInWithEmailAndPassword(email, enteredPasswordHash)
+  //     .then(async (res) => {
+  //       const user = res.user;
+  //       const userDoc = await db.collection("users").doc(user.uid).get();
+  //       const storedPasswordHash = userDoc.data().password;
+  
+  //       if (enteredPasswordHash === storedPasswordHash) {
+  //         if (user.emailVerified) {
+  //           console.log("User logged in successfully!");
+  
+  //           // Save the user's login status to AsyncStorage
+  //           try {
+  //             await AsyncStorage.setItem("isLoggedIn", "true");
+  //           } catch (error) {
+  //             console.log("Error saving login status to AsyncStorage:", error);
+  //           }
+  
+  //           navigation.navigate("Home");
+  //           setIsLoading(false);
+  //           setDisplayName("");
+  //           setEmail("");
+  //           setPassword("");
+  //           setError("");
+  //         } else {
+  //           setIsLoading(false);
+  //           Alert.alert("Please verify your email before logging in.");
+  //         }
+  //       } else {
+  //         setIsLoading(false);
+  //         Alert.alert("Invalid credentials");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setIsLoading(false);
+  //       Alert.alert(error.message);
+  //     });
+  // };
+  
 
   if (isLoading) {
     return (

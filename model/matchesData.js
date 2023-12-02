@@ -350,3 +350,21 @@ export const TeamLogo = [{
         lhrLogo: require("../assets/logo/lahore-qalandars.jpg"),
     }
 ];
+
+export const biddingPrice = [{
+        id: 1,
+        price: 500,
+    },
+    {
+        id: 2,
+        price: 1000,
+    },
+    {
+        id: 3,
+        price: 2000,
+    },
+    {
+        id: 4,
+        price: 5000,
+    },
+];
