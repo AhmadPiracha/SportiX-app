@@ -353,18 +353,22 @@ export const TeamLogo = [{
 
 export const biddingPrice = [{
         id: 1,
-        price: 500,
+        price: 0,
     },
     {
         id: 2,
-        price: 1000,
+        price: 500,
     },
     {
         id: 3,
-        price: 2000,
+        price: 1000,
     },
     {
         id: 4,
-        price: 5000,
+        price: 2000,
     },
+    {
+        id:5,
+        price: 5000,
+    }
 ];
