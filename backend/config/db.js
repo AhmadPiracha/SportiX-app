@@ -324,11 +324,24 @@ app.post('/placeBid', async (req, res) => {
     }
 });
 
+app.get('/viewAllBiddings', (req, res) => {
+    const league = req.query.league || null;
+    let sql = "SELECT * FROM sportix.league_bidding";
 
+    if (league) {
+        sql += " WHERE league = ?";
+    }
 
+    connection.query(sql, [league], (err, result) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).send("Error fetching data");
+        }
 
+        res.send(result);
+    });
 
-
+});
 
 app.listen(5001, () => {
     console.log("Server is running on port 5001.");

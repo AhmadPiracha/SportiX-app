@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { auth, db } from "../database/firebase";
 import { Picker } from '@react-native-picker/picker';
 import { windowWidth, windowHeight } from '../utils/dimensions';
+import { Table, Row } from 'react-native-table-component';
+
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import { biddingPrice } from '../model/matchesData';
@@ -15,6 +17,13 @@ const CustomBidding = ({ type }) => {
 
     const [userEmail, setUserEmail] = useState('');
     const [displayName, setDisplayName] = useState('');
+    const [team] = useState('');
+
+    const [tableData, setTableData] = useState([
+        displayName,
+        team,
+        biddingAmount,
+    ])
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -37,7 +46,7 @@ const CustomBidding = ({ type }) => {
     }, []);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const postData = async () => {
             try {
                 const response = await axios.get(`http://192.168.10.8:5001/getLeagueTeams?League_Name=${type}`);
                 if (response?.data) {
@@ -47,8 +56,25 @@ const CustomBidding = ({ type }) => {
                 console.error("Error fetching data:", error);
             }
         };
+        postData();
+    }, []);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://192.168.10.8:5001/viewAllBiddings?league=${type}`);
+                if (response?.data) {
+                    setTableData(response.data.map(item => [item.displayName, item.team, item.biddingAmount]));
+                    // console.log(JSON.stringify(response.data, null, 2));
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
         fetchData();
     }, []);
+
 
     const handleBidding = async () => {
         const userRollNo = userEmail.match(/([a-z]\d+)/i)[0];
@@ -143,6 +169,26 @@ const CustomBidding = ({ type }) => {
                 </View>
             </View>
             <View style={styles.mainContainer} >
+            <View style={styles.headerTableContainer}>
+                    {tableData.length > 0 ? (
+                        <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
+                            <Row data={['Name','Team Name','Bidding Amount']} style={styles.head} textStyle={styles.text} />
+                            {tableData.map((rowData, index) => (
+                                <Row
+                                    key={index}
+                                    data={rowData}
+                                    style={[styles.row, index % 2 && { backgroundColor: '#ffffff' }]}
+                                    textStyle={styles.text}
+                                />
+                            ))}
+                        </Table>
+                    ) : (
+                        <Text style={styles.noBookingsText}>No Bids found.</Text>
+                    )
+
+                    }
+            </View>
+
                 <View style={styles.headerContainer}>
                     <View style={styles.pickerContainer}>
                         <Picker
@@ -283,9 +329,39 @@ const styles = StyleSheet.create({
         fontSize: windowWidth * 0.05,
         fontWeight: "600",
         color: "#fff",
-
-
     },
+    headerTableContainer: {
+        marginVertical: 20,
+        backgroundColor: '#ffffff',
+        borderRadius: 10,
+        padding: 10,
+        borderWidth: 2,
+        borderColor: '#000000',
+    },
+    head: {
+        height: 40,
+        backgroundColor: '#f1f8ff',
+        borderBottomWidth: 2,
+        borderBottomColor: '#000000',
+    },
+    row: {
+        flexDirection: 'row',
+        height: 40,
+        backgroundColor: '#f9f9f9',
+        borderBottomWidth: 1,
+        borderBottomColor: '#000000',
+    },
+    text: {
+        textAlign: 'center',
+        fontWeight: '600',
+        color: '#000000',
+    },
+    noBookingsText: {
+        textAlign: 'center',
+        color: '#000000',
+        marginTop: 10,
+    },
+
 });
 
 export default CustomBidding;
