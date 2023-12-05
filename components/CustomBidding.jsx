@@ -25,6 +25,22 @@ const CustomBidding = ({ type }) => {
         biddingAmount,
     ])
 
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`http://192.168.1.9:5001/viewAllBiddings?league=${type}`);
+            if (response?.data) {
+                setTableData(response.data.map(item => [item.displayName, item.team, item.biddingAmount]));
+                // console.log(JSON.stringify(response.data, null, 2));
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -48,7 +64,7 @@ const CustomBidding = ({ type }) => {
     useEffect(() => {
         const postData = async () => {
             try {
-                const response = await axios.get(`http://192.168.10.8:5001/getLeagueTeams?League_Name=${type}`);
+                const response = await axios.get(`http://192.168.1.9:5001/getLeagueTeams?League_Name=${type}`);
                 if (response?.data) {
                     setSportsBiddingTeam(response.data.map(item => item.name));
                 }
@@ -58,23 +74,6 @@ const CustomBidding = ({ type }) => {
         };
         postData();
     }, []);
-
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`http://192.168.10.8:5001/viewAllBiddings?league=${type}`);
-                if (response?.data) {
-                    setTableData(response.data.map(item => [item.displayName, item.team, item.biddingAmount]));
-                    // console.log(JSON.stringify(response.data, null, 2));
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-        fetchData();
-    }, []);
-
 
     const handleBidding = async () => {
         const userRollNo = userEmail.match(/([a-z]\d+)/i)[0];
@@ -104,7 +103,7 @@ const CustomBidding = ({ type }) => {
                     text: "Place Bid",
                     onPress: async () => {
                         try {
-                            const response = await axios.post('http://192.168.10.8:5001/placeBid', {
+                            const response = await axios.post('http://192.168.1.9:5001/placeBid', {
                                 displayName: displayName,
                                 userRollNo,
                                 team: selectedTeam,
@@ -125,6 +124,8 @@ const CustomBidding = ({ type }) => {
                                             onPress: () => {
                                                 setSelectedTeam("Select Team");
                                                 setBiddingAmount(0);
+                                                 // Refetch the data to update the displayed bids
+                                             fetchData();
                                             },
                                             style: "cancel"
                                         },
@@ -343,19 +344,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#f1f8ff',
         borderBottomWidth: 2,
         borderBottomColor: '#000000',
-    },
-    row: {
+      },
+      row: {
         flexDirection: 'row',
         height: 40,
         backgroundColor: '#f9f9f9',
         borderBottomWidth: 1,
         borderBottomColor: '#000000',
-    },
-    text: {
+      },
+      text: {
         textAlign: 'center',
         fontWeight: '600',
         color: '#000000',
-    },
+      },
     noBookingsText: {
         textAlign: 'center',
         color: '#000000',
