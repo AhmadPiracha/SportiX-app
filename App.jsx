@@ -34,8 +34,7 @@ import FASTLeagues from "./screens/FASTLeagues/FASTLeagues";
 import FASTLeaguesMenu from "./screens/FASTLeaguesMenu";
 import LeagueMatchCardDetails from "./screens/FASTLeagues/LeagueMatchCardDetails";
 // Bidding Screens
-import FPLBidding from "./screens/Bidding/FPLBidding";
-import FCLBidding from "./screens/Bidding/FCLBidding";
+
 import BiddingMenu from "./screens/Bidding/BiddingMenu";
 import CustomBidding from "./components/CustomBidding";
 
@@ -89,43 +88,6 @@ const NestedBookingMenu = () => {
     </NestedDrawer.Navigator>
   );
 };
-
-// Custom Nested Bidding Navigator
-
-// const NestedBiddingMenu = () => {
-//   return (
-//     <NestedDrawer.Navigator
-//       drawerContent={(props) => <CustomNestedDrawer {...props} />}
-//     >
-//       <NestedDrawer.Screen
-//         name="FAST Premier League"
-//         component={FPLBidding}
-//         options={{
-//           drawerIcon: ({ focused, color, size }) => (
-//             <Ionicons
-//               name={focused ? "ios-basketball" : "ios-basketball-outline"}
-//               size={size}
-//               color={color}
-//             />
-//           ),
-//         }}
-//       />
-//       <NestedDrawer.Screen
-//         name="FAST Cricket League"
-//         component={FCLBidding}
-//         options={{
-//           drawerIcon: ({ focused, color, size }) => (
-//             <Ionicons
-//               name={focused ? "ios-pin" : "ios-pin-outline"}
-//               size={size}
-//               color={color}
-//             />
-//           ),
-//         }}
-//       />
-//     </NestedDrawer.Navigator>
-//   );
-// };
 
 // Custom Drawer Navigator
 const DrawerNavigator = () => {
