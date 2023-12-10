@@ -33,13 +33,20 @@ import ViewVenueBookingScreen from "./screens/ViewVenueBookingScreen";
 import FASTLeagues from "./screens/FASTLeagues/FASTLeagues";
 import FASTLeaguesMenu from "./screens/FASTLeaguesMenu";
 import LeagueMatchCardDetails from "./screens/FASTLeagues/LeagueMatchCardDetails";
+// Bidding Screens
+import FPLBidding from "./screens/Bidding/FPLBidding";
+import FCLBidding from "./screens/Bidding/FCLBidding";
+import BiddingMenu from "./screens/Bidding/BiddingMenu";
+import CustomBidding from "./components/CustomBidding";
 
 
 import CustomDrawer from "./components/CustomDrawer";
 import CustomNestedDrawer from "./components/CustomNestedDrawer";
-import FPLBidding from "./screens/Bidding/FPLBidding";
-import FCLBidding from "./screens/Bidding/FCLBidding";
+
+
+
 import WelcomeScreen from "./screens/WelcomeScreen";
+
 
 // Initialize navigators
 const Drawer = createDrawerNavigator();
@@ -83,42 +90,42 @@ const NestedBookingMenu = () => {
   );
 };
 
-// Custom Nested Booking Navigator
+// Custom Nested Bidding Navigator
 
-const NestedBiddingMenu = () => {
-  return (
-    <NestedDrawer.Navigator
-      drawerContent={(props) => <CustomNestedDrawer {...props} />}
-    >
-      <NestedDrawer.Screen
-        name="FAST Premier League"
-        component={FPLBidding}
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? "ios-basketball" : "ios-basketball-outline"}
-              size={size}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <NestedDrawer.Screen
-        name="FAST Cricket League"
-        component={FCLBidding}
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? "ios-pin" : "ios-pin-outline"}
-              size={size}
-              color={color}
-            />
-          ),
-        }}
-      />
-    </NestedDrawer.Navigator>
-  );
-};
+// const NestedBiddingMenu = () => {
+//   return (
+//     <NestedDrawer.Navigator
+//       drawerContent={(props) => <CustomNestedDrawer {...props} />}
+//     >
+//       <NestedDrawer.Screen
+//         name="FAST Premier League"
+//         component={FPLBidding}
+//         options={{
+//           drawerIcon: ({ focused, color, size }) => (
+//             <Ionicons
+//               name={focused ? "ios-basketball" : "ios-basketball-outline"}
+//               size={size}
+//               color={color}
+//             />
+//           ),
+//         }}
+//       />
+//       <NestedDrawer.Screen
+//         name="FAST Cricket League"
+//         component={FCLBidding}
+//         options={{
+//           drawerIcon: ({ focused, color, size }) => (
+//             <Ionicons
+//               name={focused ? "ios-pin" : "ios-pin-outline"}
+//               size={size}
+//               color={color}
+//             />
+//           ),
+//         }}
+//       />
+//     </NestedDrawer.Navigator>
+//   );
+// };
 
 // Custom Drawer Navigator
 const DrawerNavigator = () => {
@@ -218,7 +225,7 @@ const DrawerNavigator = () => {
         }}
       />
       {/* Nested Navigator for Leagues Bidding */}
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Leagues Bidding"
         component={NestedBiddingMenu}
         options={{
@@ -226,6 +233,21 @@ const DrawerNavigator = () => {
           drawerIcon: ({ focused, size }) => (
             <Ionicons
               name={focused ? "bookmark" : "bookmark-outline"}
+              size={size}
+              color={focused ? "#00B4D8" : "#000"}
+            />
+          ),
+        }}
+      /> */}
+
+      <Drawer.Screen
+        name="Bidding"
+        component={BiddingMenu}
+        options={{
+          drawerLabel: "Bidding",
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name={focused ? "basketball" : "basketball-outline"}
               size={size}
               color={focused ? "#00B4D8" : "#000"}
             />
@@ -268,11 +290,11 @@ const App = () => {
   if (isLoading) {
     <LoadingScreen />;
   }
-  
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {/* <Stack.Screen name="Welcome" component={WelcomeScreen} /> */}
+        {/* <Stack.Screen name="Welcome" component={WelcomeScreen} /> */}
 
         {user ? (
           <>
@@ -289,14 +311,16 @@ const App = () => {
             {/* FAST Sports League */}
             <Stack.Screen name="FASTLeaguesMenu" component={FASTLeaguesMenu} />
             <Stack.Screen name="LeagueMatchCardDetails" component={LeagueMatchCardDetails} />
+            {/* Bidding Component */}
+            <Stack.Screen name="CustomBidding" component={CustomBidding} />
             {/* Settings Screen */}
             {/* <Stack.Screen name="Settings" component={SettingsScreen} /> */}
           </>
         ) : (
           <>
             {/* Auth Screens */}
-            <Stack.Screen name="Register" component={SignUpScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Register" component={SignUpScreen} />
           </>
         )}
       </Stack.Navigator>

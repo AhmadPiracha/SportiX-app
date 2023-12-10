@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import EquipBookingCard from '../components/EquipBookingCard';
 import axios from 'axios';
 import { auth, db } from '../database/firebase';
@@ -11,10 +11,15 @@ const ViewEquipmentBookingScreen = () => {
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const [userEmail, setUserEmail] = useState('');
   const [userRollNo, setUserRollNo] = useState(null);
-
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchBookings();
+    setRefreshing(false);
+  };
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -41,23 +46,25 @@ const ViewEquipmentBookingScreen = () => {
   }, [userEmail]);
 
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const response = await axios.get(`http://192.168.10.8:5001/viewEquipBookings?userRollNo=${userRollNo}`);
-        const bookingData = response.data;
-        setBookings(bookingData);
-        console.log("Bookings:", JSON.stringify(bookingData, null, 2));
-        setIsLoading(false); 
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-        setError(error); 
-        setIsLoading(false);
-      }
-    };
+  const fetchBookings = async () => {
+    try {
+      const response = await axios.get(`http://192.168.10.6:5001/viewEquipBookings?userRollNo=${userRollNo}`);
+      const bookingData = response.data;
+      setBookings(bookingData);
+      console.log("Bookings:", JSON.stringify(bookingData, null, 2));
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+      setError(error);
+      setIsLoading(false);
+      setRefreshing(false);
+    }
+  };
 
+  useEffect(() => {
     fetchBookings();
-  }, [userRollNo]);
+  }
+    , []);
 
   const onPressBack = () => {
     navigation.navigate('Home');
@@ -65,6 +72,8 @@ const ViewEquipmentBookingScreen = () => {
 
   return (
     <View style={styles.container}>
+      {refreshing ? <ActivityIndicator /> : null}
+
       {/* <Ionicons onPress={onPressBack} name="arrow-back-outline" size={20} color="#fff" style={styles.containerBtn} /> */}
 
       {isLoading ? (
@@ -76,7 +85,12 @@ const ViewEquipmentBookingScreen = () => {
           {bookings.length === 0 ? (
             <Text style={styles.noBookingsText}>No equipment bookings found.</Text>
           ) : (
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <ScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
               {bookings.map((booking, index) => (
                 <EquipBookingCard key={index} booking={booking} />
               ))}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import VenueBookingCard from '../components/VenueBookingCard';
-import { View, Text, StyleSheet, ScrollView,ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import axios from 'axios';
 import { auth, db } from '../database/firebase';
 
@@ -15,6 +15,13 @@ const ViewVenueBookingScreen = () => {
   const [userEmail, setUserEmail] = useState('');
   const [userRollNo, setUserRollNo] = useState(null);
   const [error, setError] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchBookings();
+    setRefreshing(false);
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -31,7 +38,6 @@ const ViewVenueBookingScreen = () => {
 
     fetchUserData();
   }, []);
-
   useEffect(() => {
     if (userEmail) {
       const rollNoMatch = userEmail.match(/([a-z]\d+)/i);
@@ -41,23 +47,25 @@ const ViewVenueBookingScreen = () => {
     }
   }, [userEmail]);
 
+  const fetchBookings = async () => {
+    try {
+      const response = await axios.get(`http://192.168.10.6:5001/viewVenueBookings?userRollNo=${userRollNo}`);
+      const bookingData = response.data;
+      setBookings(bookingData);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+      setError(error);
+    } finally {
+      setIsLoading(false);
+      setRefreshing(false); 
+    }
+  };
+
+
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const response = await axios.get(`http://192.168.10.8:5001/viewVenueBookings?userRollNo=${userRollNo}`);
-        const bookingData = response.data;
-        setBookings(bookingData);
-        setIsLoading(false); 
-
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-        setError(error);
-        setIsLoading(false);
-      }
-    };
-
     fetchBookings();
-  }, [userRollNo]);
+  }, []);
+
 
   const onPressBack = () => {
     navigation.navigate('View your Bookings');
@@ -65,7 +73,9 @@ const ViewVenueBookingScreen = () => {
 
   return (
     <View style={styles.container}>
-   {/* <Ionicons onPress={onPressBack} name="arrow-back-outline" size={20} color="#fff" style={styles.containerBtn} /> */}
+          {refreshing ? <ActivityIndicator /> : null}
+
+      {/* <Ionicons onPress={onPressBack} name="arrow-back-outline" size={20} color="#fff" style={styles.containerBtn} /> */}
 
       {isLoading ? (
         <ActivityIndicator size="large" color="#00B4D8" />
@@ -76,11 +86,17 @@ const ViewVenueBookingScreen = () => {
           {bookings.length === 0 ? (
             <Text style={styles.noBookingsText}>No equipment bookings found.</Text>
           ) : (
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-            {bookings.map((booking, index) => (
-              <VenueBookingCard key={index} booking={booking} />
-            ))}
-          </ScrollView>
+            
+            <ScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
+              {bookings.map((booking, index) => (
+                <VenueBookingCard key={index} booking={booking} />
+              ))}
+            </ScrollView>
           )}
         </View>
       )}

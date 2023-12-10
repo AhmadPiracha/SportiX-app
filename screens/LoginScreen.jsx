@@ -11,6 +11,7 @@ import {
   TextInput,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { SHA256 } from "crypto-js";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomButton from "../components/CustomButton";
@@ -86,7 +87,7 @@ const LoginScreen = ({ navigation }) => {
       .then(async (res) => {
         const userDoc = db.collection("users").doc(res.user.uid).get();
         const storedPasswordHash = (await userDoc).data().password;
-  
+
         if (enteredPasswordHash === storedPasswordHash) {
           console.log("User logged in successfully!");
 
@@ -117,28 +118,28 @@ const LoginScreen = ({ navigation }) => {
 
   // const userLogin = () => {
   //   setIsLoading(true);
-  
+
   //   // Generate hash of the entered password using SHA-256
   //   const enteredPasswordHash = SHA256(password).toString();
-    
+
   //   auth
   //     .signInWithEmailAndPassword(email, enteredPasswordHash)
   //     .then(async (res) => {
   //       const user = res.user;
   //       const userDoc = await db.collection("users").doc(user.uid).get();
   //       const storedPasswordHash = userDoc.data().password;
-  
+
   //       if (enteredPasswordHash === storedPasswordHash) {
   //         if (user.emailVerified) {
   //           console.log("User logged in successfully!");
-  
+
   //           // Save the user's login status to AsyncStorage
   //           try {
   //             await AsyncStorage.setItem("isLoggedIn", "true");
   //           } catch (error) {
   //             console.log("Error saving login status to AsyncStorage:", error);
   //           }
-  
+
   //           navigation.navigate("Home");
   //           setIsLoading(false);
   //           setDisplayName("");
@@ -159,7 +160,7 @@ const LoginScreen = ({ navigation }) => {
   //       Alert.alert(error.message);
   //     });
   // };
-  
+
 
   if (isLoading) {
     return (
@@ -270,6 +271,11 @@ const LoginScreen = ({ navigation }) => {
 
         {/* OR TEXT */}
         <Text style={styles.orText}>Or</Text>
+
+        {/* Google Auth */}
+
+        <CustomButton label={"Sign in with Google"} onPress={() => {
+        }} />
 
         {/* DON'T HAVE AN ACCOUNT SIGNUP */}
         <View style={styles.signupContainer}>

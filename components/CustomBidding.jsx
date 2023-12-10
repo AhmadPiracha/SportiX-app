@@ -4,13 +4,13 @@ import { auth, db } from "../database/firebase";
 import { Picker } from '@react-native-picker/picker';
 import { windowWidth, windowHeight } from '../utils/dimensions';
 import { Table, Row } from 'react-native-table-component';
-
-import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
-import { biddingPrice } from '../model/matchesData';
+import { biddingPrice } from '../model/matchesData'; import { Ionicons } from "@expo/vector-icons";
 
-const CustomBidding = ({ type }) => {
+
+const CustomBidding = ({ navigation,route }) => {
     var basePrice = 2000;
+    const { League_name } = route.params;
     const [sportsBiddingTeam, setSportsBiddingTeam] = useState([]);
     const [biddingAmount, setBiddingAmount] = useState(0);
     const [selectedTeam, setSelectedTeam] = useState("Select Team");
@@ -27,10 +27,10 @@ const CustomBidding = ({ type }) => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`http://192.168.1.9:5001/viewAllBiddings?league=${type}`);
+            const response = await axios.get(`http://192.168.10.6:5001/viewAllBiddings?league=${League_name}`);
             if (response?.data) {
                 setTableData(response.data.map(item => [item.displayName, item.team, item.biddingAmount]));
-                // console.log(JSON.stringify(response.data, null, 2));
+                console.log(JSON.stringify(response.data, null, 2));
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -64,7 +64,7 @@ const CustomBidding = ({ type }) => {
     useEffect(() => {
         const postData = async () => {
             try {
-                const response = await axios.get(`http://192.168.1.9:5001/getLeagueTeams?League_Name=${type}`);
+                const response = await axios.get(`http://192.168.10.6:5001/getLeagueTeams?League_Name=${League_name}`);
                 if (response?.data) {
                     setSportsBiddingTeam(response.data.map(item => item.name));
                 }
@@ -92,7 +92,7 @@ const CustomBidding = ({ type }) => {
 
         Alert.alert(
             "Confirm Bid",
-            `Are you sure you want to place a bid of ${totalAmount} for ${selectedTeam} in ${type} league?`,
+            `Are you sure you want to place a bid of ${totalAmount} for ${selectedTeam} in ${League_name} league?`,
             [
                 {
                     text: "Cancel",
@@ -103,11 +103,11 @@ const CustomBidding = ({ type }) => {
                     text: "Place Bid",
                     onPress: async () => {
                         try {
-                            const response = await axios.post('http://192.168.1.9:5001/placeBid', {
+                            const response = await axios.post('http://192.168.10.6:5001/placeBid', {
                                 displayName: displayName,
                                 userRollNo,
                                 team: selectedTeam,
-                                league: type,
+                                league: League_name,
                                 basePrice,
                                 biddingAmount,
                             });
@@ -117,15 +117,15 @@ const CustomBidding = ({ type }) => {
                             if (response.data.success) {
                                 Alert.alert(
                                     "Successful Bid",
-                                    `Congratulations! Your bid of ${totalAmount} for ${selectedTeam} in ${type} was successful.`,
+                                    `Congratulations! Your bid of ${totalAmount} for ${selectedTeam} in ${League_name} was successful.`,
                                     [
                                         {
                                             text: "OK",
                                             onPress: () => {
                                                 setSelectedTeam("Select Team");
                                                 setBiddingAmount(0);
-                                                 // Refetch the data to update the displayed bids
-                                             fetchData();
+                                                // Refetch the data to update the displayed bids
+                                                fetchData();
                                             },
                                             style: "cancel"
                                         },
@@ -134,7 +134,7 @@ const CustomBidding = ({ type }) => {
                             } else {
                                 Alert.alert(
                                     "Bid Unsuccessful",
-                                    `Oops! Your bid of ${totalAmount} for ${selectedTeam} in ${type} was not successful. Please try again with a higher bid.`,
+                                    `Oops! Your bid of ${totalAmount} for ${selectedTeam} in ${League_name} was not successful. Please try again with a higher bid.`,
                                     [
                                         {
                                             text: "OK",
@@ -158,22 +158,29 @@ const CustomBidding = ({ type }) => {
         setSelectedTeam("Select Team");
         setBiddingAmount(0);
 
-
     };
-
-
+    const onPressBack = () => {
+        navigation.navigate("Bidding");
+    };
     return (
         <View style={styles.container}>
             <View style={styles.containerOne}>
+                <Ionicons
+                    onPress={onPressBack}
+                    name="arrow-back-outline"
+                    size={20}
+                    color="#000"
+                    style={styles.backButton}
+                />
                 <View style={styles.headerGameContainer}>
-                    <Text style={styles.headerGameTxt}>{type}</Text>
+                    <Text style={styles.headerGameTxt}>{League_name}</Text>
                 </View>
             </View>
             <View style={styles.mainContainer} >
-            <View style={styles.headerTableContainer}>
+                <View style={styles.headerTableContainer}>
                     {tableData.length > 0 ? (
                         <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
-                            <Row data={['Name','Team Name','Bidding Amount']} style={styles.head} textStyle={styles.text} />
+                            <Row data={['Name', 'Team Name', 'Bidding Amount']} style={styles.head} textStyle={styles.text} />
                             {tableData.map((rowData, index) => (
                                 <Row
                                     key={index}
@@ -188,7 +195,7 @@ const CustomBidding = ({ type }) => {
                     )
 
                     }
-            </View>
+                </View>
 
                 <View style={styles.headerContainer}>
                     <View style={styles.pickerContainer}>
@@ -235,7 +242,7 @@ const CustomBidding = ({ type }) => {
                 </TouchableOpacity>
 
 
-                
+
 
                 <TouchableOpacity onPress={clearSelections} style={styles.clearButton}>
                     <Text style={styles.clearButtonText}>Clear Selections</Text>
@@ -344,24 +351,31 @@ const styles = StyleSheet.create({
         backgroundColor: '#f1f8ff',
         borderBottomWidth: 2,
         borderBottomColor: '#000000',
-      },
-      row: {
+    },
+    row: {
         flexDirection: 'row',
         height: 40,
         backgroundColor: '#f9f9f9',
         borderBottomWidth: 1,
         borderBottomColor: '#000000',
-      },
-      text: {
+    },
+    text: {
         textAlign: 'center',
         fontWeight: '600',
         color: '#000000',
-      },
+    },
     noBookingsText: {
         textAlign: 'center',
         color: '#000000',
         marginTop: 10,
     },
+    backButton: {
+        marginRight: 10,
+        color: "#fff",
+        marginTop: 10,
+        
+    },
+
 
 });
 
