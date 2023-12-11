@@ -204,7 +204,7 @@ app.get('/viewVenueBookings', (req, res) => {
 });
 
 app.get('/getLeague', (req, res) => {
-    const name = "SELECT DISTINCT nname,ground_name FROM league";
+    const name = "SELECT DISTINCT League_name,League_Type FROM league";
 
     connection.query(name, (err, result) => {
         if (err) {
@@ -252,18 +252,6 @@ app.get('/getLeagueSchedule', (req, res) => {
     });
 });
 
-app.get('/getLeagueBids', (req, res) => {
-    let league = "SELECT DISTINCT League_name,type FROM bidding_cricket";
-    let status = invalid;
-    connection.query(league, (err, result) => {
-        if (err) {
-            console.error("Error executing SQL query:", err);
-            return res.status(500).send("Error fetching data");
-        }
-
-        res.send(result);
-    });
-});
 
 app.post('/placeBid', async (req, res) => {
     try {
@@ -333,6 +321,42 @@ app.get('/viewAllBiddings', (req, res) => {
     }
 });
 
+app.get('/getLeagueBids', (req, res) => {
+    const leagueQuery = "SELECT DISTINCT League_name, type, status FROM bidding_cricket";
+    connection.query(leagueQuery, (err, result) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).send("Error fetching data");
+        }
+
+        // console.log("Raw Result:", result);
+
+        const validLeagues = result.filter(item => item.status === 'Valid' || item.status === 'valid');
+
+        // console.log("Valid Leagues:", validLeagues);
+
+        if (validLeagues.length > 0) {
+            res.send(validLeagues);
+        } else {
+            res.status(404).send("No valid leagues found");
+        }
+    });
+});
+
+
+app.get('/getLeagueResult', (req, res) => {
+
+    const result = "SELECT winner,date FROM result";
+    connection.query(result, (err, result) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            return res.status(500).send("Error fetching data");
+        }
+
+        res.send(result);
+    });
+    
+});
 
 app.listen(5001, () => {
     console.log("App is running on port 5001.");

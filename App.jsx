@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { auth, db } from './database/firebase';
+import { auth } from './database/firebase';
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text } from "react-native";
 // Icons

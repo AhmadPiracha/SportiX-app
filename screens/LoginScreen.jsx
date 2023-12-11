@@ -16,7 +16,6 @@ import { SHA256 } from "crypto-js";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomButton from "../components/CustomButton";
 import { auth, GoogleProvider, db } from "../database/firebase";
-import { signInWithPopup } from "firebase/auth";
 import { StyleSheet } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
@@ -274,8 +273,8 @@ const LoginScreen = ({ navigation }) => {
 
         {/* Google Auth */}
 
-        <CustomButton label={"Sign in with Google"} onPress={() => {
-        }} />
+        {/* <CustomButton label={"Sign in with Google"} onPress={() => {
+        }} /> */}
 
         {/* DON'T HAVE AN ACCOUNT SIGNUP */}
         <View style={styles.signupContainer}>

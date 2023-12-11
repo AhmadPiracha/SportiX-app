@@ -15,7 +15,7 @@ import { LeaguesOptionSwitch } from '../components/leaguesOptionSwitch';
 import { Ionicons } from "@expo/vector-icons";
 import Feather from "react-native-vector-icons/Feather";
 import Carousel from 'react-native-snap-carousel';
-import { windowWidth,windowHeight } from '../utils/dimensions';
+import { windowWidth, windowHeight } from '../utils/dimensions';
 import { sliderData } from "../model/matchesData";
 import BannerSlider from "../components/BannerSlider";
 
@@ -90,13 +90,13 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   const [teamsName, setTeamName] = useState([]);
   const [matchSchedule, setMatchSchedule] = useState([]);
   const [filteredTeams, setFilteredTeams] = useState([]);
-
+  const [result, setResult] = useState([]);
   const upcomingMatches = matchSchedule.slice(0, 5);
 
   useEffect(() => {
     const fetchTeamsName = async () => {
       try {
-        const response = await axios.get(`http://192.168.10.6:5001/getLeagueTeams?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.10.7:5001/getLeagueTeams?League_Name=${nname}`);
         if (response?.data) {
           setTeamName(response.data);
           console.log("Team Name:", JSON.stringify(response.data, null, 2));
@@ -104,7 +104,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
 
 
         }
-      } catch (error) {cmd
+      } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
@@ -115,10 +115,10 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchMatchesSchedule = async () => {
       try {
-        const response = await axios.get(`http://192.168.10.6:5001/getLeagueSchedule?League_Name=${nname}`);
+        const response = await axios.get(`http://192.168.10.7:5001/getLeagueSchedule?League_Name=${nname}`);
         if (response?.data) {
           setMatchSchedule(response.data);
-          // console.log("Match Schedule:", JSON.stringify(response.data, null, 2));
+          console.log("Match Schedule:", JSON.stringify(response.data, null, 2));
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -129,9 +129,26 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   }, []);
 
 
+  // useEffect(() => {
+  //   const fetchResult = async () => {
+  //     try {
+  //       const response = await axios.get(`http://192.168.10.7:5001/getLeagueResult`);
+  //       if (response?.data) {
+  //         setResult(response.data);
+  //         console.log("Match Schedule:", JSON.stringify(response.data, null, 2));
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchResult();
+  // }, []);
+
+
   const formatDate = (dateString) => {
     const matchDate = new Date(dateString);
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit'};
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return matchDate.toLocaleDateString(undefined, options);
   };
 
@@ -192,34 +209,34 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
           data={upcomingMatches}
           renderItem={({ item }) => (
             <>
-            <View style={styles.matchCardContainer}>
-            <View style={styles.matchCard}>
-                <View style={styles.matchContent}>
-                  <View style={styles.teamLogoContainer}>
-                    <Image
-                      source={require("../assets/logo/islamabad-united.jpg")}
-                      style={styles.teamLogo}
-                    />
-                    <Text style={styles.matchCardTitle}>{item.team1}</Text>
+              <View style={styles.matchCardContainer}>
+                <View style={styles.matchCard}>
+                  <View style={styles.matchContent}>
+                    <View style={styles.teamLogoContainer}>
+                      <Image
+                        source={require("../assets/logo/islamabad-united.jpg")}
+                        style={styles.teamLogo}
+                      />
+                      <Text style={styles.matchCardTitle}>{item.team1}</Text>
+                    </View>
+                    <View style={styles.teamLogoContainer}>
+                      <Image
+                        source={require("../assets/logo/lahore-qalandars.jpg")}
+                        style={styles.teamLogo}
+                      />
+                      <Text style={styles.matchCardTitle}>{item.team2}</Text>
+                    </View>
                   </View>
-                  <View style={styles.teamLogoContainer}>
-                    <Image
-                      source={require("../assets/logo/lahore-qalandars.jpg")}
-                      style={styles.teamLogo}
-                    />
-                    <Text style={styles.matchCardTitle}>{item.team2}</Text>
+                  <View style={styles.matchDetails}>
+                    <Text style={styles.matchCardDate}>{item.slot}</Text>
+                    <Text style={styles.matchCardDate}>{formatDate(item.Match_Date)}</Text>
                   </View>
                 </View>
                 <View style={styles.matchDetails}>
-                  <Text style={styles.matchCardDate}>{item.slot}</Text>
-                  <Text style={styles.matchCardDate}>{formatDate(item.Match_Date)}</Text>
+                  <Text style={styles.matchCardVenue}>{item.League_Name}</Text>
                 </View>
               </View>
-              <View style={styles.matchDetails}>
-                <Text style={styles.matchCardVenue}>{item.League_Name}</Text>
-              </View>
-            </View>
-            
+
             </>
           )}
           sliderWidth={windowWidth}
@@ -234,9 +251,9 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
           enableSnap={true}
           lockScrollWhileSnapping={true}
           removeClippedSubviews={true}
-          inactiveSlideScale={0.9} 
+          inactiveSlideScale={0.9}
           inactiveSlideOpacity={0.7}
-          activeSlideAlignment="start" 
+          activeSlideAlignment="start"
         />
       </ScrollView>
     );
@@ -338,43 +355,37 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   //   return (
   //     <View style={styles.winnerCard}>
   //       <View style={styles.matchCardContainer}>
-  //           <View style={styles.matchCard}>
-  //               <View style={styles.matchContent}>
-  //                 <View style={styles.teamLogoContainer}>
-  //                   <Image
-  //                     source={require("../assets/logo/islamabad-united.jpg")}
-  //                     style={styles.teamLogo}
-  //                   />
-  //                   <Text style={styles.matchCardTitle}>A</Text>
-  //                 </View>
-  //                 <View style={styles.teamLogoContainer}>
-  //                   <Image
-  //                     source={require("../assets/logo/lahore-qalandars.jpg")}
-  //                     style={styles.teamLogo}
-  //                   />
-  //                   <Text style={styles.matchCardTitle}>B</Text>
-  //                 </View>
-  //               </View>
-  //               <View style={styles.matchDetails}>
-  //                 <Text style={styles.matchCardDate}>WINNER</Text>
-  //               </View>
+  //        {/* {result.map((item) => (
+  //          <FlatList 
+  //           data={item}
+  //           renderItem={({item}) => (
+  //             <View style={styles.tableRow}>
+  //               <Text style={styles.tableCell}>{item.winner}</Text>
+  //               <Text style={styles.tableCell}>{item.date}</Text>
   //             </View>
-  //             <View style={styles.matchDetails}>
-  //               <Text style={styles.matchCardVenue}>FCL</Text>
+  //           )}
+  //           keyExtractor={(item, index) => index.toString()}
+  //           contentContainerStyle={styles.table}
+  //           />
+  //         ))}  */}
+
+  //         <FlatList
+  //           data={result}
+  //           renderItem={({ item }) => (
+  //             <View style={styles.tableRow}>
+  //               <Text style={styles.tableCell}>{item.winner}</Text>
+  //               <Text style={styles.tableCell}>{item.date}</Text>
   //             </View>
-  //           </View>
+  //           )}
+  //           keyExtractor={(item, index) => index.toString()}
+  //           contentContainerStyle={styles.table}
+  //         />
+
+  //       </View>
   //     </View>
   //   );
   // };
 
-  const renderPointsTableView = () => {
-    return (
-      <View style={styles.contentContainer}>
-        <Text>Points Table View</Text>
-        {/* Add your Points Table content here */}
-      </View>
-    );
-  };
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -404,7 +415,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
       {switchTab === 2 && renderTeamsView()}
       {switchTab === 3 && renderMatchesView()}
       {/* {switchTab === 4 && renderPointsTableView()} */}
-      
+
     </SafeAreaView>
   );
 
@@ -585,15 +596,15 @@ const styles = StyleSheet.create({
   },
 
   // New styles for match card on home screen
-  matchCardContainer:{
+  matchCardContainer: {
     backgroundColor: '#1b263b',
     borderRadius: 10,
     padding: 10,
-    marginBottom: 10,    
+    marginBottom: 10,
 
   },
   matchCard: {
-  
+
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -640,11 +651,11 @@ const styles = StyleSheet.create({
     color: '#888',
     textAlign: 'center',
     flex: 1,
-    color:'#ffffff',
+    color: '#ffffff',
   },
 
   // Winner Card
- 
+
   winnerCard: {
     backgroundColor: 'white',
     padding: 16,

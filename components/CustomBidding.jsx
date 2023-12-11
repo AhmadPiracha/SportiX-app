@@ -27,10 +27,10 @@ const CustomBidding = ({ navigation,route }) => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`http://192.168.10.6:5001/viewAllBiddings?league=${League_name}`);
+            const response = await axios.get(`http://192.168.10.7:5001/viewAllBiddings?league=${League_name}`);
             if (response?.data) {
                 setTableData(response.data.map(item => [item.displayName, item.team, item.biddingAmount]));
-                console.log(JSON.stringify(response.data, null, 2));
+                // console.log(JSON.stringify(response.data, null, 2));
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -64,7 +64,7 @@ const CustomBidding = ({ navigation,route }) => {
     useEffect(() => {
         const postData = async () => {
             try {
-                const response = await axios.get(`http://192.168.10.6:5001/getLeagueTeams?League_Name=${League_name}`);
+                const response = await axios.get(`http://192.168.10.7:5001/getLeagueTeams?League_Name=${League_name}`);
                 if (response?.data) {
                     setSportsBiddingTeam(response.data.map(item => item.name));
                 }
@@ -103,7 +103,7 @@ const CustomBidding = ({ navigation,route }) => {
                     text: "Place Bid",
                     onPress: async () => {
                         try {
-                            const response = await axios.post('http://192.168.10.6:5001/placeBid', {
+                            const response = await axios.post('http://192.168.10.7:5001/placeBid', {
                                 displayName: displayName,
                                 userRollNo,
                                 team: selectedTeam,

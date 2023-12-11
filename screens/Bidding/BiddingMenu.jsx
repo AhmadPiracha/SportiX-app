@@ -20,7 +20,7 @@ const BiddingMenu = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://192.168.10.6:5001/getLeagueBids");
+        const response = await axios.get("http://192.168.10.7:5001/getLeagueBids");
         if (response?.data) {
           setTeamName(response.data);
           console.log("Team Name:", JSON.stringify(response.data, null, 2));
@@ -52,28 +52,41 @@ const BiddingMenu = () => {
         </View>
       </View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {Array.isArray(teamName) && teamName.map((item) => (
-          <TouchableOpacity
-            key={item.League_name}
-            onPress={() =>
-              navigation.navigate("CustomBidding", { League_name: item.League_name })
-            }
-            style={styles.card}
-          >
-            <View style={styles.rowContainer}>
-              <View style={styles.imageContainer}>
-                {/* <Image source={{ uri: item.image_url }} style={styles.cardImage} /> */}
-                <Image source={require("../../assets/logo/FPL_Logo.jpg")} style={styles.cardImage} />
+        {Array.isArray(teamName) && teamName.length > 0 ?
+        
+        (
+          teamName.map((item) => (
+            <TouchableOpacity
+              key={item.League_name}
+              onPress={() =>
+                navigation.navigate("CustomBidding", { League_name: item.League_name })
+              }
+              style={styles.card}
+            >
+              <View style={styles.rowContainer}>
+                <View style={styles.imageContainer}>
+                  {item.League_name === "FAST PREMIER LEAGUE" ? (
+                    <Image source={require("../../assets/logo/FPL_Logo.jpg")} style={styles.cardImage} />
+                  ) : item.League_name === "FAST Cricket League" ? (
+                    <Image source={require("../../assets/logo/FCL_Logo.jpg")} style={styles.cardImage} />
+                  ) : (
+                    <Image source={require('../../assets/logo/FCL_Logo.jpg')} style={styles.cardImage} />
+                  )}
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.itemTitle}>{item.League_name}</Text>
+                  <Text style={styles.itemSubTitle}>{item.ground_name}</Text>
+                </View>
               </View>
-              <View style={styles.textContainer}>
-                <Text style={styles.itemTitle}>{item.League_name}</Text>
-                <Text style={styles.itemSubTitle}>{item.ground_name}</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-
-        ))}
+            </TouchableOpacity>
+          ))
+        ) : (
+          <View style={styles.noBiddingContainer}>
+            <Text style={styles.noBiddingText}>League Bidding Not Started</Text>
+          </View>
+        )}
       </ScrollView>
+
     </SafeAreaView>
   );
 };
@@ -112,15 +125,15 @@ const styles = StyleSheet.create({
     margin: windowWidth * 0.03,
   },
   rowContainer: {
-    flexDirection: "row", 
-    alignItems: "center", 
+    flexDirection: "row",
+    alignItems: "center",
   },
   imageContainer: {
-    flex: 1, 
+    flex: 1,
     padding: windowWidth * 0.02,
   },
   textContainer: {
-    flex: 2, 
+    flex: 2,
     padding: windowWidth * 0.02,
   },
   cardImage: {
@@ -141,7 +154,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     padding: 10,
   },
-  
+
 });
 
 export default BiddingMenu;
