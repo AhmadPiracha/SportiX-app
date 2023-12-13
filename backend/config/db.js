@@ -21,7 +21,7 @@ const connection = mysql.createConnection({
     host: "localhost",
     database: "sportix",
     user: "root",
-    password: "fast@19cfd",
+    password: "password",
 });
 
 module.exports = connection;
@@ -163,8 +163,31 @@ app.post('/venue_booking', (req, res) => {
         res.status(200).json({ message: "Booking data inserted successfully" });
     });
 });
-
-
+app.post('/checkVenueAvailability', (req, res) => {
+    const location = req.body.location;
+    const booking_date = req.body.booking_date;
+    const timeSlotDuration = req.body.timeSlotDuration;
+  
+    // Check only confirmed bookings
+    const sql = "SELECT * FROM venue_booking WHERE location = ? AND booking_date = ? AND timeSlotDuration = ? AND status = 'Confirmed'";
+    const values = [location, booking_date, timeSlotDuration];
+  
+    connection.query(sql, values, (err, result) => {
+      if (err) {
+        console.error("Error executing SQL query:", err);
+        return res.status(500).json({ message: "Error checking venue availability" });
+      }
+  
+      const available = result.length === 0; // Venue is available if there are no confirmed bookings at that time
+  
+      // Set the content type to JSON
+      res.setHeader('Content-Type', 'application/json');
+  
+      // Send the response in the correct format
+      res.status(200).json({ available });
+    });
+  });
+  
 app.get('/viewEquipBookings', (req, res) => {
     const userRollNo = req.query.userRollNo || null;
     let sql = "SELECT * FROM equip_booking";
@@ -355,7 +378,7 @@ app.get('/getLeagueResult', (req, res) => {
 
         res.send(result);
     });
-    
+
 });
 
 app.listen(5001, () => {
