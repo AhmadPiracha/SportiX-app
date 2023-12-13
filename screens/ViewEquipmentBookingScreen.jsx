@@ -15,11 +15,15 @@ const ViewEquipmentBookingScreen = () => {
 
   const [userEmail, setUserEmail] = useState('');
   const [userRollNo, setUserRollNo] = useState(null);
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    fetchBookings();
-    setRefreshing(false);
+    try {
+      await fetchBookings();
+    } finally {
+      setRefreshing(false);
+    }
   };
+  
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -48,23 +52,25 @@ const ViewEquipmentBookingScreen = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await axios.get(`http://192.168.10.7:5001/viewEquipBookings?userRollNo=${userRollNo}`);
-      const bookingData = response.data;
-      setBookings(bookingData);
-      console.log("Bookings:", JSON.stringify(bookingData, null, 2));
-      setIsLoading(false);
+      if (userRollNo) {
+        const response = await axios.get(`http://192.168.1.4:5001/viewEquipBookings?userRollNo=${userRollNo}`);
+        const bookingData = response.data;
+        setBookings(bookingData);
+      } else {
+        console.error("Error: User Roll No is null or undefined");
+      }
     } catch (error) {
       console.error("Error fetching bookings:", error);
       setError(error);
+    } finally {
       setIsLoading(false);
-      setRefreshing(false);
     }
   };
 
   useEffect(() => {
     fetchBookings();
   }
-    , []);
+    , [userRollNo]);
 
   const onPressBack = () => {
     navigation.navigate('Home');
