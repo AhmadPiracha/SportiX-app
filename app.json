@@ -21,6 +21,11 @@
             "supportsTablet": true
         },
         "android": {
+            "permissions": [
+                "ACCESS_NETWORK_STATE",
+                "INTERNET"
+            ],
+
             "adaptiveIcon": {
                 "foregroundImage": "./assets/logo/sportix-logo.png",
                 "backgroundColor": "#ffffff"

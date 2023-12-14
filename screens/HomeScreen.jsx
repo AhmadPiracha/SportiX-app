@@ -19,6 +19,8 @@ import BannerSlider from "../components/BannerSlider";
 import CustomSwitch from "../components/CustomSwitch";
 import { sliderData } from "../model/matchesData";
 import axios from "axios";
+// import { fetchPrivateIPs } from '../backend/currentIp/IP';
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -28,6 +30,10 @@ const HomeScreen = ({ navigation }) => {
   const [matchTab, setMatchTab] = useState(1);
   const [displayName, setDisplayName] = useState("");
   const [matches, setMatches] = useState({ todayMatches: [], upcomingMatches: [] });
+
+  
+  
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -50,7 +56,7 @@ const HomeScreen = ({ navigation }) => {
         // console.log("PKT Current Date:", pktDate.toISO()); // Log PKT current date
 
         const response = await axios.get(
-          `http://192.168.10.7:5001/teamSchedule?date=${pktDate.toISO()}`,
+          `http://192.168.1.8:5001/teamSchedule?date=${pktDate.toISO()}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -83,6 +89,19 @@ const HomeScreen = ({ navigation }) => {
     fetchData();
   }, []);
 
+
+  // useEffect(() => {
+  //   const fetchIP = async () => {
+  //     try {
+  //       const privateIP = await fetchPrivateIPs();
+  //       console.log("IP Address:", privateIP);
+  //     } catch (error) {
+  //       console.error("Error fetching IP address:", error);
+  //     }
+  //   };
+  
+  //   fetchIP();
+  // }, []);
   const renderBanner = ({ item, index }) => {
     return <BannerSlider data={item} index={index} />;
   };
@@ -153,7 +172,7 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.sectionTitle}>Gallery</Text>
         </View>
 
-        <Carousel
+        {/* <Carousel
         ref={(c) => {
           this._carousel = c;
         }}
@@ -162,7 +181,7 @@ const HomeScreen = ({ navigation }) => {
         sliderWidth={width - 40}
         itemWidth={300}
         loop={true}
-      />
+      /> */}
 
         <View style={styles.switchContainer}>
           <CustomSwitch
