@@ -52,7 +52,11 @@ const SportsVenueBookingScreen = ({navigation}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get("http://192.168.1.8:5001/getVenue");
+=======
+        const response = await axios.get("http://192.168.1.4:5001/getVenue");
+>>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
         if (response?.data) {
           setSportGrounds(response.data);
         }
@@ -73,7 +77,12 @@ const SportsVenueBookingScreen = ({navigation}) => {
     }
   }, [sportGround, sportGrounds]);
 
-  const handleBooking = () => {
+  const formatDateTime = (dateTime) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
+    return new Date(dateTime).toLocaleString(undefined, options);
+  };
+  
+  const handleBooking = async () => {
     if (!selectedTimeSlot) {
       Alert.alert("Time Slot Required", "Please select a time slot for booking.");
       return;
@@ -88,11 +97,10 @@ const SportsVenueBookingScreen = ({navigation}) => {
     const capitalizedType = sportType.charAt(0).toUpperCase() + sportType.slice(1);
     const userRollNo = userEmail.match(/([a-z]\d+)/i)[0];
   
-    // Combine the selectedDate and selectedTime to create a new Date
     const selectedDateTime = new Date(selectedDate);
     selectedDateTime.setHours(selectedTime.getHours(), selectedTime.getMinutes());
     const formattedBookingDate = selectedDateTime.toISOString().slice(0, 19).replace('T', ' ');
-
+  
     const bookingInfo = {
       name: sportGround,
       type: capitalizedType,
@@ -103,14 +111,38 @@ const SportsVenueBookingScreen = ({navigation}) => {
       booking_date: formattedBookingDate,
     };
   
+    try {
+      const availabilityResponse = await axios.post(
+        'http://192.168.1.4:5001/checkVenueAvailability',
+        {
+          location: sportVenue,
+          booking_date: formattedBookingDate,
+          timeSlotDuration: selectedTimeSlot.duration,
+        }
+      );
+  
+      if (!availabilityResponse.data.available) {
+        Alert.alert(
+          "Venue Not Available",
+          "The selected venue is already booked at this time. Please choose another time or venue."
+        );
+        return;
+      }
+    } catch (error) {
+      console.error('Error checking venue availability:', error);
+      Alert.alert("Error", "An error occurred while checking venue availability. Please try again.");
+      return;
+    }
+  
+    const formattedDateTime = formatDateTime(selectedDateTime);
+  
     Alert.alert(
       "Booking Details",
-      "Name: " + displayName + "\n" +
-      "Sport Ground: " + sportGround + "\n" +
-      "Sport Venue: " + sportVenue + "\n" +
-      "Time Slot: " + selectedTimeSlot.duration + "\n" +
-      "Date: " + selectedDate.toDateString() + "\n" +
-      "Time: " + selectedTime.toLocaleTimeString(),
+      `Name: ${displayName}\n` +
+      `Sport Ground: ${sportGround}\n` +
+      `Sport Venue: ${sportVenue}\n` +
+      `Time Slot: ${selectedTimeSlot.duration}\n` +
+      `Date and Time: ${formattedDateTime}`,
       [
         {
           text: "Cancel",
@@ -121,25 +153,27 @@ const SportsVenueBookingScreen = ({navigation}) => {
           text: "Book Now", onPress: async () => {
             try {
               const response = await axios.post(
+<<<<<<< HEAD
                 'http://192.168.1.8:5001/venue_booking',
+=======
+                'http://192.168.1.4:5001/venue_booking',
+>>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
                 bookingInfo
               );
               console.log('Booking response:', response.data);
-
             } catch (error) {
               console.error('Error booking:', error);
             }
-
-
+  
             Alert.alert(
               "Successful",
-              "Your booking request is Forwarded to Sports Officer.",
+              "Your booking request is forwarded to the Sports Officer.",
               [
                 {
                   text: "OK",
                   onPress: () => {
                     setSportGround(null);
-                    setSportVenue(null)
+                    setSportVenue(null);
                     setSelectedTimeSlot(null);
                     setSelectedDate(new Date());
                     setSelectedTime(new Date());
@@ -152,8 +186,9 @@ const SportsVenueBookingScreen = ({navigation}) => {
         }
       ]
     );
-
   };
+  
+
 
   const handleDateChange = (event, selected) => {
     const currentDate = selected || selectedDate;

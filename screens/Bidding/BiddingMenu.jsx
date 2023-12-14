@@ -20,10 +20,14 @@ const BiddingMenu = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get("http://192.168.1.8:5001/getLeagueBids");
+=======
+        const response = await axios.get("http://192.168.1.4:5001/getLeagueBids");
+>>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
         if (response?.data) {
           setTeamName(response.data);
-          console.log("Team Name:", JSON.stringify(response.data, null, 2));
+          // console.log("Team Name:", JSON.stringify(response.data, null, 2));
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -154,6 +158,19 @@ const styles = StyleSheet.create({
   scrollContainer: {
     padding: 10,
   },
+  noBiddingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff', // Set your background color
+  },
+  noBiddingText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333', // Set your text color
+    textAlign: 'center',
+  },
+  
 
 });
 

@@ -17,11 +17,15 @@ const ViewVenueBookingScreen = () => {
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    fetchBookings();
-    setRefreshing(false);
+    try {
+      await fetchBookings();
+    } finally {
+      setRefreshing(false);
+    }
   };
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -49,22 +53,32 @@ const ViewVenueBookingScreen = () => {
 
   const fetchBookings = async () => {
     try {
+<<<<<<< HEAD
       const response = await axios.get(`http://192.168.1.8:5001/viewVenueBookings?userRollNo=${userRollNo}`);
       const bookingData = response.data;
       setBookings(bookingData);
+=======
+      if (userRollNo) {
+        const response = await axios.get(`http://192.168.1.4:5001/viewVenueBookings?userRollNo=${userRollNo}`);
+        const bookingData = response.data;
+        setBookings(bookingData);
+      } else {
+        console.error("Data Fetching");
+      }
+>>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
     } catch (error) {
       console.error("Error fetching bookings:", error);
       setError(error);
     } finally {
       setIsLoading(false);
-      setRefreshing(false); 
     }
   };
+  
 
 
   useEffect(() => {
     fetchBookings();
-  }, []);
+  }, [userRollNo]);
 
 
   const onPressBack = () => {

@@ -27,7 +27,11 @@ const CustomBidding = ({ navigation,route }) => {
 
     const fetchData = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get(`http://192.168.1.8:5001/viewAllBiddings?league=${League_name}`);
+=======
+            const response = await axios.get(`http://192.168.1.4:5001/viewAllBiddings?league=${League_name}`);
+>>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
             if (response?.data) {
                 setTableData(response.data.map(item => [item.displayName, item.team, item.biddingAmount]));
                 // console.log(JSON.stringify(response.data, null, 2));
@@ -64,7 +68,11 @@ const CustomBidding = ({ navigation,route }) => {
     useEffect(() => {
         const postData = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`http://192.168.1.8:5001/getLeagueTeams?League_Name=${League_name}`);
+=======
+                const response = await axios.get(`http://192.168.1.4:5001/getLeagueTeams?League_Name=${League_name}`);
+>>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
                 if (response?.data) {
                     setSportsBiddingTeam(response.data.map(item => item.name));
                 }
@@ -103,7 +111,11 @@ const CustomBidding = ({ navigation,route }) => {
                     text: "Place Bid",
                     onPress: async () => {
                         try {
+<<<<<<< HEAD
                             const response = await axios.post('http://192.168.1.8:5001/placeBid', {
+=======
+                            const response = await axios.post('http://192.168.1.4:5001/placeBid', {
+>>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
                                 displayName: displayName,
                                 userRollNo,
                                 team: selectedTeam,

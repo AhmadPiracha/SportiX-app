@@ -38,7 +38,11 @@ const ItemDetailsScreen = ({ route, navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+<<<<<<< HEAD
         const response = await fetch(`http://192.168.1.8:5001/getProducts?type=${type}`);
+=======
+        const response = await fetch(`http://192.168.1.4:5001/getProducts?type=${type}`);
+>>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
         const data = await response.json();
 
         console.log("Data fetched successfully:", JSON.stringify(data, null, 2));
@@ -103,7 +107,11 @@ const ItemDetailsScreen = ({ route, navigation }) => {
                 booking_date: formattedBookingDate,
               };
 
+<<<<<<< HEAD
               return fetch('http://192.168.1.8:5001/equipment_booking', {
+=======
+              return fetch('http://192.168.1.4:5001/equipment_booking', {
+>>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',

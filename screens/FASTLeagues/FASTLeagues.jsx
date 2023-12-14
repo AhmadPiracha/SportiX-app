@@ -20,7 +20,11 @@ const FASTLeagues = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get("http://192.168.1.8:5001/getLeague");
+=======
+        const response = await axios.get("http://192.168.1.4:5001/getLeague");
+>>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
         if (response?.data) {
           setTeamName(response.data);
           console.log("Team Name:", JSON.stringify(response.data, null, 2));
