@@ -10,11 +10,7 @@ const PlayersList = ({ team }) => {
     const fetchData = async () => {
       try {
 
-<<<<<<< HEAD
-        const response = await axios.get(`http://192.168.1.8:5001/getPlayers?team=${team}`, {
-=======
-        const response = await axios.get(`http://192.168.1.4:5001/getPlayers?team=${team}`, {
->>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
+        const response = await axios.get(`http://192.168.10.5:5001/getPlayers?team=${team}`, {
           headers: {
             'Content-Type': 'application/json',
           },

@@ -21,11 +21,7 @@ const MatchDetails = ({ type }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-<<<<<<< HEAD
-          `http://192.168.1.8:5001/teamSchedule?type=${type}`,
-=======
-          `http://192.168.1.4:5001/teamSchedule?type=${type}`,
->>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
+          `http://192.168.10.5:5001/teamSchedule?type=${type}`,
           {
             headers: {
               "Content-Type": "application/json",

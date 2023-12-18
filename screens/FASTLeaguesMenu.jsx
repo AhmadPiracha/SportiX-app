@@ -96,11 +96,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchTeamsName = async () => {
       try {
-<<<<<<< HEAD
-        const response = await axios.get(`http://192.168.1.8:5001/getLeagueTeams?League_Name=${nname}`);
-=======
-        const response = await axios.get(`http://192.168.1.4:5001/getLeagueTeams?League_Name=${nname}`);
->>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
+        const response = await axios.get(`http://192.168.10.5:5001/getLeagueTeams?League_Name=${nname}`);
         if (response?.data) {
           setTeamName(response.data);
           console.log("Team Name:", JSON.stringify(response.data, null, 2));
@@ -119,11 +115,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   useEffect(() => {
     const fetchMatchesSchedule = async () => {
       try {
-<<<<<<< HEAD
-        const response = await axios.get(`http://192.168.1.8:5001/getLeagueSchedule?League_Name=${nname}`);
-=======
-        const response = await axios.get(`http://192.168.1.4:5001/getLeagueSchedule?League_Name=${nname}`);
->>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
+        const response = await axios.get(`http://192.168.10.5:5001/getLeagueSchedule?League_Name=${nname}`);
         if (response?.data) {
           setMatchSchedule(response.data);
           console.log("Match Schedule:", JSON.stringify(response.data, null, 2));
@@ -140,11 +132,7 @@ const FASTLeaguesMenu = ({ route, navigation }) => {
   // useEffect(() => {
   //   const fetchResult = async () => {
   //     try {
-<<<<<<< HEAD
-  //       const response = await axios.get(`http://192.168.1.8:5001/getLeagueResult`);
-=======
-  //       const response = await axios.get(`http://192.168.1.4:5001/getLeagueResult`);
->>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
+  //       const response = await axios.get(`http://192.168.10.5:5001/getLeagueResult`);
   //       if (response?.data) {
   //         setResult(response.data);
   //         console.log("Match Schedule:", JSON.stringify(response.data, null, 2));

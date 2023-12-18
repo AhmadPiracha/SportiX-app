@@ -53,19 +53,9 @@ const ViewVenueBookingScreen = () => {
 
   const fetchBookings = async () => {
     try {
-<<<<<<< HEAD
-      const response = await axios.get(`http://192.168.1.8:5001/viewVenueBookings?userRollNo=${userRollNo}`);
+      const response = await axios.get(`http://192.168.10.5:5001/viewVenueBookings?userRollNo=${userRollNo}`);
       const bookingData = response.data;
       setBookings(bookingData);
-=======
-      if (userRollNo) {
-        const response = await axios.get(`http://192.168.1.4:5001/viewVenueBookings?userRollNo=${userRollNo}`);
-        const bookingData = response.data;
-        setBookings(bookingData);
-      } else {
-        console.error("Data Fetching");
-      }
->>>>>>> f56abb628e6d22e5d319ee60097fe97084f49462
     } catch (error) {
       console.error("Error fetching bookings:", error);
       setError(error);
