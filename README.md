@@ -13,6 +13,7 @@ SportiX is a sophisticated web and mobile application developed as a final year 
 - [Key Features](#key-features)
 - [Backend](#backend)
 - [Acknowledgments](#acknowledgments)
+- [Contact](#contact)
 
 ## Getting Started
 
@@ -64,7 +65,7 @@ Before you embark on this journey, ensure your system is equipped with the follo
 
 ## Technology Stack
 
-- **Frontend:** React Native, Expo
+- **Frontend:** React, React Native, Expo
 - **Backend:** Node, Express
 - **Database:** SQL, Firebase
 
@@ -99,3 +100,7 @@ Before you embark on this journey, ensure your system is equipped with the follo
 ## Acknowledgments
 
 SportiX - Elevating the sports community, meticulously crafted by Ahmad Piracha.
+
+## Contact
+
+For inquiries or collaboration opportunities, reach out to Ahmad Piracha at ahmadpiracha3@gmail.com.
